@@ -41,4 +41,4 @@ GameTests live in `src/main/java/com/raishxn/gtia/gametest`, because `runGameTes
 
 ## License
 
-Code: LGPL-3.0, see [LICENSE.MD](LICENSE.MD). Textures made for GTIA: CC BY-NC-SA 4.0.
+Code: LGPL-3.0, see [LICENSE.MD](LICENSE.MD). Original textures: CC BY-NC-SA 4.0. Third-party content: [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md). Contributing: [CONTRIBUTING.md](CONTRIBUTING.md).
