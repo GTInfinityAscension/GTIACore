@@ -1,5 +1,7 @@
 package com.raishxn.gtia.rules;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -27,6 +29,8 @@ import java.util.Map;
 public final class WorldRules {
 
     public static final String FILE = "gtia_rules.json";
+    /** Authoritative copy inside the world data; the JSON file is the readable one. */
+    public static final String DATA_FILE = "data/gtia_rules.dat";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     /** Rules the next new world will get (set by the create-world screen; the config default otherwise). */
@@ -34,6 +38,7 @@ public final class WorldRules {
     private static volatile Snapshot active = Snapshot.of(RulePreset.NORMAL);
     /** True when the active rules were read from an existing world file. */
     private static volatile boolean locked;
+    private static volatile String warning;
 
     private WorldRules() {}
 
@@ -93,12 +98,26 @@ public final class WorldRules {
      * created the folder is temporary and has no rules file, so the pending choice is used.
      */
     public static void prepare(Path datapackDir) {
-        Path file = datapackDir == null || datapackDir.getParent() == null ? null :
-                datapackDir.getParent().resolve(FILE);
-        Snapshot fromWorld = file == null ? null : read(file);
-        if (fromWorld != null) {
-            active = fromWorld;
+        Path world = datapackDir == null ? null : datapackDir.getParent();
+        Snapshot stored = world == null ? null : readData(world.resolve(DATA_FILE));
+        Snapshot readable = world == null ? null : read(world.resolve(FILE));
+        if (stored != null) {
+            active = stored;
             locked = true;
+            if (readable == null || !readable.toJson().equals(stored.toJson())) {
+                warning = "gtia.rules.warning.file_mismatch";
+                GTIAMod.LOGGER.warn("{} differs from the world data; the world keeps preset {}", world.resolve(FILE),
+                        stored.preset().id());
+            }
+        } else if (readable != null) {
+            active = readable; // world from before the data copy existed
+            locked = true;
+        } else if (world != null && Files.exists(world.resolve("level.dat"))) {
+            // An existing world that lost its rules never picks up a new-world preset by accident.
+            active = Snapshot.of(RulePreset.NORMAL);
+            locked = true;
+            warning = "gtia.rules.warning.missing";
+            GTIAMod.LOGGER.warn("World {} has no GTIA rules; using Normal", world);
         } else {
             active = pending != null ? pending : defaultForNewWorlds();
             locked = false;
@@ -107,16 +126,40 @@ public final class WorldRules {
                 locked ? " (from world)" : " (new world)");
     }
 
-    /** Writes the rules into a world that has none yet, and locks them. */
+    /** Message key to show the first player who joins, if the world's rules needed attention. */
+    public static String takeWarning() {
+        String w = warning;
+        warning = null;
+        return w;
+    }
+
+    /** Writes both copies of the world's rules (JSON and world data) if either is missing, and locks them. */
     public static void onServerStarted(MinecraftServer server) {
-        Path file = server.getWorldPath(LevelResource.ROOT).resolve(FILE);
-        if (Files.exists(file)) return;
+        Path world = server.getWorldPath(LevelResource.ROOT);
         try {
-            Files.writeString(file, GSON.toJson(active.toJson()), StandardCharsets.UTF_8);
+            if (!Files.exists(world.resolve(DATA_FILE))) {
+                Files.createDirectories(world.resolve(DATA_FILE).getParent());
+                CompoundTag tag = new CompoundTag();
+                tag.putString("json", active.toJson().toString());
+                NbtIo.writeCompressed(tag, world.resolve(DATA_FILE).toFile());
+            }
+            // The readable copy always mirrors the rules in effect (restores a deleted or edited file).
+            Files.writeString(world.resolve(FILE), GSON.toJson(active.toJson()), StandardCharsets.UTF_8);
             locked = true;
             pending = null;
         } catch (IOException e) {
-            GTIAMod.LOGGER.error("Could not write GTIA rules to {}", file, e);
+            GTIAMod.LOGGER.error("Could not write GTIA rules to {}", world, e);
+        }
+    }
+
+    private static Snapshot readData(Path file) {
+        if (!Files.isRegularFile(file)) return null;
+        try {
+            CompoundTag tag = NbtIo.readCompressed(file.toFile());
+            return Snapshot.fromJson(GSON.fromJson(tag.getString("json"), JsonObject.class));
+        } catch (IOException | RuntimeException e) {
+            GTIAMod.LOGGER.error("Could not read GTIA rules from {}", file, e);
+            return null;
         }
     }
 

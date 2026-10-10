@@ -43,6 +43,14 @@ public final class GTIAMod {
         REGISTRATE.registerRegistrate();
         MinecraftForge.EVENT_BUS.addListener(
                 (net.minecraftforge.event.server.ServerStartedEvent e) -> WorldRules.onServerStarted(e.getServer()));
+        MinecraftForge.EVENT_BUS
+                .addListener((net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e) -> {
+                    String warning = WorldRules.takeWarning();
+                    if (warning != null) {
+                        e.getEntity().sendSystemMessage(net.minecraft.network.chat.Component.translatable(warning,
+                                WorldRules.active().preset().id()).withStyle(net.minecraft.ChatFormatting.GOLD));
+                    }
+                });
         if (System.getProperty(RecipeExport.PROPERTY) != null) {
             MinecraftForge.EVENT_BUS.addListener(RecipeExport::onServerStarted);
         }

@@ -78,6 +78,8 @@
   "gtia.machine.wood_retort.tooltip.main.1": "Burns its own wood gas: no fuel, no power",
   "gtia.machine.wood_retort.tooltip.requirements.0": "Accepts up to 5 Coke Oven Hatches for automation",
   "gtia.machine.wood_retort.tooltip.requirements.1": "Three Retorts keep one Still busy on circuit 1",
+  "gtia.rules.warning.file_mismatch": "gtia_rules.json was edited, but a world's rules can't change. This world stays %s.",
+  "gtia.rules.warning.missing": "This world had lost its GTIA rules, so it was set to %s. Back up your saves before moving them around.",
   "gtia.solvay_tower": "Solvay Tower",
   "gtia.still": "Still",
   "gtia.tooltip.section.auxiliary": "Auxiliary Module",

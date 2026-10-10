@@ -106,5 +106,7 @@
   "tagprefix.gtia_quintuple_plate": "Placa Quíntupla de %s",
   "tagprefix.gtia_superdense_plate": "Placa Superdensa de %s",
   "tagprefix.gtia_triple_ingot": "Lingote Triplo de %s",
-  "tagprefix.gtia_triple_plate": "Placa Tripla de %s"
+  "tagprefix.gtia_triple_plate": "Placa Tripla de %s",
+  "gtia.rules.warning.missing": "Este mundo tinha perdido as regras do GTIA e ficou em %s. Faça backup dos saves antes de mexer neles.",
+  "gtia.rules.warning.file_mismatch": "O gtia_rules.json foi editado, mas as regras de um mundo não mudam. Este mundo continua %s."
 }

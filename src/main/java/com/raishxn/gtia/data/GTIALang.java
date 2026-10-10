@@ -8,6 +8,10 @@ public final class GTIALang {
 
     public static void init() {
         GTIATooltips.registerLang();
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.warning.missing",
+                "This world had lost its GTIA rules, so it was set to %s. Back up your saves before moving them around.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.warning.file_mismatch",
+                "gtia_rules.json was edited, but a world's rules can't change. This world stays %s.");
         GTIAMod.REGISTRATE.addRawLang("tagprefix.gtia_double_ingot", "Double %s Ingot");
         GTIAMod.REGISTRATE.addRawLang("tagprefix.gtia_triple_ingot", "Triple %s Ingot");
         GTIAMod.REGISTRATE.addRawLang("tagprefix.gtia_quadruple_ingot", "Quadruple %s Ingot");
