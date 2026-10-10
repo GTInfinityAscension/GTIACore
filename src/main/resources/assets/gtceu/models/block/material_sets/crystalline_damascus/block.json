@@ -1,0 +1,7 @@
+{
+  "parent": "gtceu:block/cube/tinted/all_0",
+  "textures": {
+    "all": "gtceu:block/material_sets/crystalline_damascus/block",
+    "particle": "gtceu:block/material_sets/crystalline_damascus/block"
+  }
+}

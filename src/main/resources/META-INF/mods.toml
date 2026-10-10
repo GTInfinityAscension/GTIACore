@@ -1,0 +1,46 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "${mod_license}"
+
+[[mods]]
+    modId = "${mod_id}"
+    version = "${version}"
+    displayName = "${mod_name}"
+    displayURL = "${mod_url}"
+    logoFile = "assets/gtia/textures/logo.png"
+    authors="${mod_author}"
+    description = '''
+Core Java do modpack GregTech Infinity Ascension. Integra materiais, processos e progressao ao GTCEu Modern.
+'''
+
+    [[dependencies.${mod_id}]]
+        modId = "forge"
+        mandatory = true
+        versionRange = "[${forge_version},)"
+        ordering = "NONE"
+        side = "BOTH"
+    [[dependencies.${mod_id}]]
+        modId = "minecraft"
+        mandatory = true
+        versionRange = "[${minecraft_version}]"
+        ordering = "NONE"
+        side = "BOTH"
+    [[dependencies.${mod_id}]]
+        modId = "gtceu"
+        mandatory = true
+        versionRange = "[${gtceu_version},8.0.0)"
+        ordering = "AFTER"
+        side = "BOTH"
+    [[dependencies.${mod_id}]]
+        modId = "ae2"
+        mandatory = ${integration_mandatory}
+        versionRange = "[15,16)"
+        ordering = "AFTER"
+        side = "BOTH"
+
+    [[dependencies.${mod_id}]]
+        modId = "gtna"
+        mandatory = ${integration_mandatory}
+        versionRange = "[0.5.1,)"
+        ordering = "AFTER"
+        side = "BOTH"

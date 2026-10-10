@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "gtia:block/machine/opv_fermentation_vat",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "gtia:block/machine/opv_fermentation_vat"
+    },
+    "facing=south": {
+      "model": "gtia:block/machine/opv_fermentation_vat",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gtia:block/machine/opv_fermentation_vat",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "gtceu:block/material_sets/astral_void/raw_ore_block",
+    "particle": "gtceu:block/material_sets/astral_void/raw_ore_block"
+  }
+}

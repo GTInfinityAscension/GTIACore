@@ -1,0 +1,33 @@
+package com.raishxn.gtia.data;
+
+import net.minecraft.world.item.Item;
+
+import com.raishxn.gtia.GTIAMod;
+import com.tterrag.registrate.util.entry.ItemEntry;
+
+public final class GTIAItems {
+
+    public static final ItemEntry<Item> PHASE_COUPLER = GTIAMod.REGISTRATE.item("phase_coupler", Item::new)
+            .lang("Phase Coupler")
+            .model((context, provider) -> provider.generated(context,
+                    GTIAMod.id("item/phase_coupler")))
+            .register();
+
+    /** Wears out slowly in the Diaphragm Cell (a chanced input). Placeholder texture until the author draws one. */
+    public static final ItemEntry<Item> ASBESTOS_DIAPHRAGM = GTIAMod.REGISTRATE.item("asbestos_diaphragm", Item::new)
+            .lang("Asbestos Diaphragm")
+            .model((context, provider) -> provider.generated(context,
+                    GTIAMod.id("item/asbestos_diaphragm")))
+            .register();
+
+    /** Consumed by the Hall-Heroult Cell: real anodes burn away into CO2. Placeholder texture. */
+    public static final ItemEntry<Item> CARBON_ANODE = GTIAMod.REGISTRATE.item("carbon_anode", Item::new)
+            .lang("Carbon Anode")
+            .model((context, provider) -> provider.generated(context,
+                    GTIAMod.id("item/carbon_anode")))
+            .register();
+
+    private GTIAItems() {}
+
+    public static void init() {}
+}

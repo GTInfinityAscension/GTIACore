@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "gtceu:block/material_sets/phase_eternity/block",
+    "particle": "gtceu:block/material_sets/phase_eternity/block"
+  }
+}

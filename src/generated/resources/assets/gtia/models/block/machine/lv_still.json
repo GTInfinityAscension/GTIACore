@@ -1,0 +1,53 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "gtceu:machine",
+  "machine": "gtia:lv_still",
+  "variants": {
+    "recipe_logic_status=idle": {
+      "model": {
+        "parent": "gtceu:block/casings/voltage/lv",
+        "textures": {
+          "overlay_front": "gtia:block/machines/still/overlay_front",
+          "overlay_side": "gtia:block/machines/still/overlay_side",
+          "overlay_top": "gtia:block/machines/still/overlay_top"
+        }
+      }
+    },
+    "recipe_logic_status=suspend": {
+      "model": {
+        "parent": "gtceu:block/casings/voltage/lv",
+        "textures": {
+          "overlay_front": "gtia:block/machines/still/overlay_front",
+          "overlay_side": "gtia:block/machines/still/overlay_side",
+          "overlay_top": "gtia:block/machines/still/overlay_top"
+        }
+      }
+    },
+    "recipe_logic_status=waiting": {
+      "model": {
+        "parent": "gtceu:block/casings/voltage/lv",
+        "textures": {
+          "overlay_front": "gtia:block/machines/still/overlay_front_active",
+          "overlay_front_emissive": "gtia:block/machines/still/overlay_front_active_emissive",
+          "overlay_side": "gtia:block/machines/still/overlay_side_active",
+          "overlay_side_emissive": "gtia:block/machines/still/overlay_side_active_emissive",
+          "overlay_top": "gtia:block/machines/still/overlay_top_active",
+          "overlay_top_emissive": "gtia:block/machines/still/overlay_top_active_emissive"
+        }
+      }
+    },
+    "recipe_logic_status=working": {
+      "model": {
+        "parent": "gtceu:block/casings/voltage/lv",
+        "textures": {
+          "overlay_front": "gtia:block/machines/still/overlay_front_active",
+          "overlay_front_emissive": "gtia:block/machines/still/overlay_front_active_emissive",
+          "overlay_side": "gtia:block/machines/still/overlay_side_active",
+          "overlay_side_emissive": "gtia:block/machines/still/overlay_side_active_emissive",
+          "overlay_top": "gtia:block/machines/still/overlay_top_active",
+          "overlay_top_emissive": "gtia:block/machines/still/overlay_top_active_emissive"
+        }
+      }
+    }
+  }
+}
