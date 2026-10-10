@@ -158,6 +158,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
+    // Mixin (GTIA Rules hooks)
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -180,7 +183,16 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
-tasks.named('jar', Jar).configure { finalizedBy 'reobfJar' }
+// The mixin config is declared through the manifest only (src/main/resources/META-INF/MANIFEST.MF in dev, the jar
+// manifest in production). A --mixin.config run argument is read before the mod folder is mounted and fails in dev.
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+}
+
+tasks.named('jar', Jar).configure {
+    manifest.attributes('MixinConfigs': "${mod_id}.mixins.json")
+    finalizedBy 'reobfJar'
+}
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly

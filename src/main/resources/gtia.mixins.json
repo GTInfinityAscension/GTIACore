@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.raishxn.gtia.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "gtia.refmap.json",
+  "minVersion": "0.8",
+  "mixins": [
+    "GTRecipeBuilderMixin",
+    "ServerPacksSourceMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

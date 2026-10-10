@@ -19,6 +19,7 @@ import com.raishxn.gtia.data.GTIAItems;
 import com.raishxn.gtia.data.GTIALang;
 import com.raishxn.gtia.data.GTIAMachines;
 import com.raishxn.gtia.data.GTIARecipeTypes;
+import com.raishxn.gtia.rules.WorldRules;
 import com.raishxn.gtia.tools.RecipeExport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +41,8 @@ public final class GTIAMod {
         modBus.addGenericListener(GTRecipeType.class, this::registerRecipeTypes);
         modBus.addGenericListener(MachineDefinition.class, this::registerMachines);
         REGISTRATE.registerRegistrate();
+        MinecraftForge.EVENT_BUS.addListener(
+                (net.minecraftforge.event.server.ServerStartedEvent e) -> WorldRules.onServerStarted(e.getServer()));
         if (System.getProperty(RecipeExport.PROPERTY) != null) {
             MinecraftForge.EVENT_BUS.addListener(RecipeExport::onServerStarted);
         }
