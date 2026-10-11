@@ -172,8 +172,8 @@ public final class GTIARulesSelfTest {
                     server.execute(() -> {
                         var player = server.getPlayerList().getPlayers().get(0);
                         player.getInventory().clearContent();
-                        player.getInventory()
-                                .add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.OAK_LOG));
+                        player.getInventory().add(
+                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.OAK_LOG));
                     });
                     step = 71;
                     wait = 20;
@@ -193,9 +193,19 @@ public final class GTIARulesSelfTest {
                     wait = 40;
                 }
                 case 72 -> {
-                    boolean has = mc.player.getInventory().countItem(net.minecraft.world.item.Items.CRAFTING_TABLE) > 0;
-                    GTIAMod.LOGGER.info("GTIA rules self-test: Fabricate log -> crafting table: {}",
-                            has ? "PASS" : "FAIL");
+                    // Read the server's inventory: in creative the client copy is not updated by the server craft.
+                    var serverInventory = mc.getSingleplayerServer().getPlayerList().getPlayers().get(0).getInventory();
+                    boolean has = serverInventory.countItem(net.minecraft.world.item.Items.CRAFTING_TABLE) > 0;
+                    fabricateTries++;
+                    if (!has && fabricateTries < 3) {
+                        // Fabricate builds its craft graph on the first request of a session.
+                        step = 71;
+                        return;
+                    }
+                    GTIAMod.LOGGER.info(
+                            "GTIA rules self-test: Fabricate log -> crafting table: {} (attempt {}, inventory {})",
+                            has ? "PASS" : "FAIL", fabricateTries,
+                            serverInventory.items.stream().filter(st -> !st.isEmpty()).toList());
                     step = 80;
                 }
                 case 80 -> {
@@ -216,8 +226,9 @@ public final class GTIARulesSelfTest {
                     boolean kept = mc.player.hasEffect(net.minecraft.world.effect.MobEffects.NIGHT_VISION);
                     GTIAMod.LOGGER.info("GTIA rules self-test: Night Vision after /pspace tpx to {}: {}",
                             mc.level.dimension().location(), nether && kept ? "PASS" : "FAIL");
-                    step = 8;
+                    step = 82;
                 }
+                case 82 -> questBook(mc, "gtia_selftest_quests_" + mc.options.languageCode + ".png", 8);
                 case 8 -> {
                     if (mc.screen != null) mc.screen.onClose();
                     mc.options.languageCode = "zh_cn";
@@ -226,7 +237,8 @@ public final class GTIARulesSelfTest {
                     step = 9;
                     wait = 400;
                 }
-                case 9 -> preview(mc, "gtna:eye_of_harmony", "gtia_selftest_eoh_zh.png", 10);
+                case 9 -> questBook(mc, "gtia_selftest_quests_zh_cn.png", 90);
+                case 90 -> preview(mc, "gtna:eye_of_harmony", "gtia_selftest_eoh_zh.png", 10);
                 case 10 -> preview(mc, "gtna:forge_of_gods", "gtia_selftest_fog_zh.png", 11);
                 case 11 -> {
                     if (fpsSamples < 15) {
@@ -262,6 +274,7 @@ public final class GTIARulesSelfTest {
 
     private static boolean previewOpened;
     private static int emiWaits;
+    private static int fabricateTries;
     private static int fpsSamples;
     private static int fpsTotal;
 
@@ -280,6 +293,29 @@ public final class GTIARulesSelfTest {
         shot(mc, file);
         if (mc.screen != null) mc.screen.onClose();
         previewOpened = false;
+        step = next;
+        wait = 20;
+    }
+
+    private static boolean questsOpened;
+
+    /** Opens the FTB Quests book, waits for it to draw, then screenshots it in the current language. */
+    private static void questBook(Minecraft mc, String file, int next) {
+        if (!questsOpened) {
+            if (mc.screen != null) mc.screen.onClose();
+            try {
+                Class.forName("dev.ftb.mods.ftbquests.client.ClientQuestFile").getMethod("openGui").invoke(null);
+            } catch (ReflectiveOperationException e) {
+                GTIAMod.LOGGER.error("GTIA rules self-test: FTB Quests not reachable", e);
+            }
+            questsOpened = true;
+            wait = 100;
+            return;
+        }
+        GTIAMod.LOGGER.info("GTIA rules self-test: quest book in {}: screen {}", mc.options.languageCode, mc.screen);
+        shot(mc, file);
+        if (mc.screen != null) mc.screen.onClose();
+        questsOpened = false;
         step = next;
         wait = 20;
     }
