@@ -122,7 +122,19 @@ public final class GTIARulesSelfTest {
                     wait = 20;
                 }
                 case 8 -> {
+                    if (mc.screen != null) mc.screen.onClose();
+                    mc.options.languageCode = "zh_cn";
+                    mc.getLanguageManager().setSelected("zh_cn");
+                    mc.reloadResourcePacks();
                     step = 9;
+                    wait = 400;
+                }
+                case 9 -> preview(mc, "gtna:eye_of_harmony", "gtia_selftest_eoh_zh.png", 10);
+                case 10 -> preview(mc, "gtna:forge_of_gods", "gtia_selftest_fog_zh.png", 11);
+                case 11 -> {
+                    mc.options.languageCode = "en_us";
+                    mc.getLanguageManager().setSelected("en_us");
+                    step = 12;
                     MARKER.toFile().delete();
                     mc.stop();
                 }
@@ -133,6 +145,26 @@ public final class GTIARulesSelfTest {
             step = 4;
             mc.stop();
         }
+    }
+
+    private static boolean previewOpened;
+
+    /** Opens the EMI recipes of a multiblock controller, waits for the preview to build, then screenshots it. */
+    private static void preview(Minecraft mc, String item, String file, int next) {
+        if (!previewOpened) {
+            var stack = new net.minecraft.world.item.ItemStack(net.minecraftforge.registries.ForgeRegistries.ITEMS
+                    .getValue(new ResourceLocation(item)));
+            dev.emi.emi.api.EmiApi.displayRecipes(dev.emi.emi.api.stack.EmiStack.of(stack));
+            previewOpened = true;
+            wait = 600;
+            return;
+        }
+        GTIAMod.LOGGER.info("GTIA rules self-test: preview {}: screen {}", item, mc.screen);
+        shot(mc, file);
+        if (mc.screen != null) mc.screen.onClose();
+        previewOpened = false;
+        step = next;
+        wait = 20;
     }
 
     private static void shot(Minecraft mc, String name) {
