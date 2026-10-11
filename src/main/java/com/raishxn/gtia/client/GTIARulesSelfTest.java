@@ -196,6 +196,26 @@ public final class GTIARulesSelfTest {
                     boolean has = mc.player.getInventory().countItem(net.minecraft.world.item.Items.CRAFTING_TABLE) > 0;
                     GTIAMod.LOGGER.info("GTIA rules self-test: Fabricate log -> crafting table: {}",
                             has ? "PASS" : "FAIL");
+                    step = 80;
+                }
+                case 80 -> {
+                    var server = mc.getSingleplayerServer();
+                    server.execute(() -> {
+                        var source = server.createCommandSourceStack().withSuppressedOutput();
+                        String name = mc.player.getGameProfile().getName();
+                        server.getCommands().performPrefixedCommand(source,
+                                "effect give " + name + " minecraft:night_vision infinite");
+                        server.getCommands().performPrefixedCommand(source,
+                                "pspace tpx " + name + " minecraft:the_nether 0 100 0");
+                    });
+                    step = 81;
+                    wait = 100;
+                }
+                case 81 -> {
+                    boolean nether = mc.level.dimension() == net.minecraft.world.level.Level.NETHER;
+                    boolean kept = mc.player.hasEffect(net.minecraft.world.effect.MobEffects.NIGHT_VISION);
+                    GTIAMod.LOGGER.info("GTIA rules self-test: Night Vision after /pspace tpx to {}: {}",
+                            mc.level.dimension().location(), nether && kept ? "PASS" : "FAIL");
                     step = 8;
                 }
                 case 8 -> {
@@ -209,6 +229,22 @@ public final class GTIARulesSelfTest {
                 case 9 -> preview(mc, "gtna:eye_of_harmony", "gtia_selftest_eoh_zh.png", 10);
                 case 10 -> preview(mc, "gtna:forge_of_gods", "gtia_selftest_fog_zh.png", 11);
                 case 11 -> {
+                    if (fpsSamples < 15) {
+                        // One sample per second, in the world with no screen open, at the player's settings.
+                        if (fpsSamples == 0) {
+                            if (mc.screen != null) mc.screen.onClose();
+                            // A hidden test window with vsync on is throttled by the compositor; measure without it.
+                            mc.getWindow().updateVsync(false);
+                        }
+                        if (fpsSamples > 0) fpsTotal += mc.getFps();
+                        fpsSamples++;
+                        wait = 20;
+                        return;
+                    }
+                    GTIAMod.LOGGER.info(
+                            "GTIA rules self-test: average FPS in the world over 14 s: {} (render distance {}, {})",
+                            fpsTotal / 14, mc.options.renderDistance().get(),
+                            com.mojang.blaze3d.platform.GlUtil.getRenderer());
                     mc.options.languageCode = "en_us";
                     mc.getLanguageManager().setSelected("en_us");
                     step = 12;
@@ -226,6 +262,8 @@ public final class GTIARulesSelfTest {
 
     private static boolean previewOpened;
     private static int emiWaits;
+    private static int fpsSamples;
+    private static int fpsTotal;
 
     /** Opens the EMI recipes of a multiblock controller, waits for the preview to build, then screenshots it. */
     private static void preview(Minecraft mc, String item, String file, int next) {
