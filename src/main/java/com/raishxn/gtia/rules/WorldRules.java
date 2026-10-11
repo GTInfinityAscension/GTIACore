@@ -115,6 +115,21 @@ public final class WorldRules {
         pending = snapshot;
     }
 
+    /** The rules a world created now would get: the player's choice, else the configured default. */
+    public static Snapshot pendingOrDefault() {
+        return pending != null ? pending : defaultForNewWorlds();
+    }
+
+    /**
+     * Client: the create-world screen is opening. Its first data load generates the recipes right away, so the rules of
+     * the last world played must not leak into it.
+     */
+    public static void beginNewWorld() {
+        pending = null;
+        active = defaultForNewWorlds();
+        locked = false;
+    }
+
     /**
      * Called with the data pack folder of the world about to load ({@code <world>/datapacks}). For a world being
      * created the folder is temporary and has no rules file, so the pending choice is used.

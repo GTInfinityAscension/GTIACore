@@ -10,5 +10,10 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "client.CreateWorldGameTabMixin",
+    "client.CreateWorldScreenAccessor",
+    "client.CreateWorldScreenMixin"
+  ]
 }

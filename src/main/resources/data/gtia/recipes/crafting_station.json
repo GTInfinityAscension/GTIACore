@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "minecraft:crafting_table" },
+    { "tag": "forge:chests/wooden" }
+  ],
+  "result": { "item": "gtia:crafting_station" }
+}

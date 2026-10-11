@@ -8,6 +8,64 @@ public final class GTIALang {
 
     public static void init() {
         GTIATooltips.registerLang();
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.tab",
+                "%s (%s)");
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.empty",
+                "Place chests or other containers on the sides or below the station to craft from them.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.side.north",
+                "north");
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.side.east",
+                "east");
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.side.south",
+                "south");
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.side.west",
+                "west");
+        GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.side.down",
+                "below");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.title",
+                "GTIA Rules");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.title.world",
+                "GTIA Rules of this world");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.button",
+                "GTIA Rules: %s");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.button.tooltip",
+                "Difficulty preset of this world: Journey, Normal or Custom. It can't be changed after the world is created.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.search",
+                "Search rules...");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.locked",
+                "A world's rules are fixed when it is created.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.values",
+                "Journey %s · Normal %s · range %s to %s");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.pause",
+                "GTIA Rules");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.preset.journey",
+                "Journey");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.preset.normal",
+                "Normal");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.preset.custom",
+                "Custom");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.preset.journey.desc",
+                "A gentler pace: faster recipes and stronger steam machines.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.preset.normal.desc",
+                "The intended experience.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.preset.custom.desc",
+                "Starts from the selected preset; edit every value below.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.group.recipes",
+                "Recipes");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.group.steam",
+                "Steam");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.recipes.duration_multiplier",
+                "Recipe duration");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.recipes.duration_multiplier.desc",
+                "Multiplies the time of every GregTech machine recipe. Lower is faster.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.parallel_multiplier",
+                "Steam multiblock parallels");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.parallel_multiplier.desc",
+                "Multiplies how many recipes the GTNA steam multiblocks run at once.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.duration_multiplier_steam",
+                "Steam multiblock duration");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.duration_multiplier_steam.desc",
+                "Multiplies the recipe time of the GTNA steam multiblocks, on top of the recipe duration rule.");
         GTIAMod.REGISTRATE.addRawLang("gtia.rules.warning.missing",
                 "This world had lost its GTIA rules, so it was set to %s. Back up your saves before moving them around.");
         GTIAMod.REGISTRATE.addRawLang("gtia.rules.warning.file_mismatch",

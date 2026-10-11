@@ -37,6 +37,7 @@ public final class GTIAMod {
     public GTIAMod() {
         GTIALang.init();
         GTIAItems.init();
+        com.raishxn.gtia.station.GTIAStation.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(this::registerMaterialRegistry);
         modBus.addListener(this::registerMaterials);
@@ -50,6 +51,10 @@ public final class GTIAMod {
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
             MinecraftForge.EVENT_BUS.addListener(
                     (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) -> WorldRules.leaveWorld());
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onScreenInit);
+            if (com.raishxn.gtia.client.GTIARulesSelfTest.ENABLED) {
+                MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesSelfTest::onClientTick);
+            }
         }
         MinecraftForge.EVENT_BUS
                 .addListener((net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e) -> {

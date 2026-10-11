@@ -91,6 +91,8 @@ legacyForge {
             sourceSet = sourceSets.main
             programArguments.addAll('--refresh-dependencies')
             systemProperty('forge.enabledGameTestNamespaces', project.mod_id)
+            // ./gradlew runClient -PgtiaRulesSelfTest runs the create-world rules self-test and quits.
+            if (project.hasProperty('gtiaRulesSelfTest')) systemProperty('gtia.rulesSelfTest', 'true')
         }
         server {
             server()
@@ -149,6 +151,7 @@ dependencies {
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
     modRuntimeOnly("dev.emi:emi-forge:${emi_version}+${minecraft_version}")
+    modCompileOnly("dev.emi:emi-forge:${emi_version}+${minecraft_version}:api")
     modRuntimeOnly("curse.maven:jade-324717:5390389")
 
     // GregTech and dependencies
