@@ -177,6 +177,8 @@ public final class GTIARulesScreen extends Screen {
 
         RuleList(Minecraft minecraft, int width, int height, int top, int bottom, int itemHeight) {
             super(minecraft, width, height, top, bottom, itemHeight);
+            // Its dirt bands would cover the preset buttons and the search box above it.
+            setRenderTopAndBottom(false);
         }
 
         void refill(String filter) {

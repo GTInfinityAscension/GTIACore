@@ -22,6 +22,9 @@ public interface CreateWorldScreenAccessor {
     @Invoker("getDataPackSelectionSettings")
     Pair<Path, PackRepository> gtia$getDataPackSelectionSettings(WorldDataConfiguration configuration);
 
+    @Invoker("onCreate")
+    void gtia$onCreate();
+
     @Invoker("applyNewPackConfig")
     void gtia$applyNewPackConfig(PackRepository repository, WorldDataConfiguration configuration,
                                  Consumer<WorldDataConfiguration> onFailure);

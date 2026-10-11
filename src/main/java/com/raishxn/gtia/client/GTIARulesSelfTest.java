@@ -67,6 +67,7 @@ public final class GTIARulesSelfTest {
                     boolean pass = Math.abs(journey - expected) <= 1;
                     GTIAMod.LOGGER.info("GTIA rules self-test: after Journey {} takes {} ticks (expected about {}): {}",
                             recipeId, journey, expected, pass ? "PASS" : "FAIL");
+                    shot(mc, "gtia_selftest_create_world.png");
                     GTIARulesScreen.openForNewWorld(screen);
                     step = 3;
                     wait = 20;
@@ -74,7 +75,54 @@ public final class GTIARulesSelfTest {
                 case 3 -> {
                     GTIAMod.LOGGER.info("GTIA rules self-test: rules screen open: {}",
                             mc.screen instanceof GTIARulesScreen ? "PASS" : "FAIL (" + mc.screen + ")");
-                    step = 4;
+                    shot(mc, "gtia_selftest_rules_screen.png");
+                    if (mc.screen instanceof GTIARulesScreen rules) rules.onClose();
+                    step = 5;
+                    wait = 10;
+                }
+                case 5 -> {
+                    if (!(mc.screen instanceof CreateWorldScreen screen)) return;
+                    ((com.raishxn.gtia.mixin.client.CreateWorldScreenAccessor) screen).gtia$onCreate();
+                    step = 6;
+                }
+                case 6 -> {
+                    var server = mc.getSingleplayerServer();
+                    if (mc.player == null || server == null || mc.screen != null) return;
+                    server.execute(() -> {
+                        var player = server.getPlayerList().getPlayers().get(0);
+                        var level = player.serverLevel();
+                        var pos = player.blockPosition().relative(player.getDirection(), 2);
+                        level.setBlockAndUpdate(pos,
+                                com.raishxn.gtia.station.GTIAStation.BLOCK.get().defaultBlockState());
+                        level.setBlockAndUpdate(pos.east(),
+                                net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState());
+                        level.setBlockAndUpdate(pos.below(),
+                                net.minecraft.world.level.block.Blocks.BARREL.defaultBlockState());
+                        if (level.getBlockEntity(
+                                pos.east()) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest) {
+                            chest.setItem(0, new net.minecraft.world.item.ItemStack(
+                                    net.minecraft.world.item.Items.OAK_PLANKS, 32));
+                            chest.setItem(5, new net.minecraft.world.item.ItemStack(
+                                    net.minecraft.world.item.Items.IRON_INGOT, 16));
+                        }
+                        level.getBlockState(pos).use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND,
+                                new net.minecraft.world.phys.BlockHitResult(
+                                        net.minecraft.world.phys.Vec3.atCenterOf(pos),
+                                        net.minecraft.core.Direction.UP, pos, false));
+                    });
+                    step = 7;
+                    wait = 40;
+                }
+                case 7 -> {
+                    boolean open = mc.screen instanceof com.raishxn.gtia.station.CraftingStationScreen;
+                    GTIAMod.LOGGER.info("GTIA rules self-test: crafting station open: {}",
+                            open ? "PASS" : "FAIL (" + mc.screen + ")");
+                    shot(mc, "gtia_selftest_crafting_station.png");
+                    step = 8;
+                    wait = 20;
+                }
+                case 8 -> {
+                    step = 9;
                     MARKER.toFile().delete();
                     mc.stop();
                 }
@@ -85,6 +133,10 @@ public final class GTIARulesSelfTest {
             step = 4;
             mc.stop();
         }
+    }
+
+    private static void shot(Minecraft mc, String name) {
+        net.minecraft.client.Screenshot.grab(mc.gameDirectory, name, mc.getMainRenderTarget(), msg -> {});
     }
 
     private static GTRecipe firstGTRecipe(CreateWorldScreen screen) {
