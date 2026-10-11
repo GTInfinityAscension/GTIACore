@@ -90,6 +90,7 @@ public final class GTIARulesSelfTest {
                     if (mc.player == null || server == null || mc.screen != null) return;
                     server.execute(() -> {
                         var player = server.getPlayerList().getPlayers().get(0);
+                        player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
                         var level = player.serverLevel();
                         var pos = player.blockPosition().relative(player.getDirection(), 2);
                         level.setBlockAndUpdate(pos,
@@ -118,8 +119,84 @@ public final class GTIARulesSelfTest {
                     GTIAMod.LOGGER.info("GTIA rules self-test: crafting station open: {}",
                             open ? "PASS" : "FAIL (" + mc.screen + ")");
                     shot(mc, "gtia_selftest_crafting_station.png");
-                    step = 8;
+                    if (open) {
+                        // The pack changes some vanilla recipes, so take whichever crafting recipe EMI shows for
+                        // sticks.
+                        var screen = (com.raishxn.gtia.station.CraftingStationScreen) mc.screen;
+                        var handler = new com.raishxn.gtia.integration.emi.GTIAEmiPlugin.StationHandler();
+                        var ctx = new dev.emi.emi.api.recipe.handler.EmiCraftContext<>(screen,
+                                handler.getInventory(screen),
+                                dev.emi.emi.api.recipe.handler.EmiCraftContext.Type.FILL_BUTTON);
+                        var recipe = dev.emi.emi.api.EmiApi.getRecipeManager()
+                                .getRecipesByOutput(
+                                        dev.emi.emi.api.stack.EmiStack.of(net.minecraft.world.item.Items.STICK))
+                                .stream().filter(r -> handler.supportsRecipe(r) && handler.canCraft(r, ctx))
+                                .findFirst().orElse(null);
+                        var all = dev.emi.emi.api.EmiApi.getRecipeManager().getRecipesByOutput(
+                                dev.emi.emi.api.stack.EmiStack.of(net.minecraft.world.item.Items.STICK));
+                        if (all.isEmpty() && emiWaits++ < 60) {
+                            // EMI is still loading the pack's recipes after the world opened.
+                            wait = 40;
+                            return;
+                        }
+                        for (var r : all) {
+                            GTIAMod.LOGGER.info("GTIA rules self-test: stick recipe {} {} supported {} canCraft {}",
+                                    r.getId(), r.getCategory().getId(), handler.supportsRecipe(r),
+                                    handler.canCraft(r, ctx));
+                        }
+                        GTIAMod.LOGGER.info("GTIA rules self-test: {} sources, planks visible to EMI: {}",
+                                handler.getInputSources(screen.getMenu()).size(),
+                                handler.getInputSources(screen.getMenu()).stream()
+                                        .filter(sl -> sl.getItem().is(net.minecraft.world.item.Items.OAK_PLANKS))
+                                        .mapToInt(sl -> sl.getItem().getCount()).sum());
+                        GTIAMod.LOGGER.info("GTIA rules self-test: EMI stick recipe from the side chest: {}",
+                                recipe == null ? null : recipe.getId());
+                        if (recipe != null) handler.craft(recipe, ctx);
+                    }
+                    step = 70;
+                    wait = 40;
+                }
+                case 70 -> {
+                    if (mc.screen instanceof com.raishxn.gtia.station.CraftingStationScreen station) {
+                        var result = station.getMenu().getSlot(0).getItem();
+                        int planksInGrid = 0;
+                        for (int i = 1; i < 10; i++) planksInGrid += station.getMenu().getSlot(i).getItem().getCount();
+                        boolean pass = result.is(net.minecraft.world.item.Items.STICK) && planksInGrid > 0;
+                        GTIAMod.LOGGER.info(
+                                "GTIA rules self-test: EMI fill from the side chest: {} (result {}, {} planks in grid)",
+                                pass ? "PASS" : "FAIL", result, planksInGrid);
+                        shot(mc, "gtia_selftest_crafting_station_filled.png");
+                        station.onClose();
+                    }
+                    var server = mc.getSingleplayerServer();
+                    server.execute(() -> {
+                        var player = server.getPlayerList().getPlayers().get(0);
+                        player.getInventory().clearContent();
+                        player.getInventory()
+                                .add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.OAK_LOG));
+                    });
+                    step = 71;
                     wait = 20;
+                }
+                case 71 -> {
+                    try {
+                        Class<?> packet = Class.forName("com.sabbs.fabricate.network.PlannerCraftPacket");
+                        Object msg = packet
+                                .getConstructor(net.minecraft.world.item.Item.class, int.class, boolean.class)
+                                .newInstance(net.minecraft.world.item.Items.CRAFTING_TABLE, 1, false);
+                        Class.forName("com.sabbs.fabricate.network.NetworkHandler").getMethod("sendToServer", packet)
+                                .invoke(null, msg);
+                    } catch (ReflectiveOperationException e) {
+                        GTIAMod.LOGGER.error("GTIA rules self-test: Fabricate not reachable", e);
+                    }
+                    step = 72;
+                    wait = 40;
+                }
+                case 72 -> {
+                    boolean has = mc.player.getInventory().countItem(net.minecraft.world.item.Items.CRAFTING_TABLE) > 0;
+                    GTIAMod.LOGGER.info("GTIA rules self-test: Fabricate log -> crafting table: {}",
+                            has ? "PASS" : "FAIL");
+                    step = 8;
                 }
                 case 8 -> {
                     if (mc.screen != null) mc.screen.onClose();
@@ -148,10 +225,12 @@ public final class GTIARulesSelfTest {
     }
 
     private static boolean previewOpened;
+    private static int emiWaits;
 
     /** Opens the EMI recipes of a multiblock controller, waits for the preview to build, then screenshots it. */
     private static void preview(Minecraft mc, String item, String file, int next) {
         if (!previewOpened) {
+            if (mc.screen != null) mc.screen.onClose();
             var stack = new net.minecraft.world.item.ItemStack(net.minecraftforge.registries.ForgeRegistries.ITEMS
                     .getValue(new ResourceLocation(item)));
             dev.emi.emi.api.EmiApi.displayRecipes(dev.emi.emi.api.stack.EmiStack.of(stack));

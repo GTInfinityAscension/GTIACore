@@ -22,29 +22,32 @@ public class GTIAEmiPlugin implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(GTIAStation.BLOCK.get()));
-        registry.addRecipeHandler(GTIAStation.MENU.get(), new StandardRecipeHandler<CraftingStationMenu>() {
+        registry.addRecipeHandler(GTIAStation.MENU.get(), new StationHandler());
+    }
 
-            @Override
-            public List<Slot> getInputSources(CraftingStationMenu menu) {
-                List<Slot> sources = new ArrayList<>(menu.slots.subList(10, 46));
-                sources.addAll(menu.slots.subList(menu.firstSideSlot(), menu.slots.size()));
-                return sources;
-            }
+    /** The station's recipe handler; also used by the client self-test to press "+" the same way EMI does. */
+    public static class StationHandler implements StandardRecipeHandler<CraftingStationMenu> {
 
-            @Override
-            public List<Slot> getCraftingSlots(CraftingStationMenu menu) {
-                return menu.slots.subList(1, 10);
-            }
+        @Override
+        public List<Slot> getInputSources(CraftingStationMenu menu) {
+            List<Slot> sources = new ArrayList<>(menu.slots.subList(10, 46));
+            sources.addAll(menu.slots.subList(menu.firstSideSlot(), menu.slots.size()));
+            return sources;
+        }
 
-            @Override
-            public Slot getOutputSlot(CraftingStationMenu menu) {
-                return menu.slots.get(0);
-            }
+        @Override
+        public List<Slot> getCraftingSlots(CraftingStationMenu menu) {
+            return menu.slots.subList(1, 10);
+        }
 
-            @Override
-            public boolean supportsRecipe(EmiRecipe recipe) {
-                return recipe.getCategory() == VanillaEmiRecipeCategories.CRAFTING && recipe.supportsRecipeTree();
-            }
-        });
+        @Override
+        public Slot getOutputSlot(CraftingStationMenu menu) {
+            return menu.slots.get(0);
+        }
+
+        @Override
+        public boolean supportsRecipe(EmiRecipe recipe) {
+            return recipe.getCategory() == VanillaEmiRecipeCategories.CRAFTING && recipe.supportsRecipeTree();
+        }
     }
 }
