@@ -126,6 +126,9 @@ apply from: "$rootDir/gradle/scripts/spotless.gradle"
 
 dependencies {
     // Supply a local GTNA jar for development runs; distribution requires GTNA separately.
+    // GTNA API (GTNASteamBalance) at compile time; GTNA is a required dependency at runtime.
+    compileOnly files(project.findProperty('gtnaApiJar') ?: "${rootDir}/../../GregTech-Nexus-Addon/build/libs/gtna-${gtna_version}.jar")
+
     if (project.hasProperty('gtnaDevJar')) {
         runtimeOnly files(project.property('gtnaDevJar'))
         modRuntimeOnly("curse.maven:applied-energistics-2-223794:7148487") { transitive = false }

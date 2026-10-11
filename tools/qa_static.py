@@ -63,9 +63,9 @@ def check_built_jar() -> None:
         metadata = tomllib.loads(jar.read("META-INF/mods.toml").decode("utf-8"))
         dependencies = {entry["modId"]: entry for entry in metadata["dependencies"]["gtia"]}
         gtna = dependencies.get("gtna", {})
-        if (gtna.get("mandatory") is not True or gtna.get("versionRange") != "[0.5.1,)"
+        if (gtna.get("mandatory") is not True or gtna.get("versionRange") != "[0.5.3,)"
                 or gtna.get("ordering") != "AFTER" or gtna.get("side") != "BOTH"):
-            raise ValueError("Distribution jar must require GTNA 0.5.1+ on both sides, loaded before GTIACore")
+            raise ValueError("Distribution jar must require GTNA 0.5.3+ on both sides, loaded before GTIACore")
         packed_lang = json.loads(jar.read("assets/gtia/lang/en_us.json"))
         source_lang = json.loads((ROOT / "src/generated/resources/assets/gtia/lang/en_us.json")
                                  .read_text(encoding="utf-8"))

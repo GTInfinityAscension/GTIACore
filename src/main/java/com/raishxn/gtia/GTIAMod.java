@@ -19,6 +19,8 @@ import com.raishxn.gtia.data.GTIAItems;
 import com.raishxn.gtia.data.GTIALang;
 import com.raishxn.gtia.data.GTIAMachines;
 import com.raishxn.gtia.data.GTIARecipeTypes;
+import com.raishxn.gtia.rules.GTIARulesNetwork;
+import com.raishxn.gtia.rules.GTIASteamRules;
 import com.raishxn.gtia.rules.WorldRules;
 import com.raishxn.gtia.tools.RecipeExport;
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +45,17 @@ public final class GTIAMod {
         REGISTRATE.registerRegistrate();
         MinecraftForge.EVENT_BUS.addListener(
                 (net.minecraftforge.event.server.ServerStartedEvent e) -> WorldRules.onServerStarted(e.getServer()));
+        GTIARulesNetwork.register();
+        if (net.minecraftforge.fml.ModList.get().isLoaded("gtna")) GTIASteamRules.install();
+        if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
+            MinecraftForge.EVENT_BUS.addListener(
+                    (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) -> WorldRules.leaveWorld());
+        }
         MinecraftForge.EVENT_BUS
                 .addListener((net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e) -> {
+                    if (e.getEntity() instanceof net.minecraft.server.level.ServerPlayer player) {
+                        GTIARulesNetwork.sendTo(player);
+                    }
                     String warning = WorldRules.takeWarning();
                     if (warning != null) {
                         e.getEntity().sendSystemMessage(net.minecraft.network.chat.Component.translatable(warning,

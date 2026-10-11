@@ -18,6 +18,15 @@ public enum RulePreset {
         return this == CUSTOM ? NORMAL : this;
     }
 
+    /** Name shown in tooltips (a proper noun, the same in every language). */
+    public String displayName() {
+        return switch (this) {
+            case JOURNEY -> "Journey";
+            case NORMAL -> "Normal";
+            case CUSTOM -> "Custom";
+        };
+    }
+
     public static RulePreset byId(String id) {
         for (RulePreset preset : values()) {
             if (preset.id().equals(id)) return preset;

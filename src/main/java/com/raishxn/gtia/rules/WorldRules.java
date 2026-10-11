@@ -88,6 +88,28 @@ public final class WorldRules {
         return locked;
     }
 
+    /** Whether a world (local or remote) has told this side its rules; false in the main menu. */
+    private static volatile boolean inWorld;
+
+    public static boolean inWorld() {
+        return inWorld;
+    }
+
+    /** Client: rules received from the server the player joined. */
+    public static void applyFromServer(String json) {
+        active = Snapshot.fromJson(GSON.fromJson(json, JsonObject.class));
+        inWorld = true;
+    }
+
+    /** Client: back to the main menu, tooltips list every preset again. */
+    public static void leaveWorld() {
+        inWorld = false;
+    }
+
+    public static String activeJson() {
+        return active.toJson().toString();
+    }
+
     /** Called by the create-world screen when the player picks a preset or edits a Custom rule. */
     public static void setPending(Snapshot snapshot) {
         pending = snapshot;
@@ -122,6 +144,7 @@ public final class WorldRules {
             active = pending != null ? pending : defaultForNewWorlds();
             locked = false;
         }
+        inWorld = true;
         GTIAMod.LOGGER.info("GTIA rules for {}: preset {}{}", datapackDir, active.preset().id(),
                 locked ? " (from world)" : " (new world)");
     }

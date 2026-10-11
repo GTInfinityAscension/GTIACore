@@ -41,6 +41,6 @@ Core Java do modpack GregTech Infinity Ascension. Integra materiais, processos e
     [[dependencies.${mod_id}]]
         modId = "gtna"
         mandatory = ${integration_mandatory}
-        versionRange = "[0.5.1,)"
+        versionRange = "[0.5.3,)"
         ordering = "AFTER"
         side = "BOTH"
