@@ -1,40 +1,49 @@
 package com.raishxn.gtia.mixin;
 
-import com.gregtechceu.gtceu.api.recipe.GTRecipe;
+import com.gregtechceu.gtceu.api.capability.recipe.RecipeCapability;
+import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
+import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
 
-import com.raishxn.gtia.rules.GTIARules;
-import com.raishxn.gtia.rules.WorldRules;
+import com.raishxn.gtia.rules.GTIARecipeRules;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-/** Applies the recipe duration rule to every recipe GTCEu builds, without changing the builder itself. */
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Applies the recipe rules ({@link GTIARecipeRules}) to every recipe GTCEu builds. The recipe keeps the maps it is
+ * given, so the rules change the constructor arguments and the builder itself is never changed.
+ */
 @Mixin(value = GTRecipeBuilder.class, remap = false)
 public abstract class GTRecipeBuilderMixin {
 
-    @Shadow
-    public int duration;
-
     @Unique
-    private int gtia$baseDuration = -1;
+    private static final String GTIA$NEW_RECIPE = "Lcom/gregtechceu/gtceu/api/recipe/GTRecipe;<init>(" +
+            "Lcom/gregtechceu/gtceu/api/recipe/GTRecipeType;Lnet/minecraft/resources/ResourceLocation;" +
+            "Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;" +
+            "Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lnet/minecraft/nbt/CompoundTag;I" +
+            "Lcom/gregtechceu/gtceu/api/recipe/category/GTRecipeCategory;I)V";
 
-    @Inject(method = "buildRawRecipe", at = @At("HEAD"))
-    private void gtia$scaleDuration(CallbackInfoReturnable<GTRecipe> cir) {
-        double factor = WorldRules.get(GTIARules.RECIPE_DURATION);
-        if (factor == 1.0 || duration <= 0) return;
-        gtia$baseDuration = duration;
-        duration = Math.max(1, (int) Math.round(duration * factor));
+    @Shadow
+    public GTRecipeType recipeType;
+
+    @Shadow
+    @Final
+    public Map<RecipeCapability<?>, List<Content>> tickOutput;
+
+    @ModifyArg(method = "buildRawRecipe", at = @At(value = "INVOKE", target = GTIA$NEW_RECIPE), index = 13)
+    private int gtia$duration(int base) {
+        return GTIARecipeRules.duration(base, recipeType, tickOutput);
     }
 
-    @Inject(method = "buildRawRecipe", at = @At("RETURN"))
-    private void gtia$restoreDuration(CallbackInfoReturnable<GTRecipe> cir) {
-        if (gtia$baseDuration >= 0) {
-            duration = gtia$baseDuration;
-            gtia$baseDuration = -1;
-        }
+    @ModifyArg(method = "buildRawRecipe", at = @At(value = "INVOKE", target = GTIA$NEW_RECIPE), index = 4)
+    private Map<RecipeCapability<?>, List<Content>> gtia$tickInputs(Map<RecipeCapability<?>, List<Content>> base) {
+        return GTIARecipeRules.tickInputs(base);
     }
 }

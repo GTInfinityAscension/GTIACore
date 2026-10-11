@@ -167,10 +167,19 @@ public final class GTIARulesScreen extends Screen {
         minecraft.setScreen(parent);
     }
 
-    private static String format(double value) {
+    /** A rule value as shown: ×1.5, 32 or On/Off. */
+    static String format(GTIARule rule, double value) {
+        return switch (rule.kind()) {
+            case TOGGLE -> Component.translatable(value != 0 ? "gtia.rules.value.on" : "gtia.rules.value.off")
+                    .getString();
+            case NUMBER -> Long.toString(Math.round(value));
+            case MULTIPLIER -> "×" + plain(value);
+        };
+    }
+
+    private static String plain(double value) {
         String text = String.format(Locale.ROOT, "%.2f", value);
-        text = text.replaceAll("0+$", "").replaceAll("\\.$", "");
-        return "×" + text;
+        return text.replaceAll("0+$", "").replaceAll("\\.$", "");
     }
 
     private final class RuleList extends ContainerObjectSelectionList<RuleList.Row> {
@@ -242,12 +251,19 @@ public final class GTIARulesScreen extends Screen {
 
             private final GTIARule rule;
             private final EditBox value;
+            private final Button toggle;
 
             RuleRow(GTIARule rule) {
                 this.rule = rule;
+                this.toggle = Button.builder(Component.literal(format(rule, customValues.get(rule.id()))), b -> {
+                    customValues.put(rule.id(), customValues.get(rule.id()) != 0 ? 0.0 : 1.0);
+                    b.setMessage(Component.literal(format(rule, customValues.get(rule.id()))));
+                }).bounds(0, 0, 56, 16).build();
                 this.value = new EditBox(font, 0, 0, 56, 16, Component.translatable(rule.translationKey()));
-                value.setValue(stripX(format(customValues.get(rule.id()))));
-                value.setFilter(text -> text.matches("[0-9]*[.,]?[0-9]*"));
+                value.setValue(rule.kind() == GTIARule.Kind.NUMBER ? format(rule, customValues.get(rule.id())) :
+                        plain(customValues.get(rule.id())));
+                value.setFilter(text -> text.matches(rule.kind() == GTIARule.Kind.NUMBER ? "[0-9]*" :
+                        "[0-9]*[.,]?[0-9]*"));
                 value.setResponder(text -> {
                     try {
                         double parsed = Double.parseDouble(text.replace(',', '.'));
@@ -259,10 +275,6 @@ public final class GTIARulesScreen extends Screen {
                 });
             }
 
-            private static String stripX(String text) {
-                return text.substring(1);
-            }
-
             private boolean editing() {
                 return editable && preset == RulePreset.CUSTOM;
             }
@@ -270,19 +282,28 @@ public final class GTIARulesScreen extends Screen {
             @Override
             public void render(GuiGraphics graphics, int index, int top, int left, int width, int height, int mouseX,
                                int mouseY, boolean hovered, float partialTick) {
-                graphics.drawString(font, Component.translatable(rule.translationKey()), left, top + 2, 0xFFFFFF);
-                graphics.drawString(font, Component.translatable("gtia.rules.screen.values",
-                        format(rule.journey()), format(rule.normal()), format(rule.min()), format(rule.max())),
-                        left, top + 12, 0x8888AA);
+                Component name = Component.translatable(rule.translationKey());
+                if (rule.restart()) {
+                    name = name.copy().append(" ").append(Component.translatable("gtia.rules.screen.restart")
+                            .withStyle(ChatFormatting.GOLD));
+                }
+                graphics.drawString(font, name, left, top + 2, 0xFFFFFF);
+                Component values = rule.kind() == GTIARule.Kind.TOGGLE ?
+                        Component.translatable("gtia.rules.screen.values.toggle", format(rule, rule.journey()),
+                                format(rule, rule.normal())) :
+                        Component.translatable("gtia.rules.screen.values", format(rule, rule.journey()),
+                                format(rule, rule.normal()), format(rule, rule.min()), format(rule, rule.max()));
+                graphics.drawString(font, values, left, top + 12, 0x8888AA);
                 graphics.drawString(font, Component.translatable(rule.translationKey() + ".desc"), left, top + 22,
                         0xAAAAAA);
                 if (editing()) {
-                    value.setX(left + width - 58);
-                    value.setY(top + 2);
-                    value.render(graphics, mouseX, mouseY, partialTick);
+                    var widget = rule.kind() == GTIARule.Kind.TOGGLE ? toggle : value;
+                    widget.setX(left + width - 58);
+                    widget.setY(top + 2);
+                    widget.render(graphics, mouseX, mouseY, partialTick);
                 } else {
                     double current = preset == RulePreset.CUSTOM ? customValues.get(rule.id()) : rule.valueFor(preset);
-                    String text = format(current);
+                    String text = format(rule, current);
                     graphics.drawString(font, Component.literal(text).withStyle(ChatFormatting.GREEN),
                             left + width - font.width(text) - 2, top + 6, 0xFFFFFF);
                 }
@@ -294,12 +315,16 @@ public final class GTIARulesScreen extends Screen {
 
             @Override
             public List<? extends GuiEventListener> children() {
-                return editing() ? List.of(value) : List.of();
+                return editing() ? List.of(widget()) : List.of();
+            }
+
+            private net.minecraft.client.gui.components.AbstractWidget widget() {
+                return rule.kind() == GTIARule.Kind.TOGGLE ? toggle : value;
             }
 
             @Override
             public List<? extends NarratableEntry> narratables() {
-                return editing() ? List.of(value) : List.of();
+                return editing() ? List.of(widget()) : List.of();
             }
         }
     }

@@ -43,7 +43,11 @@ public final class GTIARulesNetwork {
         }
 
         static void handle(Sync message, Supplier<NetworkEvent.Context> context) {
-            context.get().enqueueWork(() -> WorldRules.applyFromServer(message.json()));
+            context.get().enqueueWork(() -> {
+                WorldRules.applyFromServer(message.json());
+                String warning = WorldRules.takeWarning();
+                if (warning != null) com.raishxn.gtia.client.GTIARulesClient.showWarning(warning);
+            });
             context.get().setPacketHandled(true);
         }
     }

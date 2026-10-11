@@ -99,6 +99,11 @@ public final class WorldRules {
     public static void applyFromServer(String json) {
         active = Snapshot.fromJson(GSON.fromJson(json, JsonObject.class));
         inWorld = true;
+        // In singleplayer the integrated server already applied them in the same game.
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() == null) {
+            GTIARuleEffects.applyRuntimeRules(active);
+            if (GTIARuleEffects.checkStartupRules(active)) warning = "gtia.rules.warning.restart";
+        }
     }
 
     /** Client: back to the main menu, tooltips list every preset again. */
@@ -160,8 +165,21 @@ public final class WorldRules {
             locked = false;
         }
         inWorld = true;
+        GTIARuleEffects.applyRecipeRules(active);
+        GTIARuleEffects.applyRuntimeRules(active);
         GTIAMod.LOGGER.info("GTIA rules for {}: preset {}{}", datapackDir, active.preset().id(),
                 locked ? " (from world)" : " (new world)");
+    }
+
+    /**
+     * Test hook: makes {@code rules} the active rules (and applies their runtime settings) and returns the previous
+     * ones, so a GameTest can restore them.
+     */
+    public static Snapshot swapActiveForTest(Snapshot rules) {
+        Snapshot previous = active;
+        active = rules;
+        GTIARuleEffects.applyRuntimeRules(rules);
+        return previous;
     }
 
     /** Message key to show the first player who joins, if the world's rules needed attention. */
@@ -174,6 +192,10 @@ public final class WorldRules {
     /** Writes both copies of the world's rules (JSON and world data) if either is missing, and locks them. */
     public static void onServerStarted(MinecraftServer server) {
         Path world = server.getWorldPath(LevelResource.ROOT);
+        boolean newWorld = !Files.exists(world.resolve(DATA_FILE)) && !Files.exists(world.resolve(FILE));
+        GTIARuleEffects.applyOnServerStart(server, active, newWorld);
+        // Checked here, not while loading, so a preset only previewed on the create-world screen changes nothing.
+        if (GTIARuleEffects.checkStartupRules(active) && warning == null) warning = "gtia.rules.warning.restart";
         try {
             if (!Files.exists(world.resolve(DATA_FILE))) {
                 Files.createDirectories(world.resolve(DATA_FILE).getParent());

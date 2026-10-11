@@ -36,10 +36,12 @@ public final class GTIAMod {
 
     public GTIAMod() {
         GTIALang.init();
+        com.raishxn.gtia.rules.GTIARuleEffects.applyStartupRules();
         GTIAItems.init();
         com.raishxn.gtia.station.GTIAStation.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(this::registerMaterialRegistry);
+        modBus.addListener(this::sendCraftingSources);
         modBus.addListener(this::registerMaterials);
         modBus.addGenericListener(GTRecipeType.class, this::registerRecipeTypes);
         modBus.addGenericListener(MachineDefinition.class, this::registerMachines);
@@ -51,7 +53,8 @@ public final class GTIAMod {
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
             MinecraftForge.EVENT_BUS.addListener(
                     (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) -> WorldRules.leaveWorld());
-            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onScreenInit);
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onRegisterCommands);
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onClientTick);
             if (com.raishxn.gtia.client.GTIARulesSelfTest.ENABLED) {
                 MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesSelfTest::onClientTick);
             }
@@ -70,6 +73,20 @@ public final class GTIAMod {
         if (System.getProperty(RecipeExport.PROPERTY) != null) {
             MinecraftForge.EVENT_BUS.addListener(RecipeExport::onServerStarted);
         }
+    }
+
+    /**
+     * Crafting Chain (optional) crafts from the containers around an open Crafting Station, the same five sides the
+     * station shows. Sent over IMC, so GTIACore needs no compile dependency on it.
+     */
+    private void sendCraftingSources(net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent event) {
+        if (!net.minecraftforge.fml.ModList.get().isLoaded("craftingchain")) return;
+        net.minecraftforge.fml.InterModComms.sendTo("craftingchain", "sources",
+                () -> (java.util.function.Function<net.minecraft.server.level.ServerPlayer, java.util.List<net.minecraftforge.items.IItemHandler>>) player -> player.containerMenu instanceof com.raishxn.gtia.station.CraftingStationMenu station ?
+                        station.sides().stream()
+                                .map(com.raishxn.gtia.station.CraftingStationMenu.Side::handler)
+                                .toList() :
+                        java.util.List.of());
     }
 
     private void registerMaterialRegistry(MaterialRegistryEvent event) {

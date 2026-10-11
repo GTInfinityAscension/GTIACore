@@ -21,6 +21,11 @@ public final class GTIARulesSelfTest {
 
     private static final java.nio.file.Path MARKER = java.nio.file.Path.of("gtia_rules_selftest");
     public static final boolean ENABLED = Boolean.getBoolean("gtia.rulesSelfTest") || MARKER.toFile().exists();
+    /**
+     * Also re-runs the checks of earlier releases (Night Vision after /pspace tpx, quest book and multiblock previews
+     * in zh_cn, average FPS): with {@code -Dgtia.rulesSelfTest.full=true} or "full" in the marker file.
+     */
+    private static final boolean FULL = Boolean.getBoolean("gtia.rulesSelfTest.full") || markerSays("full");
     private static int step;
     private static int wait;
     private static ResourceLocation recipeId;
@@ -51,6 +56,11 @@ public final class GTIARulesSelfTest {
                     GTRecipe recipe = firstGTRecipe(screen);
                     recipeId = recipe.getId();
                     normalDuration = recipe.duration;
+                    GTRecipe euRecipe = recipes(screen).filter(r -> euOf(r) >= 30 && euOf(r) <= 32).findFirst()
+                            .orElseThrow();
+                    euRecipeId = euRecipe.getId();
+                    normalEU = euOf(euRecipe);
+                    normalCasings = casings(screen);
                     GTIAMod.LOGGER.info("GTIA rules self-test: {} takes {} ticks with {}", recipeId, normalDuration,
                             WorldRules.pendingOrDefault().preset().id());
                     WorldRules.setPending(WorldRules.Snapshot.of(RulePreset.JOURNEY));
@@ -67,6 +77,14 @@ public final class GTIARulesSelfTest {
                     boolean pass = Math.abs(journey - expected) <= 1;
                     GTIAMod.LOGGER.info("GTIA rules self-test: after Journey {} takes {} ticks (expected about {}): {}",
                             recipeId, journey, expected, pass ? "PASS" : "FAIL");
+                    long journeyEU = euOf((GTRecipe) screen.getUiState().getSettings().dataPackResources()
+                            .getRecipeManager().byKey(euRecipeId).orElseThrow());
+                    long expectedEU = Math.max(1, Math.round(normalEU * 0.75));
+                    GTIAMod.LOGGER.info("GTIA rules self-test: after Journey {} uses {} EU/t (was {}, expected {}): {}",
+                            euRecipeId, journeyEU, normalEU, expectedEU, journeyEU == expectedEU ? "PASS" : "FAIL");
+                    int journeyCasings = casings(screen);
+                    GTIAMod.LOGGER.info("GTIA rules self-test: casings per craft {} -> {} (expected 3): {}",
+                            normalCasings, journeyCasings, journeyCasings == 3 ? "PASS" : "FAIL");
                     shot(mc, "gtia_selftest_create_world.png");
                     GTIARulesScreen.openForNewWorld(screen);
                     step = 3;
@@ -88,11 +106,18 @@ public final class GTIARulesSelfTest {
                 case 6 -> {
                     var server = mc.getSingleplayerServer();
                     if (mc.player == null || server == null || mc.screen != null) return;
+                    // Journey turns maintenance off, a rule read at startup: the world asks for a restart.
+                    var startup = java.nio.file.Path.of("config", "gtia", "startup_rules.json");
+                    boolean saved = java.nio.file.Files.exists(startup) &&
+                            java.nio.file.Files.readString(startup).contains("\"maintenance\": 0.0");
+                    GTIAMod.LOGGER.info("GTIA rules self-test: Journey restart rules saved for the next start: {}",
+                            saved ? "PASS" : "FAIL");
                     server.execute(() -> {
                         var player = server.getPlayerList().getPlayers().get(0);
                         player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
                         var level = player.serverLevel();
                         var pos = player.blockPosition().relative(player.getDirection(), 2);
+                        stationPos = pos;
                         level.setBlockAndUpdate(pos,
                                 com.raishxn.gtia.station.GTIAStation.BLOCK.get().defaultBlockState());
                         level.setBlockAndUpdate(pos.east(),
@@ -166,47 +191,76 @@ public final class GTIARulesSelfTest {
                                 "GTIA rules self-test: EMI fill from the side chest: {} (result {}, {} planks in grid)",
                                 pass ? "PASS" : "FAIL", result, planksInGrid);
                         shot(mc, "gtia_selftest_crafting_station_filled.png");
-                        station.onClose();
                     }
+                    // Crafting Chain: the station stays open, so the chest beside it is a source. Barrel <- Slabs <-
+                    // Planks <- Logs is a three-level chain (the pack's hopper needs a GregTech wrench); the enchanted
+                    // log must stay where it is.
                     var server = mc.getSingleplayerServer();
                     server.execute(() -> {
                         var player = server.getPlayerList().getPlayers().get(0);
                         player.getInventory().clearContent();
-                        player.getInventory().add(
-                                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.OAK_LOG));
+                        if (player.level().getBlockEntity(stationPos
+                                .east()) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest) {
+                            chest.clearContent();
+                            chest.setItem(0, new net.minecraft.world.item.ItemStack(
+                                    net.minecraft.world.item.Items.OAK_LOG, 3));
+                            var enchanted = new net.minecraft.world.item.ItemStack(
+                                    net.minecraft.world.item.Items.OAK_LOG);
+                            enchanted.enchant(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING, 1);
+                            chest.setItem(2, enchanted);
+                        }
                     });
                     step = 71;
                     wait = 20;
                 }
                 case 71 -> {
-                    try {
-                        Class<?> packet = Class.forName("com.sabbs.fabricate.network.PlannerCraftPacket");
-                        Object msg = packet
-                                .getConstructor(net.minecraft.world.item.Item.class, int.class, boolean.class)
-                                .newInstance(net.minecraft.world.item.Items.CRAFTING_TABLE, 1, false);
-                        Class.forName("com.sabbs.fabricate.network.NetworkHandler").getMethod("sendToServer", packet)
-                                .invoke(null, msg);
-                    } catch (ReflectiveOperationException e) {
-                        GTIAMod.LOGGER.error("GTIA rules self-test: Fabricate not reachable", e);
-                    }
+                    chainRequest(net.minecraft.world.item.Items.BARREL);
                     step = 72;
                     wait = 40;
                 }
                 case 72 -> {
-                    // Read the server's inventory: in creative the client copy is not updated by the server craft.
-                    var serverInventory = mc.getSingleplayerServer().getPlayerList().getPlayers().get(0).getInventory();
-                    boolean has = serverInventory.countItem(net.minecraft.world.item.Items.CRAFTING_TABLE) > 0;
-                    fabricateTries++;
-                    if (!has && fabricateTries < 3) {
-                        // Fabricate builds its craft graph on the first request of a session.
-                        step = 71;
+                    // Block entities can only be read on the server thread.
+                    var server = mc.getSingleplayerServer();
+                    server.execute(() -> {
+                        var player = server.getPlayerList().getPlayers().get(0);
+                        boolean barrel = player.getInventory().countItem(net.minecraft.world.item.Items.BARREL) == 1;
+                        var chest = (net.minecraft.world.level.block.entity.ChestBlockEntity) player.level()
+                                .getBlockEntity(stationPos.east());
+                        boolean fromChest = chest != null && chest.getItem(0).getCount() < 3;
+                        boolean keptEnchanted = chest != null && chest.getItem(2).isEnchanted();
+                        chainCheck = String.format(
+                                "%s (barrel %s, logs used from the chest %s, enchanted log kept %s; %s)",
+                                barrel && fromChest && keptEnchanted ? "PASS" : "FAIL", barrel, fromChest,
+                                keptEnchanted, chainResult());
+                    });
+                    step = 720;
+                    wait = 10;
+                }
+                case 720 -> {
+                    GTIAMod.LOGGER.info("GTIA rules self-test: Crafting Chain barrel from the side chest: {}",
+                            chainCheck);
+                    shot(mc, "gtia_selftest_chain_" + mc.options.languageCode + ".png");
+                    chainRequest(net.minecraft.world.item.Items.DIAMOND_PICKAXE);
+                    step = 73;
+                    wait = 20;
+                }
+                case 73 -> {
+                    String result = chainResult();
+                    GTIAMod.LOGGER.info("GTIA rules self-test: Crafting Chain names what is missing: {} ({})",
+                            result.contains(net.minecraft.world.item.Items.DIAMOND.getDescription().getString()) ?
+                                    "PASS" : "FAIL",
+                            result);
+                    shot(mc, "gtia_selftest_chain_missing_" + mc.options.languageCode + ".png");
+                    if (mc.screen != null) mc.screen.onClose();
+                    if (FULL) {
+                        step = 80;
+                    } else {
+                        mc.setScreen(new net.minecraft.client.gui.screens.PauseScreen(true));
+                        step = 83;
+                        wait = 20;
                         return;
                     }
-                    GTIAMod.LOGGER.info(
-                            "GTIA rules self-test: Fabricate log -> crafting table: {} (attempt {}, inventory {})",
-                            has ? "PASS" : "FAIL", fabricateTries,
-                            serverInventory.items.stream().filter(st -> !st.isEmpty()).toList());
-                    step = 80;
+                    wait = 10;
                 }
                 case 80 -> {
                     var server = mc.getSingleplayerServer();
@@ -226,7 +280,31 @@ public final class GTIARulesSelfTest {
                     boolean kept = mc.player.hasEffect(net.minecraft.world.effect.MobEffects.NIGHT_VISION);
                     GTIAMod.LOGGER.info("GTIA rules self-test: Night Vision after /pspace tpx to {}: {}",
                             mc.level.dimension().location(), nether && kept ? "PASS" : "FAIL");
-                    step = 82;
+                    mc.setScreen(new net.minecraft.client.gui.screens.PauseScreen(true));
+                    step = 83;
+                    wait = 20;
+                }
+                case 83 -> {
+                    // The pause menu has no GTIA Rules button any more; the rules are behind /gtia rules.
+                    boolean button = mc.screen != null && mc.screen.children().stream()
+                            .anyMatch(w -> w instanceof net.minecraft.client.gui.components.AbstractWidget aw &&
+                                    aw.getMessage().getString().contains("GTIA"));
+                    GTIAMod.LOGGER.info("GTIA rules self-test: pause menu without the GTIA Rules button: {}",
+                            mc.screen instanceof net.minecraft.client.gui.screens.PauseScreen && !button ? "PASS" :
+                                    "FAIL (" + mc.screen + ")");
+                    shot(mc, "gtia_selftest_pause_" + mc.options.languageCode + ".png");
+                    mc.setScreen(null);
+                    net.minecraftforge.client.ClientCommandHandler.runCommand("gtia rules");
+                    step = 84;
+                    wait = 10;
+                }
+                case 84 -> {
+                    GTIAMod.LOGGER.info("GTIA rules self-test: /gtia rules opens the rules screen: {}",
+                            mc.screen instanceof GTIARulesScreen ? "PASS" : "FAIL (" + mc.screen + ")");
+                    shot(mc, "gtia_selftest_rules_command_" + mc.options.languageCode + ".png");
+                    if (mc.screen != null) mc.screen.onClose();
+                    step = FULL ? 82 : 11;
+                    wait = 10;
                 }
                 case 82 -> questBook(mc, "gtia_selftest_quests_" + mc.options.languageCode + ".png", 8);
                 case 8 -> {
@@ -241,7 +319,7 @@ public final class GTIARulesSelfTest {
                 case 90 -> preview(mc, "gtna:eye_of_harmony", "gtia_selftest_eoh_zh.png", 10);
                 case 10 -> preview(mc, "gtna:forge_of_gods", "gtia_selftest_fog_zh.png", 11);
                 case 11 -> {
-                    if (fpsSamples < 15) {
+                    if (FULL && fpsSamples < 15) {
                         // One sample per second, in the world with no screen open, at the player's settings.
                         if (fpsSamples == 0) {
                             if (mc.screen != null) mc.screen.onClose();
@@ -253,14 +331,34 @@ public final class GTIARulesSelfTest {
                         wait = 20;
                         return;
                     }
-                    GTIAMod.LOGGER.info(
+                    if (FULL) GTIAMod.LOGGER.info(
                             "GTIA rules self-test: average FPS in the world over 14 s: {} (render distance {}, {})",
                             fpsTotal / 14, mc.options.renderDistance().get(),
                             com.mojang.blaze3d.platform.GlUtil.getRenderer());
+                    // Xaero's Minimap in the top right corner, and the inventory with the quest book and EMI. The
+                    // test window has no focus, so the game would pause itself; toasts would cover the corner.
+                    if (!hudReady) {
+                        mc.options.pauseOnLostFocus = false;
+                        mc.setScreen(null);
+                        mc.getToasts().clear();
+                        hudReady = true;
+                        wait = 60;
+                        return;
+                    }
+                    shot(mc, "gtia_selftest_hud_minimap.png");
+                    mc.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(mc.player));
+                    step = 12;
+                    wait = 40;
+                }
+                case 12 -> {
+                    shot(mc, "gtia_selftest_inventory_minimap.png");
+                    if (mc.screen != null) mc.screen.onClose();
                     mc.options.languageCode = "en_us";
                     mc.getLanguageManager().setSelected("en_us");
-                    step = 12;
+                    step = 13;
                     MARKER.toFile().delete();
+                    // The test world's restart rules must not carry over to the player's next start.
+                    java.nio.file.Path.of("config", "gtia", "startup_rules.json").toFile().delete();
                     mc.stop();
                 }
                 default -> {}
@@ -274,7 +372,29 @@ public final class GTIARulesSelfTest {
 
     private static boolean previewOpened;
     private static int emiWaits;
-    private static int fabricateTries;
+    private static net.minecraft.core.BlockPos stationPos;
+    private static volatile String chainCheck = "not run";
+    private static boolean hudReady;
+
+    /** Asks Crafting Chain (optional, reached by reflection) to craft an item, the same request its key sends. */
+    private static void chainRequest(net.minecraft.world.item.Item item) {
+        try {
+            Class.forName("com.raishxn.craftingchain.client.ChainClient")
+                    .getMethod("requestItem", net.minecraft.world.item.Item.class).invoke(null, item);
+        } catch (ReflectiveOperationException e) {
+            GTIAMod.LOGGER.error("GTIA rules self-test: Crafting Chain not reachable", e);
+        }
+    }
+
+    private static String chainResult() {
+        try {
+            return String.valueOf(Class.forName("com.raishxn.craftingchain.server.ChainCrafter")
+                    .getField("lastResult").get(null));
+        } catch (ReflectiveOperationException e) {
+            return "Crafting Chain not reachable";
+        }
+    }
+
     private static int fpsSamples;
     private static int fpsTotal;
 
@@ -320,8 +440,42 @@ public final class GTIARulesSelfTest {
         wait = 20;
     }
 
+    private static boolean markerSays(String word) {
+        try {
+            return MARKER.toFile().exists() && java.nio.file.Files.readString(MARKER).contains(word);
+        } catch (java.io.IOException e) {
+            return false;
+        }
+    }
+
     private static void shot(Minecraft mc, String name) {
         net.minecraft.client.Screenshot.grab(mc.gameDirectory, name, mc.getMainRenderTarget(), msg -> {});
+    }
+
+    private static ResourceLocation euRecipeId;
+    private static long normalEU;
+    private static int normalCasings;
+
+    private static java.util.stream.Stream<GTRecipe> recipes(CreateWorldScreen screen) {
+        return screen.getUiState().getSettings().dataPackResources().getRecipeManager().getRecipes().stream()
+                .filter(r -> r instanceof GTRecipe gt && gt.getId().getNamespace().equals("gtceu"))
+                .map(r -> (GTRecipe) r);
+    }
+
+    private static long euOf(GTRecipe recipe) {
+        var eu = recipe.tickInputs.get(com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability.CAP);
+        if (eu == null || eu.isEmpty()) return 0;
+        return ((com.gregtechceu.gtceu.api.recipe.ingredient.EnergyStack) eu.get(0).content).voltage();
+    }
+
+    /** Output count of the crafting recipe of the Solid Steel Machine Casing. */
+    private static int casings(CreateWorldScreen screen) {
+        var resources = screen.getUiState().getSettings().dataPackResources();
+        return resources.getRecipeManager().byKey(new ResourceLocation("gtceu", "shaped/casing_steel_solid"))
+                .map(r -> r.getResultItem(Minecraft.getInstance().level == null ?
+                        net.minecraft.core.RegistryAccess.EMPTY : Minecraft.getInstance().level.registryAccess())
+                        .getCount())
+                .orElse(-1);
     }
 
     private static GTRecipe firstGTRecipe(CreateWorldScreen screen) {
