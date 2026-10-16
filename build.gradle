@@ -146,6 +146,15 @@ dependencies {
         modRuntimeOnly("curse.maven:gtmthings-1104310:7712957")
     }
 
+    // EN: Dev-only companions for playtesting together (-PmodernSpaceJar / -PmodernManipulatorJar); never shipped.
+    // PT: Mods parceiros só para teste em conjunto (-PmodernSpaceJar / -PmodernManipulatorJar); nunca entram no jar.
+    // ZH: 仅用于开发联测的配套模组（-PmodernSpaceJar / -PmodernManipulatorJar），不会打包发布。
+    if (project.hasProperty('modernSpaceJar')) {
+        runtimeOnly files(project.property('modernSpaceJar'))
+        modRuntimeOnly("curse.maven:infiniverse-568341:4597298")
+    }
+    if (project.hasProperty('modernManipulatorJar')) runtimeOnly files(project.property('modernManipulatorJar'))
+
     modImplementation("com.gtinfinityascension:gtialib:${gtialib_version}") { transitive = false }
 
     compileOnly("org.jetbrains:annotations:26.0.1")
