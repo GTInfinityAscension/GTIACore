@@ -4,7 +4,7 @@
 
 # GTIACore
 
-GTIACore is the core mod of the **GregTech Infinity Ascension (GTIA)** modpack, the way GTOCore and GTLCore are for their packs. It holds only what's unique to GTIA. Reusable machines and mechanics live in [GregTech Nexus Addon (GTNA)](https://github.com/Raishxn/GregTech-Nexus-Addon), which is a required dependency.
+GTIACore is the core mod of the **GregTech Infinity Ascension (GTIA)** modpack, the way GTOCore and GTLCore are for their packs. It holds only what's unique to GTIA. Reusable machines and mechanics live in [GregTech Nexus Addon (GTNA)](https://github.com/GTInfinityAscension/GregTech-Nexus-Addon), which is a required dependency.
 
 Started from the [GTCEu Modern addon template](https://github.com/GregTechCEu/GregTech-Addon-Template).
 

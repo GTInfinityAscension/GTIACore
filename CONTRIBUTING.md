@@ -1,6 +1,6 @@
 # Contributing to GTIACore
 
-GTIACore holds only what is unique to the GregTech Infinity Ascension modpack. Reusable machines and mechanics belong in [GTNA](https://github.com/Raishxn/GregTech-Nexus-Addon). Pack-level issues (quests, progression, configs) go to the [modpack repository](https://github.com/Raishxn/GregTech-Infinity-Ascension).
+GTIACore holds only what is unique to the GregTech Infinity Ascension modpack. Reusable machines and mechanics belong in [GTNA](https://github.com/GTInfinityAscension/GregTech-Nexus-Addon). Pack-level issues (quests, progression, configs) go to the [modpack repository](https://github.com/GTInfinityAscension/GregTech-Infinity-Ascension).
 
 ## Before a pull request
 
@@ -19,4 +19,4 @@ python3 tools/qa_static.py
 
 ## Reporting bugs
 
-Report bugs on the [modpack repository](https://github.com/Raishxn/GregTech-Infinity-Ascension/issues) with the pack version. Use this repository only for problems that are clearly in the mod (crashes in `com.raishxn.gtia`, missing textures, broken machines).
+Report bugs on the [modpack repository](https://github.com/GTInfinityAscension/GregTech-Infinity-Ascension/issues) with the pack version. Use this repository only for problems that are clearly in the mod (crashes in `com.raishxn.gtia`, missing textures, broken machines).
