@@ -44,3 +44,10 @@ Core Java do modpack GregTech Infinity Ascension. Integra materiais, processos e
         versionRange = "[0.5.3,)"
         ordering = "AFTER"
         side = "BOTH"
+
+    [[dependencies.${mod_id}]]
+        modId = "gtialib"
+        mandatory = true
+        versionRange = "[${gtialib_version},)"
+        ordering = "AFTER"
+        side = "BOTH"

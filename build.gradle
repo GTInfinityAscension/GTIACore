@@ -17,7 +17,7 @@ repositories {
     maven {
         name = 'GTInfinityAscension'
         url = 'https://gtinfinityascension.github.io/maven/'
-        content { includeGroup 'com.raishxn.gtna' }
+        content { includeGroup 'com.raishxn.gtna'; includeGroup 'com.gtinfinityascension' }
     }
     mavenCentral()
     maven {
@@ -146,6 +146,8 @@ dependencies {
         modRuntimeOnly("curse.maven:gtmthings-1104310:7712957")
     }
 
+    modImplementation("com.gtinfinityascension:gtialib:${gtialib_version}") { transitive = false }
+
     compileOnly("org.jetbrains:annotations:26.0.1")
 
     // AE2 API is available for the upcoming MV integration. The other mod bridges
@@ -186,6 +188,7 @@ tasks.named('processResources', ProcessResources).configure {
             "forge_version": forge_version.split("\\.")[0], // only specify major version of forge
             "minecraft_version": minecraft_version,
             "gtceu_version": gtceu_version,
+            "gtialib_version": gtialib_version,
             "integration_mandatory": project.findProperty('gtiaDevOptionalDependencies') == 'true' ? 'false' : 'true',
     ]
     inputs.properties(properties)
