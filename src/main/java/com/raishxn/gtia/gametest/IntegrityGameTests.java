@@ -135,7 +135,8 @@ public final class IntegrityGameTests {
             try {
                 builder.accept(ItemStack.EMPTY, tooltip);
                 for (Component line : tooltip)
-                    if (line.getString().startsWith("gtia.")) failures.add(definition.getId() + ": raw key " + line.getString());
+                    if (line.getString().startsWith("gtia."))
+                        failures.add(definition.getId() + ": raw key " + line.getString());
             } catch (RuntimeException e) {
                 failures.add(definition.getId() + " threw " + e);
             }

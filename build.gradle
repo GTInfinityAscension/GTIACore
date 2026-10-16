@@ -14,6 +14,11 @@ sourceSets {
 
 repositories {
     mavenLocal()
+    maven {
+        name = 'GTInfinityAscension'
+        url = 'https://gtinfinityascension.github.io/maven/'
+        content { includeGroup 'com.raishxn.gtna' }
+    }
     mavenCentral()
     maven {
         name = 'GTCEu Maven'
@@ -127,9 +132,10 @@ legacyForge {
 apply from: "$rootDir/gradle/scripts/spotless.gradle"
 
 dependencies {
-    // Supply a local GTNA jar for development runs; distribution requires GTNA separately.
     // GTNA API (GTNASteamBalance) at compile time; GTNA is a required dependency at runtime.
-    compileOnly files(project.findProperty('gtnaApiJar') ?: "${rootDir}/../../GregTech-Nexus-Addon/build/libs/gtna-${gtna_version}.jar")
+    // -PgtnaApiJar=<path> compiles against a local GTNA build instead of the published one.
+    if (project.hasProperty('gtnaApiJar')) compileOnly files(project.property('gtnaApiJar'))
+    else modCompileOnly("com.raishxn.gtna:gtna:${gtna_version}") { transitive = false }
 
     if (project.hasProperty('gtnaDevJar')) {
         runtimeOnly files(project.property('gtnaDevJar'))
