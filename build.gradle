@@ -54,6 +54,11 @@ repositories {
         }
     }
     maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content { includeGroup "maven.modrinth" }
+    }
+    maven {
         // EMI
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/"
@@ -137,6 +142,11 @@ dependencies {
     if (project.hasProperty('gtnaApiJar')) compileOnly files(project.property('gtnaApiJar'))
     else modCompileOnly("com.raishxn.gtna:gtna:${gtna_version}") { transitive = false }
 
+    // EN: Productive Bees only at dev runtime, so GameTests see the HV bee recipes (GTIA-D-259).
+    // PT: Productive Bees só no runtime de dev, para as GameTests verem as receitas de abelha do HV (GTIA-D-259).
+    // ZH: Productive Bees 仅用于开发运行时，使 GameTest 能检查 HV 蜜蜂配方（GTIA-D-259）。
+    if (project.findProperty('gtiaDevOptionalDependencies') == 'true')
+        modRuntimeOnly("maven.modrinth:productivebees:1.20.1-12.6.0")
     if (project.hasProperty('gtnaDevJar')) {
         runtimeOnly files(project.property('gtnaDevJar'))
         modRuntimeOnly("curse.maven:applied-energistics-2-223794:7148487") { transitive = false }

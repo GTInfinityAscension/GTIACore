@@ -4,6 +4,7 @@ import com.gregtechceu.gtceu.api.GTValues;
 
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
@@ -28,6 +29,24 @@ public final class BeeMachineGameTests {
             helper.assertTrue(machine.getRecipeTypes()[0] == GTIARecipeTypes.INDUSTRIAL_APIARY,
                     "apiary must use the industrial_apiary recipe type");
         }
+        helper.succeed();
+    }
+
+    @GameTest(template = "qa_empty_5x5", batch = "bees", timeoutTicks = 20)
+    public static void beesOnlyComeFromTheGtiaLine(GameTestHelper helper) {
+        if (!ModList.get().isLoaded("productivebees")) {
+            helper.succeed();
+            return;
+        }
+        var recipes = helper.getLevel().getServer().getRecipeManager().getRecipes();
+        long pb = recipes.stream().filter(r -> "productivebees".equals(r.getId().getNamespace())).count();
+        helper.assertTrue(pb == 0, pb + " Productive Bees recipes are still loaded");
+        for (String step : new String[] { "breed_iron", "apiary_iron", "comb_dust_iron", "comb_ore_iron" })
+            helper.assertTrue(
+                    recipes.stream()
+                            .anyMatch(r -> "gtia".equals(r.getId().getNamespace()) &&
+                                    r.getId().getPath().endsWith("bees/" + step)),
+                    "missing GTIA bee recipe " + step);
         helper.succeed();
     }
 }

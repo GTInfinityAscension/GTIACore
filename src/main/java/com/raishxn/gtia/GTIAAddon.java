@@ -6,6 +6,7 @@ import com.gregtechceu.gtceu.api.registry.registrate.GTRegistrate;
 
 import net.minecraft.data.recipes.FinishedRecipe;
 
+import com.raishxn.gtia.data.GTIABeeRecipes;
 import com.raishxn.gtia.data.GTIAExtraFormRecipes;
 import com.raishxn.gtia.data.GTIAExtraForms;
 import com.raishxn.gtia.data.GTIAPhaseOres;
@@ -33,6 +34,7 @@ public final class GTIAAddon implements IGTAddon {
         GTIARecipes.addChemistrySlice01(provider);
         GTIARecipes.addChemistrySlice02(provider);
         GTIAExtraFormRecipes.addRecipes(provider);
+        GTIABeeRecipes.addRecipes(provider);
     }
 
     @Override

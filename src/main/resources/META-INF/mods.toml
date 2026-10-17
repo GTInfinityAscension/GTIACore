@@ -51,3 +51,11 @@ Core Java do modpack GregTech Infinity Ascension. Integra materiais, processos e
         versionRange = "[${gtialib_version},)"
         ordering = "AFTER"
         side = "BOTH"
+
+    # Optional: loaded after Productive Bees so GTIA's data turns its nests off (GTIA-D-259).
+    [[dependencies.${mod_id}]]
+        modId = "productivebees"
+        mandatory = false
+        versionRange = "*"
+        ordering = "AFTER"
+        side = "BOTH"
