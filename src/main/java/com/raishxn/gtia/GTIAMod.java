@@ -15,6 +15,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.raishxn.gtia.data.GTIAAlloys;
 import com.raishxn.gtia.data.GTIABeeMachines;
+import com.raishxn.gtia.data.GTIAGreenhouse;
 import com.raishxn.gtia.data.GTIAItems;
 import com.raishxn.gtia.data.GTIALang;
 import com.raishxn.gtia.data.GTIAMachines;
@@ -109,6 +110,7 @@ public final class GTIAMod {
     private void registerMachines(GTCEuAPI.RegisterEvent<ResourceLocation, MachineDefinition> event) {
         GTIAMachines.init();
         GTIABeeMachines.init();
+        GTIAGreenhouse.init();
     }
 
     public static ResourceLocation id(String path) {

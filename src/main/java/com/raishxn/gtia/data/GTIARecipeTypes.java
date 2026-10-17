@@ -33,6 +33,13 @@ public final class GTIARecipeTypes {
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
             .setSound(GTSoundEntries.SCIENCE);
 
+    /** Greenhouse (GTIA-D-271): an Agronomica seed of the species is a catalyst; fertiliser and water grow it. */
+    public static final GTRecipeType GREENHOUSE = register("greenhouse", GTRecipeTypes.MULTIBLOCK)
+            .setMaxIOSize(3, 4, 1, 0)
+            .setEUIO(IO.IN)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.CHEMICAL);
+
     public static final GTRecipeType CATALYTIC_DEHYDRATOR = register("catalytic_dehydrator")
             .setMaxIOSize(0, 0, 2, 2)
             .setEUIO(IO.IN)

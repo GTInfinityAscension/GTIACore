@@ -242,5 +242,9 @@
   "block.gtia.mv_seed_analyzer": "§b进阶种子分析仪 §r",
   "block.gtia.hv_seed_analyzer": "§6进阶种子分析仪 II§r",
   "gtia.seed_analyzer": "种子分析仪",
-  "gtia.machine.seed_analyzer.tooltip": "显示 Agronomica 种子的生长、产量与抗性。"
+  "gtia.machine.seed_analyzer.tooltip": "显示 Agronomica 种子的生长、产量与抗性。",
+  "block.gtia.greenhouse": "温室",
+  "gtia.greenhouse": "温室",
+  "gtia.machine.greenhouse.tooltip.purpose": "大规模种植 Agronomica 作物：输入肥料与水，输出收获物。",
+  "gtia.machine.greenhouse.tooltip.seed": "在输入总线放入一颗该作物的种子；种子不会被消耗。"
 }

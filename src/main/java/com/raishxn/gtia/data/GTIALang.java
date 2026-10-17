@@ -275,6 +275,11 @@ public final class GTIALang {
         GTIAMod.REGISTRATE.addRawLang("gtia.fermentation_vat", "Fermentation Vat");
         GTIAMod.REGISTRATE.addRawLang("gtia.industrial_apiary", "Industrial Apiary");
         GTIAMod.REGISTRATE.addRawLang("gtia.seed_analyzer", "Seed Analyzer");
+        GTIAMod.REGISTRATE.addRawLang("gtia.greenhouse", "Greenhouse");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.greenhouse.tooltip.purpose",
+                "Grows Agronomica crops in bulk: fertiliser and water in, harvest out.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.greenhouse.tooltip.seed",
+                "Put one seed of the crop in the input bus; it is never consumed.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.seed_analyzer.tooltip",
                 "Reveals the Growth, Gain and Resistance of Agronomica seeds.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.industrial_apiary.tooltip.purpose",

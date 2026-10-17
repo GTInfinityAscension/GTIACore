@@ -242,5 +242,9 @@
   "block.gtia.mv_seed_analyzer": "Analisador de Sementes Avançado",
   "block.gtia.hv_seed_analyzer": "Analisador de Sementes Avançado II",
   "gtia.seed_analyzer": "Analisador de Sementes",
-  "gtia.machine.seed_analyzer.tooltip": "Revela Crescimento, Ganho e Resistência das sementes da Agronomica."
+  "gtia.machine.seed_analyzer.tooltip": "Revela Crescimento, Ganho e Resistência das sementes da Agronomica.",
+  "block.gtia.greenhouse": "Estufa",
+  "gtia.greenhouse": "Estufa",
+  "gtia.machine.greenhouse.tooltip.purpose": "Cultiva plantas da Agronomica em escala: entra fertilizante e água, sai a colheita.",
+  "gtia.machine.greenhouse.tooltip.seed": "Coloque uma semente da planta no barramento de entrada; ela nunca é gasta."
 }

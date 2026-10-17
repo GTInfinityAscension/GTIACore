@@ -62,9 +62,38 @@ public final class GTIAAgroRecipes {
         // EN: Same burn value per mB as creosote (250 mB → 17.5 s): an early fuel, not a better one.
         // PT: Mesmo valor por mB que o creosoto (250 mB → 17,5 s): combustível cedo, não melhor.
         // ZH: 每 mB 燃烧值与杂酚油相同（250 mB → 17.5 秒）：早期燃料，而非更好的燃料。
+        greenhouse(provider);
+
         GTRecipeTypes.STEAM_BOILER_RECIPES.recipeBuilder(GTIAMod.id("agro/seed_oil_boiler"))
                 .inputFluids(GTMaterials.SeedOil.getFluid(250))
                 .duration(350).save(provider);
+    }
+
+    /**
+     * EN: Greenhouse: 8 products per 30 s with NPK, 6 with compost (2 per run); the seed stays in the bus.
+     * PT: Estufa: 8 produtos a cada 30 s com NPK, 6 com composto (2 por ciclo); a semente fica no barramento.
+     * ZH: 温室：使用 NPK 每 30 秒产出 8 个，使用堆肥（每次 2 个）产出 6 个；种子留在总线中。
+     */
+    private static void greenhouse(Consumer<FinishedRecipe> provider) {
+        Item seeds = item("seeds"), npk = item("fertilizer_npk"), compost = item("compost");
+        if (seeds == null || npk == null || compost == null) return;
+        String[][] crops = { { "hemp", "hemp_fiber" }, { "rapeseed", "oily_seed" },
+                { "elephant_grass", "biomass_bundle" }, { "rubber_bush", "latex" } };
+        for (String[] crop : crops) {
+            Item product = item(crop[1]);
+            if (product == null) continue;
+            var tag = new net.minecraft.nbt.CompoundTag();
+            tag.putString("species", crop[0]);
+            for (boolean rich : new boolean[] { true, false }) {
+                GTIARecipeTypes.GREENHOUSE
+                        .recipeBuilder(GTIAMod.id("agro/greenhouse_" + crop[0] + (rich ? "_npk" : "_compost")))
+                        .notConsumable(net.minecraftforge.common.crafting.PartialNBTIngredient.of(seeds, tag))
+                        .inputItems(new ItemStack(rich ? npk : compost, rich ? 1 : 2))
+                        .inputFluids(GTMaterials.Water.getFluid(1000))
+                        .outputItems(new ItemStack(product, rich ? 8 : 6))
+                        .duration(600).EUt(64).save(provider);
+            }
+        }
     }
 
     private static Item item(String path) {
