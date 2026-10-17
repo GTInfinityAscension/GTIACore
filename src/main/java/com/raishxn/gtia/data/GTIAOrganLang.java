@@ -64,5 +64,13 @@ public final class GTIAOrganLang {
         GTIAMod.REGISTRATE.addRawLang("gtia.rule.organs.organ_cost", "Organ cost");
         GTIAMod.REGISTRATE.addRawLang("gtia.rule.organs.organ_cost.desc",
                 "Multiplies the parts of every organ recipe.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.organ.screen.speed", "Speed +%s%%");
+        GTIAMod.REGISTRATE.addRawLang("gtia.organ.screen.armor", "Armor +%s");
+        GTIAMod.REGISTRATE.addRawLang("gtia.organ.screen.reach", "Reach +%s");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.group.chemistry", "Chemistry");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.chemistry.catalyst_wear", "Catalyst wear");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.chemistry.catalyst_wear.desc", "Chance per run, in hundredths of a percent, that the catalyst of a GTIA chemistry plant wears out. 0 keeps every catalyst forever.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.chemistry.heat_recovery", "Heat recovery");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.chemistry.heat_recovery.desc", "Multiplies the steam the chemistry plants make from their own reaction heat.");
     }
 }

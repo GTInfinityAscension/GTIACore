@@ -388,5 +388,13 @@
   "gtia.machine.siemens_reactor.tooltip.requirements.0": "16 份多晶硅可在电力高炉（电路 3）中拉制单晶硅锭，硅用量减半",
   "gtia.machine.siemens_reactor.tooltip.requirements.1": "可像 GregTech 机器一样超频，支持批处理模式",
   "material.gtia.trichlorosilane": "三氯氢硅",
-  "material.gtia.polysilicon": "多晶硅"
+  "material.gtia.polysilicon": "多晶硅",
+  "gtia.organ.screen.speed": "速度 +%s%%",
+  "gtia.organ.screen.armor": "护甲 +%s",
+  "gtia.organ.screen.reach": "触及 +%s",
+  "gtia.rules.group.chemistry": "化学",
+  "gtia.rule.chemistry.catalyst_wear": "催化剂损耗",
+  "gtia.rule.chemistry.catalyst_wear.desc": "GTIA 化工厂每次运行时催化剂损耗的概率（万分之一）。0 表示催化剂永不损耗。",
+  "gtia.rule.chemistry.heat_recovery": "热量回收",
+  "gtia.rule.chemistry.heat_recovery.desc": "乘以化工厂利用自身反应热产生的蒸汽。"
 }

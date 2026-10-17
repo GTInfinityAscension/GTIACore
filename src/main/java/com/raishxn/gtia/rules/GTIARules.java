@@ -139,6 +139,15 @@ public final class GTIARules {
     public static final GTIARule EXTRA_REGEN_STRENGTH = register(
             GTIARule.number("extra_regen_strength", "survival", 3, 2, 0, 20));
 
+    // Chemistry (GTIA-D-284): GTIA's own rules, not in GTO.
+
+    /** Chance per run, in hundredths of a percent, that a chemistry catalyst wears out (0 = never). */
+    public static final GTIARule CATALYST_WEAR = register(
+            GTIARule.number("catalyst_wear", "chemistry", 0, 100, 0, 10000));
+    /** Multiplies the steam the chemistry plants recover from their own heat. */
+    public static final GTIARule HEAT_RECOVERY = register(
+            GTIARule.multiplier("heat_recovery", "chemistry", 1.5, 1.0, 0.0, 4.0));
+
     // Organs (GTIA-D-279).
 
     /** Planets hurt players whose organ set tier is too low (GTO organ system). */

@@ -45,8 +45,8 @@ public final class OrganRecipes {
         VanillaRecipeHelper.addShapedRecipe(provider, GTIAMod.id("fairy_wing"), GTIAOrgans.FAIRY_WING.asStack(),
                 "ABA", "ACA", "DDD",
                 'A', new MaterialEntry(TagPrefix.foil, GTMaterials.Polyethylene),
-                'B', new MaterialEntry(TagPrefix.plate, GTMaterials.Aluminium),
-                'C', GTItems.FIELD_GENERATOR_MV.asStack(), 'D', new ItemStack(Items.PHANTOM_MEMBRANE));
+                'B', new MaterialEntry(TagPrefix.plate, GTMaterials.StainlessSteel),
+                'C', GTItems.FIELD_GENERATOR_LV.asStack(), 'D', new ItemStack(Items.PHANTOM_MEMBRANE));
         VanillaRecipeHelper.addShapedRecipe(provider, GTIAMod.id("mechanical_wing"),
                 GTIAOrgans.MECHANICAL_WING.asStack(),
                 "ABA", "CBC", "DED",

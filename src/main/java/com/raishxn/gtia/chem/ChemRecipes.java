@@ -1,6 +1,8 @@
 package com.raishxn.gtia.chem;
 
 import com.gregtechceu.gtceu.api.GTValues;
+import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
+import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.MaterialEntry;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTItems;
@@ -9,14 +11,18 @@ import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.gregtechceu.gtceu.data.recipe.CustomTags;
 import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
+import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
 
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.raishxn.gtia.GTIAMod;
 import com.raishxn.gtia.data.GTIAAlloys;
+import com.raishxn.gtia.rules.GTIARules;
+import com.raishxn.gtia.rules.WorldRules;
 
 import java.util.function.Consumer;
 
@@ -27,6 +33,19 @@ public final class ChemRecipes {
     private static final int HV = GTValues.VA[GTValues.HV];
 
     private ChemRecipes() {}
+
+    /** A catalyst: kept, or worn out now and then under the catalyst wear rule (GTIA-D-284). */
+    static GTRecipeBuilder catalyst(GTRecipeBuilder builder, TagPrefix prefix, Material material) {
+        int wear = (int) WorldRules.get(GTIARules.CATALYST_WEAR);
+        if (wear <= 0) return builder.notConsumable(prefix, material);
+        return builder.chancedInput(ChemicalHelper.get(prefix, material), wear, 0);
+    }
+
+    /** Steam recovered from a plant's heat, scaled by the heat recovery rule. */
+    static FluidStack steam(int amount) {
+        return GTMaterials.Steam
+                .getFluid(Math.max(0, (int) Math.round(amount * WorldRules.get(GTIARules.HEAT_RECOVERY))));
+    }
 
     public static void addRecipes(Consumer<FinishedRecipe> provider) {
         controllers(provider);
@@ -53,22 +72,24 @@ public final class ChemRecipes {
         // EN: 4 NH3 + 5 O2 -> 4 NO + 6 H2O over a cobalt oxide gauze; the burner's heat leaves as steam.
         // PT: 4 NH3 + 5 O2 -> 4 NO + 6 H2O sobre tela de óxido de cobalto; o calor do queimador sai como vapor.
         // ZH: 4 NH3 + 5 O2 -> 4 NO + 6 H2O，经氧化钴网催化；燃烧器的热量以蒸汽形式输出。
-        ChemRecipeTypes.OSTWALD_CONVERTER.recipeBuilder(GTIAMod.id("ostwald/ammonia_oxidation"))
+        catalyst(ChemRecipeTypes.OSTWALD_CONVERTER.recipeBuilder(GTIAMod.id("ostwald/ammonia_oxidation")),
+                TagPrefix.dust, GTMaterials.CobaltOxide)
                 .circuitMeta(1)
-                .notConsumable(TagPrefix.dust, GTMaterials.CobaltOxide)
+
                 .inputFluids(GTMaterials.Ammonia.getFluid(1000), GTMaterials.Oxygen.getFluid(1250))
                 .outputFluids(GTMaterials.NitricOxide.getFluid(1000), GTMaterials.Water.getFluid(1500),
-                        GTMaterials.Steam.getFluid(1000))
+                        steam(1000))
                 .duration(200).EUt(MV).save(provider);
         // EN: The HV route: the classic platinum gauze, after the Moon's platinum. Faster, and more heat recovered.
         // PT: A rota HV: a tela de platina clássica, depois da platina da Lua. Mais rápida e recupera mais calor.
         // ZH: HV 路线：经典铂网，需月球铂。更快，回收更多热量。
-        ChemRecipeTypes.OSTWALD_CONVERTER.recipeBuilder(GTIAMod.id("ostwald/ammonia_oxidation_platinum"))
+        catalyst(ChemRecipeTypes.OSTWALD_CONVERTER.recipeBuilder(GTIAMod.id("ostwald/ammonia_oxidation_platinum")),
+                TagPrefix.wireFine, GTMaterials.Platinum)
                 .circuitMeta(4)
-                .notConsumable(TagPrefix.wireFine, GTMaterials.Platinum)
+
                 .inputFluids(GTMaterials.Ammonia.getFluid(1000), GTMaterials.Oxygen.getFluid(1250))
                 .outputFluids(GTMaterials.NitricOxide.getFluid(1000), GTMaterials.Water.getFluid(1500),
-                        GTMaterials.Steam.getFluid(2000))
+                        steam(2000))
                 .duration(80).EUt(HV).save(provider);
         ChemRecipeTypes.OSTWALD_CONVERTER.recipeBuilder(GTIAMod.id("ostwald/nitric_oxide_oxidation"))
                 .circuitMeta(2)
@@ -89,16 +110,18 @@ public final class ChemRecipes {
         // EN: 3 H2S + 3/2 O2 -> 3 S + 3 H2O: a third burnt to SO2, the rest reacts with it over alumina (Bayer).
         // PT: 3 H2S + 3/2 O2 -> 3 S + 3 H2O: um terço queima a SO2 e o resto reage com ele sobre alumina (Bayer).
         // ZH: 3 H2S + 3/2 O2 -> 3 S + 3 H2O：三分之一燃烧成 SO2，其余在氧化铝（拜耳法）上与之反应。
-        ChemRecipeTypes.CLAUS_UNIT.recipeBuilder(GTIAMod.id("claus/sulfur_recovery"))
+        catalyst(ChemRecipeTypes.CLAUS_UNIT.recipeBuilder(GTIAMod.id("claus/sulfur_recovery")), TagPrefix.dust,
+                GTIAAlloys.ALUMINA)
                 .circuitMeta(1)
-                .notConsumable(TagPrefix.dust, GTIAAlloys.ALUMINA)
+
                 .inputFluids(GTMaterials.HydrogenSulfide.getFluid(3000), GTMaterials.Oxygen.getFluid(1500))
                 .outputItems(TagPrefix.dust, GTMaterials.Sulfur, 3)
-                .outputFluids(GTMaterials.Water.getFluid(3000), GTMaterials.Steam.getFluid(2000))
+                .outputFluids(GTMaterials.Water.getFluid(3000), steam(2000))
                 .duration(160).EUt(HV).save(provider);
-        ChemRecipeTypes.CLAUS_UNIT.recipeBuilder(GTIAMod.id("claus/sulfur_dioxide"))
+        catalyst(ChemRecipeTypes.CLAUS_UNIT.recipeBuilder(GTIAMod.id("claus/sulfur_dioxide")), TagPrefix.dust,
+                GTIAAlloys.ALUMINA)
                 .circuitMeta(2)
-                .notConsumable(TagPrefix.dust, GTIAAlloys.ALUMINA)
+
                 .inputFluids(GTMaterials.HydrogenSulfide.getFluid(2000), GTMaterials.SulfurDioxide.getFluid(1000))
                 .outputItems(TagPrefix.dust, GTMaterials.Sulfur, 3)
                 .outputFluids(GTMaterials.Water.getFluid(2000))

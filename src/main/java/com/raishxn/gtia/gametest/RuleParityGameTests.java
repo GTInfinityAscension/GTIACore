@@ -68,12 +68,21 @@ public final class RuleParityGameTests {
     /** The new rules have the GTO-like values on each preset. */
     @GameTest(template = "qa_empty_5x5", batch = "rules", timeoutTicks = 20)
     public static void parityRuleValues(GameTestHelper helper) {
-        helper.assertTrue(GTIARules.all().size() == 52, "52 rules, got " + GTIARules.all().size());
+        helper.assertTrue(GTIARules.all().size() == 54, "54 rules, got " + GTIARules.all().size());
         helper.assertTrue(GTIARules.REQUIRE_GT_TOOLS.restart(), "GT tools rule is read at startup");
         helper.assertTrue(GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.JOURNEY) == 0 &&
                 GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.NORMAL) == 1, "planets need organs on Normal");
         helper.assertTrue(GTIARules.ORGAN_COST.valueFor(RulePreset.JOURNEY) == 1 &&
                 GTIARules.ORGAN_COST.valueFor(RulePreset.NORMAL) == 2, "organ cost 1/2");
+        helper.succeed();
+    }
+
+    /** GTIA's own chemistry rules: Journey never wears catalysts and recovers more heat (GTIA-D-284). */
+    @GameTest(template = "qa_empty_5x5", batch = "rules", timeoutTicks = 20)
+    public static void chemistryRuleValues(GameTestHelper helper) {
+        helper.assertTrue(GTIARules.CATALYST_WEAR.valueFor(RulePreset.JOURNEY) == 0 &&
+                GTIARules.CATALYST_WEAR.valueFor(RulePreset.NORMAL) == 100, "catalyst wear 0 / 1%");
+        helper.assertTrue(GTIARules.HEAT_RECOVERY.valueFor(RulePreset.JOURNEY) == 1.5, "Journey recovers 1.5x heat");
         helper.succeed();
     }
 }

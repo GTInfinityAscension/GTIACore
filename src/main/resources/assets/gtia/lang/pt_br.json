@@ -388,5 +388,13 @@
   "gtia.machine.siemens_reactor.tooltip.requirements.0": "16 de Polissilício fazem um Boule de Silício no Alto-Forno Elétrico (circuito 3), metade do silício",
   "gtia.machine.siemens_reactor.tooltip.requirements.1": "Faz overclock como uma máquina GregTech e aceita o modo em lote",
   "material.gtia.trichlorosilane": "Triclorossilano",
-  "material.gtia.polysilicon": "Polissilício"
+  "material.gtia.polysilicon": "Polissilício",
+  "gtia.organ.screen.speed": "Velocidade +%s%%",
+  "gtia.organ.screen.armor": "Armadura +%s",
+  "gtia.organ.screen.reach": "Alcance +%s",
+  "gtia.rules.group.chemistry": "Química",
+  "gtia.rule.chemistry.catalyst_wear": "Desgaste de catalisador",
+  "gtia.rule.chemistry.catalyst_wear.desc": "Chance por execução, em centésimos de por cento, de o catalisador de uma planta química do GTIA se desgastar. 0 mantém todo catalisador para sempre.",
+  "gtia.rule.chemistry.heat_recovery": "Recuperação de calor",
+  "gtia.rule.chemistry.heat_recovery.desc": "Multiplica o vapor que as plantas químicas geram com o calor da própria reação."
 }
