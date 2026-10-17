@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "gtia:item/organ/right_leg/tier3"
+  }
+}

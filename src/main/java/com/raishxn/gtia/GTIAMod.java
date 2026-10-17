@@ -37,8 +37,11 @@ public final class GTIAMod {
 
     public GTIAMod() {
         GTIALang.init();
+        com.raishxn.gtia.chem.ChemLang.init();
         com.raishxn.gtia.rules.GTIARuleEffects.applyStartupRules();
         GTIAItems.init();
+        com.raishxn.gtia.organ.GTIAOrgans.init();
+        MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.rules.GTIASurvivalRules::onPlayerTick);
         com.raishxn.gtia.station.GTIAStation.init();
         com.raishxn.gtia.data.rocket.GTIARocketBlocks.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -109,16 +112,19 @@ public final class GTIAMod {
 
     private void registerMaterials(MaterialEvent event) {
         GTIAAlloys.register();
+        com.raishxn.gtia.chem.ChemMaterials.register();
     }
 
     private void registerRecipeTypes(GTCEuAPI.RegisterEvent<ResourceLocation, GTRecipeType> event) {
         GTIARecipeTypes.init();
+        com.raishxn.gtia.chem.ChemRecipeTypes.init();
     }
 
     private void registerMachines(GTCEuAPI.RegisterEvent<ResourceLocation, MachineDefinition> event) {
         GTIAMachines.init();
         GTIABeeMachines.init();
         GTIAGreenhouse.init();
+        com.raishxn.gtia.chem.ChemPlants.init();
         com.raishxn.gtia.data.rocket.GTIARocketAssembler.init();
     }
 

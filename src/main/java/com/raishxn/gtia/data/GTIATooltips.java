@@ -78,6 +78,38 @@ public final class GTIATooltips {
                 null,
                 new String[] { "Recover the Ammonia from Ammonium Chloride with Quicklime in a Chemical Reactor",
                         OVERCLOCK });
+        add("ostwald_converter",
+                "Nearly all fertiliser and explosives start in a platinum gauze like this one, since 1902",
+                new String[] { "Circuit 1: Ammonia burns over a Cobalt Oxide gauze into Nitric Oxide, water and steam",
+                        "Circuit 2: Nitric Oxide and Oxygen become Nitrogen Dioxide",
+                        "Circuit 3: Nitrogen Dioxide in water becomes Nitric Acid; a third comes back as Nitric Oxide",
+                        "Circuit 4 (HV): a Platinum gauze burns faster and gives twice the steam" },
+                null,
+                new String[] { "Circuit 1 needs Cobalt Oxide Dust, circuit 4 Fine Platinum Wire (not consumed)",
+                        OVERCLOCK });
+        add("claus_unit",
+                "Most of the sulfur sold today was never mined: it comes out of oil refineries",
+                new String[] { "Circuit 1: Hydrogen Sulfide and Oxygen become Sulfur, water and steam",
+                        "Circuit 2: Hydrogen Sulfide cleans Sulfur Dioxide into Sulfur" },
+                null,
+                new String[] { "One Alumina Dust as catalyst (not consumed)", OVERCLOCK });
+        add("kroll_reactor",
+                "Every titanium part on Earth went through a magnesium bath like this one",
+                new String[] {
+                        "Circuit 1: Ilmenite, Carbon and Chlorine become Titanium Tetrachloride, Ferric Chloride and Carbon Monoxide",
+                        "Circuit 2: Rutile, Carbon and Chlorine become Titanium Tetrachloride",
+                        "Circuit 3: Magnesium reduces Titanium Tetrachloride into Titanium and Magnesium Chloride" },
+                null,
+                new String[] { "Circuit 3 uses 50 mB of Argon per run",
+                        "Electrolyze the Magnesium Chloride to get the Magnesium and Chlorine back", OVERCLOCK });
+        add("siemens_reactor",
+                "Solar panels and chips start as silicon grown on hot rods inside glass bells",
+                new String[] { "Circuit 1: Silicon and Hydrochloric Acid become Trichlorosilane and Hydrogen",
+                        "Circuit 2: Trichlorosilane and Hydrogen deposit Polysilicon and give the acid back" },
+                null,
+                new String[] {
+                        "16 Polysilicon grow a Silicon Boule in the Electric Blast Furnace (circuit 3), half the silicon",
+                        OVERCLOCK });
     }
 
     private GTIATooltips() {}

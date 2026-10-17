@@ -38,6 +38,7 @@ public final class GTIARuleEffects {
     private static int baseLargeBoilerSteam = -1;
     private static int baseVoidMinerDuration = -1;
     private static int baseVoidMinerRandomDuration = -1;
+    private static float baseRubberTreeChance = -1;
 
     private GTIARuleEffects() {}
 
@@ -84,6 +85,11 @@ public final class GTIARuleEffects {
         machines.prospectorEnergyUseMultiplier = scaled(100, rules.get(GTIARules.PROSPECTOR_ENERGY));
         ConfigHolder.INSTANCE.tools.rngDamageElectricTools = (int) rules.get(GTIARules.ELECTRIC_TOOL_DAMAGE);
         ConfigHolder.INSTANCE.worldgen.oreVeins.oreVeinGridSize = (int) rules.get(GTIARules.ORE_VEIN_GRID);
+        var worldgen = ConfigHolder.INSTANCE.worldgen;
+        if (baseRubberTreeChance < 0) baseRubberTreeChance = worldgen.rubberTreeSpawnChance;
+        worldgen.rubberTreeSpawnChance = (float) (baseRubberTreeChance * rules.get(GTIARules.RUBBER_TREES));
+        worldgen.oreVeins.infiniteBedrockOresFluids = on(rules, GTIARules.INFINITE_BEDROCK_FLUIDS);
+        ConfigHolder.INSTANCE.gameplay.hazardsEnabled = on(rules, GTIARules.MATERIAL_HAZARDS);
         if (ModList.get().isLoaded("gtna")) applyGtnaRules(rules);
     }
 
@@ -152,6 +158,7 @@ public final class GTIARuleEffects {
                 startupValues.get(GTIARules.MINER_SPEED.id())));
         machines.enableMaintenance = startupValues.get(GTIARules.MAINTENANCE.id()) != 0;
         ConfigHolder.INSTANCE.recipes.enchantedTools = startupValues.get(GTIARules.ENCHANTED_TOOLS.id()) != 0;
+        machines.requireGTToolsForBlocks = startupValues.get(GTIARules.REQUIRE_GT_TOOLS.id()) != 0;
         GTIAMod.LOGGER.info("GTIA startup rules: {}", startupValues);
     }
 

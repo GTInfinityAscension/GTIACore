@@ -8,6 +8,7 @@ public final class GTIALang {
 
     public static void init() {
         GTIATooltips.registerLang();
+        GTIAOrganLang.init();
         GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.tab",
                 "%s (%s)");
         GTIAMod.REGISTRATE.addRawLang("gtia.crafting_station.empty",

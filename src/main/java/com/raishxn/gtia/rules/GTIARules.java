@@ -93,6 +93,10 @@ public final class GTIARules {
     public static final GTIARule MINER_SPEED = register(
             GTIARule.multiplier("miner_speed", "machines", 1.5, 1.0, 0.25, 4.0).needsRestart());
 
+    /** GregTech machines and pipes only drop with a GT tool (GTO: Require GT Tools). */
+    public static final GTIARule REQUIRE_GT_TOOLS = register(
+            GTIARule.toggle("require_gt_tools", "machines", false, true).needsRestart());
+
     // Tools.
 
     public static final GTIARule ELECTRIC_TOOL_ENERGY = register(
@@ -111,6 +115,12 @@ public final class GTIARules {
     /** Duration of the GTNA Electric Void Miner operations. */
     public static final GTIARule VOID_MINER_DURATION = register(
             GTIARule.multiplier("void_miner_duration", "resources", 0.75, 1.0, 0.1, 10.0));
+    /** Multiplies the pack's rubber tree spawn chance in new chunks (GTO: Rubber Tree Spawn Chance). */
+    public static final GTIARule RUBBER_TREES = register(
+            GTIARule.multiplier("rubber_tree_chance", "resources", 1.5, 1.0, 0.0, 10.0));
+    /** Bedrock fluid veins never run dry (GTO: Infinite Bedrock Resources). */
+    public static final GTIARule INFINITE_BEDROCK_FLUIDS = register(
+            GTIARule.toggle("infinite_bedrock_fluids", "resources", true, false));
 
     // Survival.
 
@@ -118,6 +128,24 @@ public final class GTIARules {
             GTIARule.number("ultimine_limit", "survival", 128, 64, 1, 1024));
     /** Set as the keepInventory game rule when the world is created; /gamerule can still change it later. */
     public static final GTIARule KEEP_INVENTORY = register(GTIARule.toggle("keep_inventory", "survival", true, false));
+
+    /** Radioactive and toxic materials hurt players who carry them without protection (GTO: Material Hazards). */
+    public static final GTIARule MATERIAL_HAZARDS = register(
+            GTIARule.toggle("material_hazards", "survival", false, true));
+    /** Food level from which players heal faster; 21 turns it off (GTO: Extra Regeneration Food Threshold). */
+    public static final GTIARule EXTRA_REGEN_FOOD = register(
+            GTIARule.number("extra_regen_food", "survival", 5, 15, 0, 21));
+    /** Half hearts healed every 2.5 seconds above that food level (GTO: Extra Regeneration Strength). */
+    public static final GTIARule EXTRA_REGEN_STRENGTH = register(
+            GTIARule.number("extra_regen_strength", "survival", 3, 2, 0, 20));
+
+    // Organs (GTIA-D-279).
+
+    /** Planets hurt players whose organ set tier is too low (GTO organ system). */
+    public static final GTIARule ORGAN_PLANET_REQUIREMENT = register(
+            GTIARule.toggle("planet_requirement", "organs", false, true));
+    /** Multiplies the parts of every organ recipe (GTO: ×1 on Easy, ×2 on Normal). */
+    public static final GTIARule ORGAN_COST = register(GTIARule.number("organ_cost", "organs", 1, 2, 1, 16));
 
     private GTIARules() {}
 
