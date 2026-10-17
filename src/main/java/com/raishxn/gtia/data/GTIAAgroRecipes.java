@@ -63,6 +63,7 @@ public final class GTIAAgroRecipes {
         // PT: Mesmo valor por mB que o creosoto (250 mB → 17,5 s): combustível cedo, não melhor.
         // ZH: 每 mB 燃烧值与杂酚油相同（250 mB → 17.5 秒）：早期燃料，而非更好的燃料。
         greenhouse(provider);
+        fertilizers(provider);
 
         GTRecipeTypes.STEAM_BOILER_RECIPES.recipeBuilder(GTIAMod.id("agro/seed_oil_boiler"))
                 .inputFluids(GTMaterials.SeedOil.getFluid(250))
@@ -94,6 +95,36 @@ public final class GTIAAgroRecipes {
                         .duration(600).EUt(64).save(provider);
             }
         }
+    }
+
+    /**
+     * EN: MV fertiliser chemistry: urea (NH3 + CO2), monoammonium phosphate (H3PO4 + NH3), potassium chloride from rock
+     * salt, then NPK in the Mixer. This is the route that makes NPK worth 35 each (GTIA-D-271).
+     * PT: Química de fertilizantes do MV: ureia (NH3 + CO2), fosfato monoamônico (H3PO4 + NH3), cloreto de potássio do
+     * sal-gema e o NPK no Mixer. É a rota que faz o NPK valer 35 de cada (GTIA-D-271).
+     * ZH: MV 化肥化工：尿素（NH3 + CO2）、磷酸一铵（H3PO4 + NH3）、岩盐制氯化钾，再在搅拌机中配成 NPK。此路线使 NPK
+     * 各项达到 35（GTIA-D-271）。
+     */
+    private static void fertilizers(Consumer<FinishedRecipe> provider) {
+        Item n = item("fertilizer_n"), p = item("fertilizer_p"), k = item("fertilizer_k"), npk = item("fertilizer_npk");
+        if (n == null || p == null || k == null || npk == null) return;
+        long mv = com.gregtechceu.gtceu.api.GTValues.VA[com.gregtechceu.gtceu.api.GTValues.MV];
+        GTRecipeTypes.CHEMICAL_RECIPES.recipeBuilder(GTIAMod.id("agro/urea"))
+                .inputFluids(GTMaterials.Ammonia.getFluid(2000)).inputFluids(GTMaterials.CarbonDioxide.getFluid(1000))
+                .outputItems(new ItemStack(n, 4)).outputFluids(GTMaterials.Water.getFluid(1000))
+                .duration(200).EUt(mv).save(provider);
+        GTRecipeTypes.CHEMICAL_RECIPES.recipeBuilder(GTIAMod.id("agro/monoammonium_phosphate"))
+                .inputFluids(GTMaterials.PhosphoricAcid.getFluid(1000)).inputFluids(GTMaterials.Ammonia.getFluid(1000))
+                .outputItems(new ItemStack(p, 4))
+                .duration(200).EUt(mv).save(provider);
+        GTRecipeTypes.MIXER_RECIPES.recipeBuilder(GTIAMod.id("agro/potassium_chloride"))
+                .inputItems(TagPrefix.dust, GTMaterials.RockSalt, 2).inputFluids(GTMaterials.Water.getFluid(500))
+                .outputItems(new ItemStack(k, 3))
+                .duration(160).EUt(mv).save(provider);
+        GTRecipeTypes.MIXER_RECIPES.recipeBuilder(GTIAMod.id("agro/npk"))
+                .inputItems(new ItemStack(n)).inputItems(new ItemStack(p)).inputItems(new ItemStack(k))
+                .outputItems(new ItemStack(npk, 3))
+                .duration(100).EUt(mv).save(provider);
     }
 
     private static Item item(String path) {
