@@ -228,5 +228,14 @@
   "gtia.crafting_station.side.east": "东",
   "gtia.crafting_station.side.south": "南",
   "gtia.crafting_station.side.west": "西",
-  "gtia.crafting_station.side.down": "下方"
+  "gtia.crafting_station.side.down": "下方",
+  "block.gtia.ev_industrial_apiary": "§5进阶工业蜂房 III§r",
+  "block.gtia.hv_industrial_apiary": "§6进阶工业蜂房 II§r",
+  "block.gtia.iv_industrial_apiary": "§9精英工业蜂房 §r",
+  "block.gtia.luv_industrial_apiary": "§d精英工业蜂房 II§r",
+  "block.gtia.uv_industrial_apiary": "§3终极工业蜂房 §r",
+  "block.gtia.zpm_industrial_apiary": "§c精英工业蜂房 III§r",
+  "gtia.industrial_apiary": "工业蜂房",
+  "gtia.machine.industrial_apiary.tooltip.bees": "不会有蜜蜂飞出：物种来自蜂笼，蜂框和花作为配方输入。",
+  "gtia.machine.industrial_apiary.tooltip.purpose": "将笼中蜜蜂作为物品保存，并产出其蜂巢。"
 }

@@ -16,6 +16,16 @@ import static com.lowdragmc.lowdraglib.gui.texture.ProgressTexture.FillDirection
 
 public final class GTIARecipeTypes {
 
+    /**
+     * Industrial Apiary (GTIA-D-259): a caged Productive Bees bee is a catalyst item, combs come out. The pack's
+     * KubeJS adds the species; no bee entity ever exists in the world.
+     */
+    public static final GTRecipeType INDUSTRIAL_APIARY = register("industrial_apiary")
+            .setMaxIOSize(3, 6, 1, 0)
+            .setEUIO(IO.IN)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.CHEMICAL);
+
     public static final GTRecipeType CATALYTIC_DEHYDRATOR = register("catalytic_dehydrator")
             .setMaxIOSize(0, 0, 2, 2)
             .setEUIO(IO.IN)

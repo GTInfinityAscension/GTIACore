@@ -273,6 +273,11 @@ public final class GTIALang {
                 "Accepts several plant sources; higher tiers process the same recipes faster.");
         GTIAMod.REGISTRATE.addRawLang("gtia.catalytic_dehydrator", "Catalytic Dehydrator");
         GTIAMod.REGISTRATE.addRawLang("gtia.fermentation_vat", "Fermentation Vat");
+        GTIAMod.REGISTRATE.addRawLang("gtia.industrial_apiary", "Industrial Apiary");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.industrial_apiary.tooltip.purpose",
+                "Keeps a caged bee as an item and produces its combs.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.industrial_apiary.tooltip.bees",
+                "No bees fly around: the species comes from the cage, frames and flowers are recipe inputs.");
         GTIAMod.REGISTRATE.addRawLang("gtia.bayer_digester",
                 "Bayer Digester");
         GTIAMod.REGISTRATE.addRawLang("gtia.hall_heroult",

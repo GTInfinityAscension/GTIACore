@@ -228,5 +228,14 @@
   "gtia.crafting_station.side.east": "leste",
   "gtia.crafting_station.side.south": "sul",
   "gtia.crafting_station.side.west": "oeste",
-  "gtia.crafting_station.side.down": "embaixo"
+  "gtia.crafting_station.side.down": "embaixo",
+  "block.gtia.ev_industrial_apiary": "Apiário Industrial Avançado III",
+  "block.gtia.hv_industrial_apiary": "Apiário Industrial Avançado II",
+  "block.gtia.iv_industrial_apiary": "Apiário Industrial Elite",
+  "block.gtia.luv_industrial_apiary": "Apiário Industrial Elite II",
+  "block.gtia.uv_industrial_apiary": "Apiário Industrial Supremo",
+  "block.gtia.zpm_industrial_apiary": "Apiário Industrial Elite III",
+  "gtia.industrial_apiary": "Apiário Industrial",
+  "gtia.machine.industrial_apiary.tooltip.bees": "Nenhuma abelha voa por aí: a espécie vem da gaiola; quadros e flores são entradas da receita.",
+  "gtia.machine.industrial_apiary.tooltip.purpose": "Guarda uma abelha engaiolada como item e produz os favos dela."
 }
