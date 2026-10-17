@@ -14,7 +14,7 @@ import com.raishxn.gtia.GTIAMod;
 
 import java.util.Locale;
 
-/** Bee machines (GTIA-D-259): bees start at HV, kept as items inside the machine. */
+/** Farm machines: bees from HV (GTIA-D-259) and the Agronomica Seed Analyzer from LV (GTIA-D-271). */
 public final class GTIABeeMachines {
 
     // EN: HV is the first tier (D-259); bees must not exist before the chemistry their combs need.
@@ -23,6 +23,31 @@ public final class GTIABeeMachines {
     public static final int FIRST_TIER = GTValues.HV;
 
     public static final MachineDefinition[] INDUSTRIAL_APIARY = registerApiaries();
+    public static final MachineDefinition[] SEED_ANALYZER = registerSeedAnalyzers();
+
+    private static MachineDefinition[] registerSeedAnalyzers() {
+        GTIARecipeTypes.SEED_ANALYZER.addCustomRecipeLogic(com.raishxn.gtia.machine.logic.SeedAnalyzerLogic.INSTANCE);
+        MachineDefinition[] machines = new MachineDefinition[GTValues.TIER_COUNT];
+        for (int tier : GTValues.tiersBetween(GTValues.LV, GTValues.HV)) {
+            String id = GTValues.VN[tier].toLowerCase(Locale.ROOT) + "_seed_analyzer";
+            machines[tier] = GTIAMod.REGISTRATE
+                    .machine(id, holder -> new SimpleTieredMachine(holder, tier,
+                            GTMachineUtils.defaultTankSizeFunction))
+                    .tier(tier)
+                    .langValue("%s Seed Analyzer %s".formatted(GTValues.VLVH[tier], GTValues.VLVT[tier]))
+                    .editableUI(SimpleTieredMachine.EDITABLE_UI_CREATOR.apply(GTIAMod.id("seed_analyzer"),
+                            GTIARecipeTypes.SEED_ANALYZER))
+                    .rotationState(RotationState.NON_Y_AXIS)
+                    .recipeType(GTIARecipeTypes.SEED_ANALYZER)
+                    .workableTieredHullModel(GTCEu.id("block/machines/scanner"))
+                    .tooltips(Component.translatable("gtia.machine.seed_analyzer.tooltip"))
+                    .tooltips(GTMachineUtils.workableTiered(tier, GTValues.V[tier], GTValues.V[tier] * 64L,
+                            GTIARecipeTypes.SEED_ANALYZER, GTMachineUtils.defaultTankSizeFunction.applyAsInt(tier),
+                            true))
+                    .register();
+        }
+        return machines;
+    }
 
     private GTIABeeMachines() {}
 

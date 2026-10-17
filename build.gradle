@@ -162,6 +162,7 @@ dependencies {
         runtimeOnly files(project.property('modernSpaceJar'))
         modRuntimeOnly("curse.maven:infiniverse-568341:4597298")
     }
+    if (project.hasProperty('agronomicaDevJar')) runtimeOnly files(project.property('agronomicaDevJar'))
     if (project.hasProperty('modernManipulatorJar')) runtimeOnly files(project.property('modernManipulatorJar'))
 
     modImplementation("com.gtinfinityascension:gtialib:${gtialib_version}") { transitive = false }

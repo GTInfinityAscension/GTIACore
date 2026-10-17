@@ -26,6 +26,13 @@ public final class GTIARecipeTypes {
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
             .setSound(GTSoundEntries.CHEMICAL);
 
+    /** Seed Analyzer: reveals an Agronomica seed's stats; the recipe is built per seed (custom logic). */
+    public static final GTRecipeType SEED_ANALYZER = register("seed_analyzer")
+            .setMaxIOSize(1, 1, 0, 0)
+            .setEUIO(IO.IN)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.SCIENCE);
+
     public static final GTRecipeType CATALYTIC_DEHYDRATOR = register("catalytic_dehydrator")
             .setMaxIOSize(0, 0, 2, 2)
             .setEUIO(IO.IN)

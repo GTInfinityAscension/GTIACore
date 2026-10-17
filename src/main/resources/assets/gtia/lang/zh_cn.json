@@ -237,5 +237,10 @@
   "block.gtia.zpm_industrial_apiary": "§c精英工业蜂房 III§r",
   "gtia.industrial_apiary": "工业蜂房",
   "gtia.machine.industrial_apiary.tooltip.bees": "不会有蜜蜂飞出：物种来自蜂笼，蜂框和花作为配方输入。",
-  "gtia.machine.industrial_apiary.tooltip.purpose": "将笼中蜜蜂作为物品保存，并产出其蜂巢。"
+  "gtia.machine.industrial_apiary.tooltip.purpose": "将笼中蜜蜂作为物品保存，并产出其蜂巢。",
+  "block.gtia.lv_seed_analyzer": "基础种子分析仪 §r",
+  "block.gtia.mv_seed_analyzer": "§b进阶种子分析仪 §r",
+  "block.gtia.hv_seed_analyzer": "§6进阶种子分析仪 II§r",
+  "gtia.seed_analyzer": "种子分析仪",
+  "gtia.machine.seed_analyzer.tooltip": "显示 Agronomica 种子的生长、产量与抗性。"
 }

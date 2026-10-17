@@ -274,6 +274,9 @@ public final class GTIALang {
         GTIAMod.REGISTRATE.addRawLang("gtia.catalytic_dehydrator", "Catalytic Dehydrator");
         GTIAMod.REGISTRATE.addRawLang("gtia.fermentation_vat", "Fermentation Vat");
         GTIAMod.REGISTRATE.addRawLang("gtia.industrial_apiary", "Industrial Apiary");
+        GTIAMod.REGISTRATE.addRawLang("gtia.seed_analyzer", "Seed Analyzer");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.seed_analyzer.tooltip",
+                "Reveals the Growth, Gain and Resistance of Agronomica seeds.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.industrial_apiary.tooltip.purpose",
                 "Keeps a caged bee as an item and produces its combs.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.industrial_apiary.tooltip.bees",

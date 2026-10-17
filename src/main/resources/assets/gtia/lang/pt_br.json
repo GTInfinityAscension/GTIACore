@@ -237,5 +237,10 @@
   "block.gtia.zpm_industrial_apiary": "Apiário Industrial Elite III",
   "gtia.industrial_apiary": "Apiário Industrial",
   "gtia.machine.industrial_apiary.tooltip.bees": "Nenhuma abelha voa por aí: a espécie vem da gaiola; quadros e flores são entradas da receita.",
-  "gtia.machine.industrial_apiary.tooltip.purpose": "Guarda uma abelha engaiolada como item e produz os favos dela."
+  "gtia.machine.industrial_apiary.tooltip.purpose": "Guarda uma abelha engaiolada como item e produz os favos dela.",
+  "block.gtia.lv_seed_analyzer": "Analisador de Sementes Básico",
+  "block.gtia.mv_seed_analyzer": "Analisador de Sementes Avançado",
+  "block.gtia.hv_seed_analyzer": "Analisador de Sementes Avançado II",
+  "gtia.seed_analyzer": "Analisador de Sementes",
+  "gtia.machine.seed_analyzer.tooltip": "Revela Crescimento, Ganho e Resistência das sementes da Agronomica."
 }

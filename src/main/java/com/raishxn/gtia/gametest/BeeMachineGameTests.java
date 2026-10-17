@@ -10,6 +10,7 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 import com.raishxn.gtia.data.GTIABeeMachines;
 import com.raishxn.gtia.data.GTIARecipeTypes;
+import com.raishxn.gtia.machine.logic.SeedAnalyzerLogic;
 
 /** Industrial Apiary exists from HV to UV and never earlier (GTIA-D-259). */
 @PrefixGameTestTemplate(false)
@@ -47,6 +48,25 @@ public final class BeeMachineGameTests {
                             .anyMatch(r -> "gtia".equals(r.getId().getNamespace()) &&
                                     r.getId().getPath().endsWith("bees/" + step)),
                     "missing GTIA bee recipe " + step);
+        helper.succeed();
+    }
+
+    @GameTest(template = "qa_empty_5x5", batch = "bees", timeoutTicks = 20)
+    public static void seedAnalyzerRevealsStats(GameTestHelper helper) {
+        for (int tier = GTValues.LV; tier <= GTValues.HV; tier++)
+            helper.assertTrue(GTIABeeMachines.SEED_ANALYZER[tier] != null, "missing Seed Analyzer " + tier);
+        helper.assertTrue(GTIABeeMachines.SEED_ANALYZER[GTValues.ULV] == null, "no Seed Analyzer before LV");
+        var item = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(SeedAnalyzerLogic.SEEDS);
+        if (item == null || item == net.minecraft.world.item.Items.AIR) {
+            helper.succeed();
+            return;
+        }
+        var seed = new net.minecraft.world.item.ItemStack(item);
+        seed.getOrCreateTag().putString("species", "hemp");
+        helper.assertTrue(SeedAnalyzerLogic.isUnanalyzedSeed(seed), "a fresh seed is unanalyzed");
+        var out = SeedAnalyzerLogic.analyzed(seed);
+        helper.assertTrue(!SeedAnalyzerLogic.isUnanalyzedSeed(out), "the analyzed copy is marked");
+        helper.assertTrue("hemp".equals(out.getTag().getString("species")), "the species survives analysis");
         helper.succeed();
     }
 }
