@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.raishxn.gtia.data.GTIAAlloys;
-import com.raishxn.gtia.data.GTIADraconiumMaterials;
 import com.raishxn.gtia.data.GTIAItems;
 import com.raishxn.gtia.data.GTIALang;
 import com.raishxn.gtia.data.GTIAMachines;
@@ -95,7 +94,6 @@ public final class GTIAMod {
 
     private void registerMaterials(MaterialEvent event) {
         GTIAAlloys.register();
-        GTIADraconiumMaterials.register();
     }
 
     private void registerRecipeTypes(GTCEuAPI.RegisterEvent<ResourceLocation, GTRecipeType> event) {

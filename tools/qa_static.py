@@ -14,8 +14,6 @@ OVERLAYS = ASSETS / "textures/block/machines/catalytic_dehydrator"
 REQUIRED_MATERIALS = {
     "material.gtia.pulsating_alloy",
     "material.gtia.conductive_alloy",
-    "material.gtia.draconium",
-    "material.gtia.awakened_draconium",
     "material.gtia.phase_matrix",
     "gtia:phase_matrix_deposit",
 }

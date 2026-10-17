@@ -26,7 +26,6 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 import com.raishxn.gtia.GTIAMod;
 import com.raishxn.gtia.data.GTIAAlloys;
-import com.raishxn.gtia.data.GTIADraconiumMaterials;
 import com.raishxn.gtia.data.GTIAExtraForms;
 import com.raishxn.gtia.data.GTIAItems;
 import com.raishxn.gtia.data.GTIAMachines;
@@ -40,18 +39,6 @@ public final class AlloyGameTests {
     private static final BlockPos MACHINE_POS = new BlockPos(2, 1, 2);
 
     private AlloyGameTests() {}
-
-    @GameTest(template = TEMPLATE, batch = "alloy", timeoutTicks = 20)
-    public static void nativeDraconiumForms(GameTestHelper helper) {
-        helper.assertTrue(!ModList.get().isLoaded("draconicevolution"), "QA must run without Draconic Evolution");
-        assertItemId(helper, ChemicalHelper.get(TagPrefix.ingot, GTIADraconiumMaterials.DRACONIUM),
-                "draconium_ingot");
-        assertAlloyForms(helper, GTIADraconiumMaterials.DRACONIUM, "draconium");
-        assertItemId(helper, ChemicalHelper.get(TagPrefix.ingot, GTIADraconiumMaterials.AWAKENED_DRACONIUM),
-                "awakened_draconium_ingot");
-        assertAlloyForms(helper, GTIADraconiumMaterials.AWAKENED_DRACONIUM, "awakened_draconium");
-        helper.succeed();
-    }
 
     @GameTest(template = TEMPLATE, batch = "alloy", timeoutTicks = 20)
     public static void nativeFormsAndCouplerCrafting(GameTestHelper helper) {

@@ -143,7 +143,6 @@ dependencies {
         modRuntimeOnly("curse.maven:guideme-1173950:7127447")
         modRuntimeOnly("curse.maven:glodium-957920:5226922")
         modRuntimeOnly("curse.maven:ex-pattern-provider-892005:7248944")
-        modRuntimeOnly("curse.maven:gtmthings-1104310:7712957")
     }
 
     // EN: Dev-only companions for playtesting together (-PmodernSpaceJar / -PmodernManipulatorJar); never shipped.
