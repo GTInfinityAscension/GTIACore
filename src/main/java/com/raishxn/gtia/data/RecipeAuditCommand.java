@@ -62,6 +62,15 @@ public final class RecipeAuditCommand {
             }
         }
         List<String> out = new ArrayList<>();
+        // EN: Also counts GTIA's integration recipes, so a missing optional mod shows up as 0 here.
+        // PT: Também conta as receitas de integração do GTIA; um mod opcional faltando aparece como 0 aqui.
+        // ZH: 同时统计 GTIA 的联动配方；缺少可选模组时此处显示为 0。
+        for (String group : new String[] { "agro/", "bees/" }) {
+            long n = server.getRecipeManager().getRecipes().stream()
+                    .filter(r -> "gtia".equals(r.getId().getNamespace()) && r.getId().getPath().contains(group))
+                    .count();
+            out.add("= gtia " + group + " " + n);
+        }
         perMod.forEach((mod, n) -> out.add("# " + mod + ": " + n));
         out.addAll(lines);
         try {
