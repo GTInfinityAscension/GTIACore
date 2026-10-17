@@ -254,5 +254,10 @@
   "block.gtia.zpm_mutation_chamber": "§c精英突变室 III§r",
   "block.gtia.uv_mutation_chamber": "§3终极突变室 §r",
   "gtia.mutation_chamber": "突变室",
-  "gtia.machine.mutation_chamber.tooltip": "两只笼中亲本蜜蜂（不消耗）将一只笼中野生蜜蜂转变为新物种。无随机。"
+  "gtia.machine.mutation_chamber.tooltip": "两只笼中亲本蜜蜂（不消耗）将一只笼中野生蜜蜂转变为新物种。无随机。",
+  "block.gtia.rocket_assembler": "火箭装配机",
+  "block.gtia.rocket_assembly_casing": "火箭装配外壳",
+  "gtia.rocket_assembly": "火箭装配",
+  "gtia.machine.rocket_assembler.tooltip.purpose": "用 Ad Astra 的火箭部件、GT 组件和火箭燃料组装火箭。",
+  "gtia.machine.rocket_assembler.tooltip.pad": "中央放置 3 x 3 发射台；仓口安装在前方的控制室上。"
 }

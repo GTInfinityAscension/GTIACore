@@ -254,5 +254,10 @@
   "block.gtia.zpm_mutation_chamber": "Câmara de Mutação Elite III",
   "block.gtia.uv_mutation_chamber": "Câmara de Mutação Suprema",
   "gtia.mutation_chamber": "Câmara de Mutação",
-  "gtia.machine.mutation_chamber.tooltip": "Duas abelhas-mãe engaioladas (não gastas) transformam uma abelha selvagem engaiolada em uma espécie nova. Sem sorte."
+  "gtia.machine.mutation_chamber.tooltip": "Duas abelhas-mãe engaioladas (não gastas) transformam uma abelha selvagem engaiolada em uma espécie nova. Sem sorte.",
+  "block.gtia.rocket_assembler": "Montadora de Foguetes",
+  "block.gtia.rocket_assembly_casing": "Casing da Montadora de Foguetes",
+  "gtia.rocket_assembly": "Montagem de Foguetes",
+  "gtia.machine.rocket_assembler.tooltip.purpose": "Monta os foguetes do Ad Astra com as peças deles, componentes do GT e combustível de foguete.",
+  "gtia.machine.rocket_assembler.tooltip.pad": "Uma plataforma de lançamento 3 x 3 fica no meio; as escotilhas vão na casa de controle da frente."
 }

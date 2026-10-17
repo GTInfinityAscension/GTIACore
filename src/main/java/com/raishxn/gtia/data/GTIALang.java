@@ -276,6 +276,11 @@ public final class GTIALang {
         GTIAMod.REGISTRATE.addRawLang("gtia.industrial_apiary", "Industrial Apiary");
         GTIAMod.REGISTRATE.addRawLang("gtia.seed_analyzer", "Seed Analyzer");
         GTIAMod.REGISTRATE.addRawLang("gtia.greenhouse", "Greenhouse");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rocket_assembly", "Rocket Assembly");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.rocket_assembler.tooltip.purpose",
+                "Builds Ad Astra rockets from their parts, GT components and rocket fuel.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.rocket_assembler.tooltip.pad",
+                "A 3 x 3 launch pad sits in the middle; put the hatches on the control house in front.");
         GTIAMod.REGISTRATE.addRawLang("gtia.mutation_chamber", "Mutation Chamber");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.mutation_chamber.tooltip",
                 "Two caged parent bees (kept) turn a caged wild bee into a new species. No luck involved.");

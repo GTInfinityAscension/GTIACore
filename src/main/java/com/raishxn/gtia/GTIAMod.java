@@ -40,6 +40,7 @@ public final class GTIAMod {
         com.raishxn.gtia.rules.GTIARuleEffects.applyStartupRules();
         GTIAItems.init();
         com.raishxn.gtia.station.GTIAStation.init();
+        com.raishxn.gtia.data.rocket.GTIARocketBlocks.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(this::registerMaterialRegistry);
         modBus.addListener(this::sendCraftingSources);
@@ -53,6 +54,10 @@ public final class GTIAMod {
         if (net.minecraftforge.fml.ModList.get().isLoaded("productivebees")) {
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onServerStarted);
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onDatapackSync);
+        }
+        if (net.minecraftforge.fml.ModList.get().isLoaded("ad_astra")) {
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onServerStarted);
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onDatapackSync);
         }
         GTIARulesNetwork.register();
         if (net.minecraftforge.fml.ModList.get().isLoaded("gtna")) GTIASteamRules.install();
@@ -111,6 +116,7 @@ public final class GTIAMod {
         GTIAMachines.init();
         GTIABeeMachines.init();
         GTIAGreenhouse.init();
+        com.raishxn.gtia.data.rocket.GTIARocketAssembler.init();
     }
 
     public static ResourceLocation id(String path) {
