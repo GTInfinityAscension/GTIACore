@@ -48,6 +48,7 @@ public final class GTIAMod {
         REGISTRATE.registerRegistrate();
         MinecraftForge.EVENT_BUS.addListener(
                 (net.minecraftforge.event.server.ServerStartedEvent e) -> WorldRules.onServerStarted(e.getServer()));
+        MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.RecipeAuditCommand::register);
         if (net.minecraftforge.fml.ModList.get().isLoaded("productivebees")) {
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onServerStarted);
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onDatapackSync);
