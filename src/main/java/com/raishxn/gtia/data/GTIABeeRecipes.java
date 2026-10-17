@@ -27,14 +27,31 @@ import java.util.function.Consumer;
  */
 public final class GTIABeeRecipes {
 
-    private record Species(String id, Material metal) {}
+    /** {@code parents} empty: bred from a vanilla bee in the Chemical Reactor; else mutated from those two. */
+    private record Species(String id, Material metal, int tier, String... parents) {}
 
-    private static final Species[] HV_SPECIES = {
-            new Species("iron", GTMaterials.Iron), new Species("copper", GTMaterials.Copper),
-            new Species("tin", GTMaterials.Tin), new Species("lead", GTMaterials.Lead),
-            new Species("silver", GTMaterials.Silver), new Species("nickel", GTMaterials.Nickel),
-            new Species("zinc", GTMaterials.Zinc), new Species("gold", GTMaterials.Gold),
-            new Species("aluminum", GTMaterials.Aluminium) };
+    private static final int HV = GTValues.HV, EV = GTValues.EV;
+    // EN: EV species come only from the Mutation Chamber, from two HV parents (GTIA-D-271/272, no RNG).
+    // PT: Espécies do EV só saem da Câmara de mutação, de dois pais do HV (GTIA-D-271/272, sem sorte).
+    // ZH: EV 物种只能由突变室从两只 HV 亲本获得（GTIA-D-271/272，无随机）。
+    private static final Species[] SPECIES = {
+            new Species("iron", GTMaterials.Iron, HV), new Species("copper", GTMaterials.Copper, HV),
+            new Species("tin", GTMaterials.Tin, HV), new Species("lead", GTMaterials.Lead, HV),
+            new Species("silver", GTMaterials.Silver, HV), new Species("nickel", GTMaterials.Nickel, HV),
+            new Species("zinc", GTMaterials.Zinc, HV), new Species("gold", GTMaterials.Gold, HV),
+            new Species("aluminum", GTMaterials.Aluminium, HV),
+            new Species("titanium", GTMaterials.Titanium, EV, "iron", "aluminum"),
+            new Species("tungsten", GTMaterials.Tungsten, EV, "titanium", "tin"),
+            new Species("molybdenum", GTMaterials.Molybdenum, EV, "copper", "lead"),
+            new Species("redstone", GTMaterials.Redstone, EV, "copper", "gold"),
+            new Species("lapis", GTMaterials.Lapis, EV, "aluminum", "silver") };
+
+    private static CompoundTag caged(String species) {
+        var tag = new CompoundTag();
+        tag.putString("entity", "productivebees:configurable_bee");
+        tag.putString("type", "productivebees:" + species);
+        return tag;
+    }
 
     private GTIABeeRecipes() {}
 
@@ -44,7 +61,8 @@ public final class GTIABeeRecipes {
         if (cage == null || comb == null) return;
         var wildBee = new CompoundTag();
         wildBee.putString("entity", "minecraft:bee");
-        for (Species s : HV_SPECIES) {
+        Item treat = item("honey_treat");
+        for (Species s : SPECIES) {
             String type = "productivebees:" + s.id();
             var cagedTag = new CompoundTag();
             cagedTag.putString("entity", "productivebees:configurable_bee");
@@ -58,11 +76,21 @@ public final class GTIABeeRecipes {
             var combStack = new ItemStack(comb);
             combStack.setTag(combTag);
 
-            GTRecipeTypes.CHEMICAL_RECIPES.recipeBuilder(GTIAMod.id("bees/breed_" + s.id()))
-                    .inputItems(PartialNBTIngredient.of(cage, wildBee))
-                    .inputItems(TagPrefix.block, s.metal(), 4)
-                    .inputFluids(GTMaterials.Biomass.getFluid(1000))
-                    .outputItems(caged).duration(600).EUt(GTValues.VA[GTValues.HV]).save(provider);
+            if (s.parents().length == 0) {
+                GTRecipeTypes.CHEMICAL_RECIPES.recipeBuilder(GTIAMod.id("bees/breed_" + s.id()))
+                        .inputItems(PartialNBTIngredient.of(cage, wildBee))
+                        .inputItems(TagPrefix.block, s.metal(), 4)
+                        .inputFluids(GTMaterials.Biomass.getFluid(1000))
+                        .outputItems(caged).duration(600).EUt(GTValues.VA[HV]).save(provider);
+            } else if (treat != null) {
+                GTIARecipeTypes.MUTATION_CHAMBER.recipeBuilder(GTIAMod.id("bees/mutate_" + s.id()))
+                        .notConsumable(PartialNBTIngredient.of(cage, caged(s.parents()[0])))
+                        .notConsumable(PartialNBTIngredient.of(cage, caged(s.parents()[1])))
+                        .inputItems(PartialNBTIngredient.of(cage, wildBee))
+                        .inputItems(new ItemStack(treat, 4))
+                        .inputItems(TagPrefix.block, s.metal(), 2)
+                        .outputItems(caged).duration(1200).EUt(GTValues.VA[s.tier()]).save(provider);
+            }
 
             // EN: The caged bee is a catalyst; 2 combs per 20 s at HV before overclocks.
             // PT: A abelha engaiolada é catalisador; 2 favos a cada 20 s no HV antes de overclock.
@@ -70,7 +98,7 @@ public final class GTIABeeRecipes {
             GTIARecipeTypes.INDUSTRIAL_APIARY.recipeBuilder(GTIAMod.id("bees/apiary_" + s.id()))
                     .notConsumable(PartialNBTIngredient.of(cage, cagedTag))
                     .inputFluids(GTMaterials.Water.getFluid(100))
-                    .outputItems(combStack.copyWithCount(2)).duration(400).EUt(GTValues.VA[GTValues.HV])
+                    .outputItems(combStack.copyWithCount(2)).duration(400).EUt(GTValues.VA[s.tier()])
                     .save(provider);
 
             // EN: Direct route is poor (1 small dust per comb); the reactor route gives a purified ore per comb.
@@ -85,7 +113,7 @@ public final class GTIABeeRecipes {
                     .inputItems(PartialNBTIngredient.of(comb, combTag), 4)
                     .inputFluids(GTMaterials.HydrochloricAcid.getFluid(384))
                     .outputItems(TagPrefix.crushedPurified, s.metal(), 4)
-                    .duration(200).EUt(GTValues.VA[GTValues.HV]).save(provider);
+                    .duration(200).EUt(GTValues.VA[s.tier()]).save(provider);
         }
     }
 

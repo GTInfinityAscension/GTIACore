@@ -276,6 +276,9 @@ public final class GTIALang {
         GTIAMod.REGISTRATE.addRawLang("gtia.industrial_apiary", "Industrial Apiary");
         GTIAMod.REGISTRATE.addRawLang("gtia.seed_analyzer", "Seed Analyzer");
         GTIAMod.REGISTRATE.addRawLang("gtia.greenhouse", "Greenhouse");
+        GTIAMod.REGISTRATE.addRawLang("gtia.mutation_chamber", "Mutation Chamber");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.mutation_chamber.tooltip",
+                "Two caged parent bees (kept) turn a caged wild bee into a new species. No luck involved.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.greenhouse.tooltip.purpose",
                 "Grows Agronomica crops in bulk: fertiliser and water in, harvest out.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.greenhouse.tooltip.seed",

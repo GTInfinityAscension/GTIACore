@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "gtia:block/machine/hv_mutation_chamber",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "gtia:block/machine/hv_mutation_chamber"
+    },
+    "facing=south": {
+      "model": "gtia:block/machine/hv_mutation_chamber",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gtia:block/machine/hv_mutation_chamber",
+      "y": 270
+    }
+  }
+}

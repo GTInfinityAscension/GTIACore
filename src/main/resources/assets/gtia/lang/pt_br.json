@@ -246,5 +246,13 @@
   "block.gtia.greenhouse": "Estufa",
   "gtia.greenhouse": "Estufa",
   "gtia.machine.greenhouse.tooltip.purpose": "Cultiva plantas da Agronomica em escala: entra fertilizante e água, sai a colheita.",
-  "gtia.machine.greenhouse.tooltip.seed": "Coloque uma semente da planta no barramento de entrada; ela nunca é gasta."
+  "gtia.machine.greenhouse.tooltip.seed": "Coloque uma semente da planta no barramento de entrada; ela nunca é gasta.",
+  "block.gtia.hv_mutation_chamber": "Câmara de Mutação Avançada II",
+  "block.gtia.ev_mutation_chamber": "Câmara de Mutação Avançada III",
+  "block.gtia.iv_mutation_chamber": "Câmara de Mutação Elite",
+  "block.gtia.luv_mutation_chamber": "Câmara de Mutação Elite II",
+  "block.gtia.zpm_mutation_chamber": "Câmara de Mutação Elite III",
+  "block.gtia.uv_mutation_chamber": "Câmara de Mutação Suprema",
+  "gtia.mutation_chamber": "Câmara de Mutação",
+  "gtia.machine.mutation_chamber.tooltip": "Duas abelhas-mãe engaioladas (não gastas) transformam uma abelha selvagem engaiolada em uma espécie nova. Sem sorte."
 }

@@ -40,6 +40,13 @@ public final class GTIARecipeTypes {
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
             .setSound(GTSoundEntries.CHEMICAL);
 
+    /** Mutation Chamber (GTIA-D-271): two caged parents (kept) turn a caged vanilla bee into a new species. */
+    public static final GTRecipeType MUTATION_CHAMBER = register("mutation_chamber")
+            .setMaxIOSize(5, 1, 0, 0)
+            .setEUIO(IO.IN)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.SCIENCE);
+
     public static final GTRecipeType CATALYTIC_DEHYDRATOR = register("catalytic_dehydrator")
             .setMaxIOSize(0, 0, 2, 2)
             .setEUIO(IO.IN)

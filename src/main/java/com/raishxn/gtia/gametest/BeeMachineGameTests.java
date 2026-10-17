@@ -42,12 +42,15 @@ public final class BeeMachineGameTests {
         var recipes = helper.getLevel().getServer().getRecipeManager().getRecipes();
         long pb = recipes.stream().filter(r -> "productivebees".equals(r.getId().getNamespace())).count();
         helper.assertTrue(pb == 0, pb + " Productive Bees recipes are still loaded");
-        for (String step : new String[] { "breed_iron", "apiary_iron", "comb_dust_iron", "comb_ore_iron" })
+        for (String step : new String[] { "breed_iron", "apiary_iron", "comb_dust_iron", "comb_ore_iron",
+                "mutate_titanium", "apiary_titanium" })
             helper.assertTrue(
                     recipes.stream()
                             .anyMatch(r -> "gtia".equals(r.getId().getNamespace()) &&
                                     r.getId().getPath().endsWith("bees/" + step)),
                     "missing GTIA bee recipe " + step);
+        helper.assertTrue(recipes.stream().noneMatch(r -> r.getId().getPath().endsWith("bees/breed_titanium")),
+                "EV species must not be breedable from a wild bee directly");
         helper.succeed();
     }
 

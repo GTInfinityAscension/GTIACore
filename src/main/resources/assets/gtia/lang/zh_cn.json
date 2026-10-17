@@ -246,5 +246,13 @@
   "block.gtia.greenhouse": "温室",
   "gtia.greenhouse": "温室",
   "gtia.machine.greenhouse.tooltip.purpose": "大规模种植 Agronomica 作物：输入肥料与水，输出收获物。",
-  "gtia.machine.greenhouse.tooltip.seed": "在输入总线放入一颗该作物的种子；种子不会被消耗。"
+  "gtia.machine.greenhouse.tooltip.seed": "在输入总线放入一颗该作物的种子；种子不会被消耗。",
+  "block.gtia.hv_mutation_chamber": "§6进阶突变室 II§r",
+  "block.gtia.ev_mutation_chamber": "§5进阶突变室 III§r",
+  "block.gtia.iv_mutation_chamber": "§9精英突变室 §r",
+  "block.gtia.luv_mutation_chamber": "§d精英突变室 II§r",
+  "block.gtia.zpm_mutation_chamber": "§c精英突变室 III§r",
+  "block.gtia.uv_mutation_chamber": "§3终极突变室 §r",
+  "gtia.mutation_chamber": "突变室",
+  "gtia.machine.mutation_chamber.tooltip": "两只笼中亲本蜜蜂（不消耗）将一只笼中野生蜜蜂转变为新物种。无随机。"
 }

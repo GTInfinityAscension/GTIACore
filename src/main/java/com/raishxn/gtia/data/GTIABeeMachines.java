@@ -24,6 +24,31 @@ public final class GTIABeeMachines {
 
     public static final MachineDefinition[] INDUSTRIAL_APIARY = registerApiaries();
     public static final MachineDefinition[] SEED_ANALYZER = registerSeedAnalyzers();
+    public static final MachineDefinition[] MUTATION_CHAMBER = registerMutationChambers();
+
+    private static MachineDefinition[] registerMutationChambers() {
+        MachineDefinition[] machines = new MachineDefinition[GTValues.TIER_COUNT];
+        for (int tier : GTValues.tiersBetween(FIRST_TIER, GTValues.UV)) {
+            String id = GTValues.VN[tier].toLowerCase(Locale.ROOT) + "_mutation_chamber";
+            machines[tier] = GTIAMod.REGISTRATE
+                    .machine(id, holder -> new SimpleTieredMachine(holder, tier,
+                            GTMachineUtils.defaultTankSizeFunction))
+                    .tier(tier)
+                    .langValue("%s Mutation Chamber %s".formatted(GTValues.VLVH[tier], GTValues.VLVT[tier]))
+                    .editableUI(SimpleTieredMachine.EDITABLE_UI_CREATOR.apply(GTIAMod.id("mutation_chamber"),
+                            GTIARecipeTypes.MUTATION_CHAMBER))
+                    .rotationState(RotationState.NON_Y_AXIS)
+                    .recipeType(GTIARecipeTypes.MUTATION_CHAMBER)
+                    .recipeModifier(GTRecipeModifiers.OC_NON_PERFECT)
+                    .workableTieredHullModel(GTCEu.id("block/machines/chemical_bath"))
+                    .tooltips(Component.translatable("gtia.machine.mutation_chamber.tooltip"))
+                    .tooltips(GTMachineUtils.workableTiered(tier, GTValues.V[tier], GTValues.V[tier] * 64L,
+                            GTIARecipeTypes.MUTATION_CHAMBER, GTMachineUtils.defaultTankSizeFunction.applyAsInt(tier),
+                            true))
+                    .register();
+        }
+        return machines;
+    }
 
     private static MachineDefinition[] registerSeedAnalyzers() {
         GTIARecipeTypes.SEED_ANALYZER.addCustomRecipeLogic(com.raishxn.gtia.machine.logic.SeedAnalyzerLogic.INSTANCE);
