@@ -6,6 +6,6 @@ set -euo pipefail
 P="$HOME/MineProjects"
 cd "$(dirname "$0")/.."
 exec ./gradlew runClient -PgtiaDevOptionalDependencies=true \
-  -PgtnaDevJar="$P/GregTech-Nexus-Addon/build/devlibs/gtna-0.6.0.jar" \
+  -PgtnaDevJar="$P/GregTech-Nexus-Addon/build/devlibs/gtna-0.6.1.jar" \
   -PmodernSpaceJar="$P/PersonalSpace/build/devlibs/modernspace-0.3.1.jar" \
   -PmodernManipulatorJar="$P/ModernManipulator/build/devlibs/modern-manipulator-0.2.0.jar" "$@"

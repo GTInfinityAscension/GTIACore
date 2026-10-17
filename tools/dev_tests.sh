@@ -5,7 +5,7 @@
 set -uo pipefail
 P="$HOME/MineProjects"
 cd "$(dirname "$0")/.."
-F=(-PgtiaDevOptionalDependencies=true -PgtnaDevJar="$P/GregTech-Nexus-Addon/build/devlibs/gtna-0.6.0.jar" --offline)
+F=(-PgtiaDevOptionalDependencies=true -PgtnaDevJar="$P/GregTech-Nexus-Addon/build/devlibs/gtna-0.6.1.jar" --offline)
 run() {
   for attempt in 1 2 3; do
     ./gradlew "$1" "${F[@]}" > "build/$1.log" 2>&1
