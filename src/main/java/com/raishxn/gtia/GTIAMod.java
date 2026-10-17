@@ -56,8 +56,10 @@ public final class GTIAMod {
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onDatapackSync);
         }
         if (net.minecraftforge.fml.ModList.get().isLoaded("ad_astra")) {
-            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onServerStarted);
-            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onDatapackSync);
+            MinecraftForge.EVENT_BUS
+                    .addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onServerStarted);
+            MinecraftForge.EVENT_BUS
+                    .addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onDatapackSync);
         }
         GTIARulesNetwork.register();
         if (net.minecraftforge.fml.ModList.get().isLoaded("gtna")) GTIASteamRules.install();

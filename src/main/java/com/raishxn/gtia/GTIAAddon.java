@@ -38,6 +38,7 @@ public final class GTIAAddon implements IGTAddon {
         GTIABeeRecipes.addRecipes(provider);
         GTIAAgroRecipes.addRecipes(provider);
         com.raishxn.gtia.data.rocket.GTIARocketRecipes.addRecipes(provider);
+        com.raishxn.gtia.data.GTIANexusRecipes.addRecipes(provider);
     }
 
     @Override
