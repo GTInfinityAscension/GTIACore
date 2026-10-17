@@ -76,6 +76,7 @@ public final class GTIAMod {
                 .addListener((net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e) -> {
                     if (e.getEntity() instanceof net.minecraft.server.level.ServerPlayer player) {
                         GTIARulesNetwork.sendTo(player);
+                        com.raishxn.gtia.rules.ModeStage.apply(player);
                     }
                     String warning = WorldRules.takeWarning();
                     if (warning != null) {
