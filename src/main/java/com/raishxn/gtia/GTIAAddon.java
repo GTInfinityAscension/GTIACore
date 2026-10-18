@@ -5,6 +5,7 @@ import com.gregtechceu.gtceu.api.addon.IGTAddon;
 import com.gregtechceu.gtceu.api.registry.registrate.GTRegistrate;
 
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
 
 import com.raishxn.gtia.data.GTIAAgroRecipes;
 import com.raishxn.gtia.data.GTIABeeRecipes;
@@ -41,6 +42,11 @@ public final class GTIAAddon implements IGTAddon {
         com.raishxn.gtia.data.GTIANexusRecipes.addRecipes(provider);
         com.raishxn.gtia.organ.OrganRecipes.addRecipes(provider);
         com.raishxn.gtia.chem.ChemRecipes.addRecipes(provider);
+    }
+
+    @Override
+    public void removeRecipes(Consumer<ResourceLocation> consumer) {
+        com.raishxn.gtia.chem.ChemRouteRemovals.removeRecipes(consumer);
     }
 
     @Override
