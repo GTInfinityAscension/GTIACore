@@ -162,23 +162,37 @@ public final class GTIARuleEffects {
         GTIAMod.LOGGER.info("GTIA startup rules: {}", startupValues);
     }
 
-    /**
-     * Compares a world's restart rules with the ones the game started with. When they differ, the world's values are
-     * written for the next start and the caller tells the player to restart. Returns true when a restart is needed.
-     */
-    public static boolean checkStartupRules(WorldRules.Snapshot rules) {
-        Map<String, Double> wanted = restartValues(rules);
-        if (wanted.equals(startupValues)) return false;
+    /** Whether {@code rules} need values for the restart rules other than the ones this game session started with. */
+    public static boolean needsRestart(WorldRules.Snapshot rules) {
+        return !restartValues(rules).equals(startupValues);
+    }
+
+    /** Whether {@code rule} is a restart rule whose value in {@code rules} differs from this session's. */
+    public static boolean differsFromSession(WorldRules.Snapshot rules, GTIARule rule) {
+        return rule.restart() && !Double.valueOf(rules.get(rule)).equals(startupValues.get(rule.id()));
+    }
+
+    /** Writes the restart rules of {@code rules} to {@code startup_rules.json}, for the next game start. */
+    public static void writeStartupRules(WorldRules.Snapshot rules) {
         JsonObject json = new JsonObject();
-        wanted.forEach(json::addProperty);
+        restartValues(rules).forEach(json::addProperty);
         try {
             Files.createDirectories(STARTUP_FILE.getParent());
             Files.writeString(STARTUP_FILE, GSON.toJson(json), StandardCharsets.UTF_8);
         } catch (IOException e) {
             GTIAMod.LOGGER.error("Could not write {}", STARTUP_FILE, e);
         }
+    }
+
+    /**
+     * Compares a world's restart rules with the ones the game started with. When they differ, the world's values are
+     * written for the next start and the caller tells the player to restart. Returns true when a restart is needed.
+     */
+    public static boolean checkStartupRules(WorldRules.Snapshot rules) {
+        if (!needsRestart(rules)) return false;
+        writeStartupRules(rules);
         GTIAMod.LOGGER.warn("This world's restart rules {} differ from this session's {}; restart the game",
-                wanted, startupValues);
+                restartValues(rules), startupValues);
         return true;
     }
 

@@ -32,6 +32,8 @@ public final class WorldRules {
     /** Authoritative copy inside the world data; the JSON file is the readable one. */
     public static final String DATA_FILE = "data/gtia_rules.dat";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Path KEPT_CHOICE = FMLPaths.CONFIGDIR.get().resolve("gtia")
+            .resolve("kept_new_world_rules.json");
 
     /** Rules the next new world will get (set by the create-world screen; the config default otherwise). */
     private static volatile Snapshot pending;
@@ -130,9 +132,40 @@ public final class WorldRules {
      * the last world played must not leak into it.
      */
     public static void beginNewWorld() {
-        pending = null;
-        active = defaultForNewWorlds();
+        pending = takeChoiceKeptForRestart();
+        active = pending != null ? pending : defaultForNewWorlds();
         locked = false;
+    }
+
+    /**
+     * Client: the player chose rules for a new world that need a restart and quits the game (as GTO does with its
+     * difficulty). The choice is kept so the create-world screen opens with it after the restart.
+     */
+    public static void keepChoiceForRestart(Snapshot choice) {
+        GTIARuleEffects.writeStartupRules(choice);
+        try {
+            Files.createDirectories(KEPT_CHOICE.getParent());
+            Files.writeString(KEPT_CHOICE, GSON.toJson(choice.toJson()), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            GTIAMod.LOGGER.warn("Could not write {}", KEPT_CHOICE, e);
+        }
+    }
+
+    /** The choice kept by {@link #keepChoiceForRestart}, once, and only if this session started with its values. */
+    private static Snapshot takeChoiceKeptForRestart() {
+        Snapshot kept = read(KEPT_CHOICE);
+        try {
+            Files.deleteIfExists(KEPT_CHOICE);
+        } catch (IOException e) {
+            GTIAMod.LOGGER.warn("Could not delete {}", KEPT_CHOICE, e);
+        }
+        return kept != null && !GTIARuleEffects.needsRestart(kept) ? kept : null;
+    }
+
+    /** The rules stored in a world folder, or null for a world without them. */
+    public static Snapshot readWorld(Path world) {
+        Snapshot stored = readData(world.resolve(DATA_FILE));
+        return stored != null ? stored : read(world.resolve(FILE));
     }
 
     /**

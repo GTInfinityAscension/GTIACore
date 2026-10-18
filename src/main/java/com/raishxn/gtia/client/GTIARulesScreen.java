@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 
 import com.raishxn.gtia.mixin.client.CreateWorldScreenAccessor;
 import com.raishxn.gtia.rules.GTIARule;
+import com.raishxn.gtia.rules.GTIARuleEffects;
 import com.raishxn.gtia.rules.GTIARules;
 import com.raishxn.gtia.rules.RulePreset;
 import com.raishxn.gtia.rules.WorldRules;
@@ -120,7 +121,7 @@ public final class GTIARulesScreen extends Screen {
                 new EditBox(font, x, 62, 310, 18, Component.translatable("gtia.rules.screen.search")));
         search.setHint(Component.translatable("gtia.rules.screen.search").withStyle(ChatFormatting.DARK_GRAY));
         search.setResponder(text -> list.refill(text));
-        list = addRenderableWidget(new RuleList(minecraft, width, height, 86, height - 34, 36));
+        list = addRenderableWidget(new RuleList(minecraft, width, height, 86, height - 50, 36));
         list.refill(search.getValue());
         if (editable) {
             addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onDone.accept(snapshot()))
@@ -145,8 +146,16 @@ public final class GTIARulesScreen extends Screen {
     }
 
     private void updatePresetButtons() {
-        presetButtons.forEach((value, button) -> button.setMessage(value == preset ?
-                presetName(value).copy().withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD) : presetName(value)));
+        presetButtons.forEach((value, button) -> {
+            var label = value == preset ?
+                    presetName(value).copy().withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD) :
+                    presetName(value).copy();
+            // As GTO marks a difficulty that needs a restart.
+            if (editable && value != RulePreset.CUSTOM &&
+                    GTIARuleEffects.needsRestart(WorldRules.Snapshot.of(value)))
+                label.append(Component.literal(" ⚠").withStyle(ChatFormatting.GOLD));
+            button.setMessage(label);
+        });
     }
 
     @Override
@@ -158,6 +167,9 @@ public final class GTIARulesScreen extends Screen {
                 width / 2, 48, 0xAAAAAA);
         if (!editable) {
             graphics.drawCenteredString(font, Component.translatable("gtia.rules.screen.locked"), width / 2,
+                    height - 44, 0xFFAA00);
+        } else if (GTIARuleEffects.needsRestart(snapshot())) {
+            graphics.drawCenteredString(font, Component.translatable("gtia.rules.screen.restart_needed"), width / 2,
                     height - 44, 0xFFAA00);
         }
     }
