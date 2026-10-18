@@ -26,6 +26,7 @@ public final class GTIARulesSelfTest {
      * in zh_cn, average FPS): with {@code -Dgtia.rulesSelfTest.full=true} or "full" in the marker file.
      */
     private static final boolean FULL = Boolean.getBoolean("gtia.rulesSelfTest.full") || markerSays("full");
+    private static final boolean CHAPTERS_ONLY = markerSays("chapters");
     private static int step;
     private static int wait;
     private static ResourceLocation recipeId;
@@ -100,12 +101,30 @@ public final class GTIARulesSelfTest {
                 }
                 case 5 -> {
                     if (!(mc.screen instanceof CreateWorldScreen screen)) return;
+                    // Journey needs other restart rules: Create asks for a restart first, as GTO does.
                     ((com.raishxn.gtia.mixin.client.CreateWorldScreenAccessor) screen).gtia$onCreate();
+                    GTIAMod.LOGGER.info("GTIA rules self-test: Journey world asks for a restart before creating: {}",
+                            mc.screen instanceof GTIARestartScreen ? "PASS" : "FAIL (" + mc.screen + ")");
+                    createScreen = screen;
+                    step = 51;
+                    wait = 20;
+                }
+                case 51 -> {
+                    shot(mc, "gtia_selftest_restart_screen.png");
+                    mc.setScreen(createScreen);
+                    GTIARestartScreen.bypassOnce = true;
+                    ((com.raishxn.gtia.mixin.client.CreateWorldScreenAccessor) createScreen).gtia$onCreate();
                     step = 6;
                 }
                 case 6 -> {
                     var server = mc.getSingleplayerServer();
                     if (mc.player == null || server == null || mc.screen != null) return;
+                    if (CHAPTERS_ONLY) {
+                        // "chapters" in the marker: only the quest chapter screenshots.
+                        step = 86;
+                        wait = 100;
+                        return;
+                    }
                     // Journey turns maintenance off, a rule read at startup: the world asks for a restart.
                     var startup = java.nio.file.Path.of("config", "gtia", "startup_rules.json");
                     boolean saved = java.nio.file.Files.exists(startup) &&
@@ -306,7 +325,42 @@ public final class GTIARulesSelfTest {
                     step = FULL ? 82 : 11;
                     wait = 10;
                 }
-                case 82 -> questBook(mc, "gtia_selftest_quests_" + mc.options.languageCode + ".png", 8);
+                case 82 -> questBook(mc, "gtia_selftest_quests_" + mc.options.languageCode + ".png", 86);
+                case 86 -> {
+                    // The chapters redone in D-291, one screenshot each.
+                    if (chapterShot < CHAPTERS.length) {
+                        if (chapterShot == 0 && !questsOpened) bigFrame(mc, true);
+                        if (!questsOpened) {
+                            if (mc.screen != null) mc.screen.onClose();
+                            openChapter(CHAPTERS[chapterShot]);
+                            questsOpened = true;
+                            zoomed = false;
+                            wait = 100;
+                            return;
+                        }
+                        if (!zoomed) {
+                            fitChapter(mc);
+                            zoomed = true;
+                            wait = 20;
+                            return;
+                        }
+                        shot(mc, "gtia_selftest_chapter_" + CHAPTERS[chapterShot] + ".png");
+                        questsOpened = false;
+                        chapterShot++;
+                        wait = 10;
+                        return;
+                    }
+                    if (mc.screen != null) mc.screen.onClose();
+                    bigFrame(mc, false);
+                    if (CHAPTERS_ONLY) {
+                        MARKER.toFile().delete();
+                        java.nio.file.Path.of("config", "gtia", "startup_rules.json").toFile().delete();
+                        mc.stop();
+                        return;
+                    }
+                    step = 8;
+                    wait = 40;
+                }
                 case 8 -> {
                     if (mc.screen != null) mc.screen.onClose();
                     mc.options.languageCode = "zh_cn";
@@ -370,6 +424,7 @@ public final class GTIARulesSelfTest {
         }
     }
 
+    private static CreateWorldScreen createScreen;
     private static boolean previewOpened;
     private static int emiWaits;
     private static net.minecraft.core.BlockPos stationPos;
@@ -418,6 +473,57 @@ public final class GTIARulesSelfTest {
     }
 
     private static boolean questsOpened;
+    private static final String[] CHAPTERS = { "welcome", "start", "steam", "lv", "mv", "hv", "agriculture", "bees",
+            "energy", "wireless", "multiblocks" };
+    private static boolean zoomed;
+    private static int savedWidth, savedHeight;
+
+    /**
+     * The test window is tiled to half a 1080p screen; the chapter screenshots render into a 3840 x 2160 frame
+     * instead, at GUI scale 2, so a whole chapter is readable. {@code false} restores the window's own size.
+     */
+    private static void bigFrame(Minecraft mc, boolean big) {
+        var window = mc.getWindow();
+        var access = (com.raishxn.gtia.mixin.client.WindowAccessor) (Object) window;
+        if (big) {
+            savedWidth = window.getWidth();
+            savedHeight = window.getHeight();
+        }
+        access.gtia$setFramebufferWidth(big ? 3840 : savedWidth);
+        access.gtia$setFramebufferHeight(big ? 2160 : savedHeight);
+        mc.resizeDisplay();
+    }
+
+    /** Centres the open chapter in the quest book at its normal zoom. */
+    private static void fitChapter(Minecraft mc) {
+        try {
+            Object gui = mc.screen.getClass().getMethod("getGui").invoke(mc.screen);
+            Object panel = gui.getClass().getField("questPanel").get(gui);
+            panel.getClass().getMethod("resetScroll").invoke(panel);
+        } catch (ReflectiveOperationException e) {
+            GTIAMod.LOGGER.error("GTIA rules self-test: could not zoom the quest book", e);
+        }
+    }
+
+    private static int chapterShot;
+
+    /** Opens the FTB Quests book on the chapter saved as {@code <filename>.snbt} (FTB Quests reached by reflection). */
+    private static void openChapter(String filename) {
+        try {
+            Class<?> file = Class.forName("dev.ftb.mods.ftbquests.client.ClientQuestFile");
+            Object instance = file.getField("INSTANCE").get(null);
+            for (Object chapter : (java.util.List<?>) file.getMethod("getAllChapters").invoke(instance)) {
+                if (filename.equals(chapter.getClass().getMethod("getFilename").invoke(chapter))) {
+                    long id = (long) chapter.getClass().getMethod("getId").invoke(chapter);
+                    file.getMethod("openBookToQuestObject", long.class).invoke(null, id);
+                    return;
+                }
+            }
+            GTIAMod.LOGGER.error("GTIA rules self-test: no quest chapter {}", filename);
+        } catch (ReflectiveOperationException e) {
+            GTIAMod.LOGGER.error("GTIA rules self-test: FTB Quests not reachable", e);
+        }
+    }
 
     /** Opens the FTB Quests book, waits for it to draw, then screenshots it in the current language. */
     private static void questBook(Minecraft mc, String file, int next) {

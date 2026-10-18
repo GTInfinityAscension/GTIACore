@@ -8,6 +8,8 @@ GTIACore is the core mod of the **GregTech Infinity Ascension (GTIA)** modpack, 
 
 Started from the [GTCEu Modern addon template](https://github.com/GregTechCEu/GregTech-Addon-Template).
 
+Community: [Discord](https://discord.gg/TW5vugknk5) · questions, bug reports and playtesting.
+
 ## Target
 
 - Minecraft 1.20.1, Forge 47.4.23

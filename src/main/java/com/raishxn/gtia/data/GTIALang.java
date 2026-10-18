@@ -75,6 +75,22 @@ public final class GTIALang {
                 "Journey %s · Normal %s");
         GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.restart",
                 "[restart]");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.title",
+                "Restart needed");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.new_world",
+                "%s changes rules that GregTech reads only when the game starts:");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.new_world.after",
+                "Save and Quit stores them and closes the game. Start it again and create the world: your choice is kept, and this world and your other worlds never mix values.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.existing_world",
+                "This world (%s) uses other values for rules that GregTech reads only when the game starts:");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.existing_world.after",
+                "Save and Quit stores them and closes the game; open the world after starting it again. Playing now runs the world with this session's values for these rules.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.save_and_quit",
+                "Save and Quit");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.restart.play_anyway",
+                "Play anyway");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rules.screen.restart_needed",
+                "⚠ These rules need a game restart: Create World will save and quit first");
         GTIAMod.REGISTRATE.addRawLang("gtia.rules.warning.restart",
                 "This world (%s) uses rules that GTCEu reads when the game starts. They were saved for the next start: restart the game to apply them.");
         GTIAMod.REGISTRATE.addRawLang("gtia.rules.group.power",
@@ -278,17 +294,9 @@ public final class GTIALang {
         GTIAMod.REGISTRATE.addRawLang("gtia.seed_analyzer", "Seed Analyzer");
         GTIAMod.REGISTRATE.addRawLang("gtia.greenhouse", "Greenhouse");
         GTIAMod.REGISTRATE.addRawLang("gtia.rocket_assembly", "Rocket Assembly");
-        GTIAMod.REGISTRATE.addRawLang("gtia.machine.rocket_assembler.tooltip.purpose",
-                "Builds Ad Astra rockets from their parts, GT components and rocket fuel.");
-        GTIAMod.REGISTRATE.addRawLang("gtia.machine.rocket_assembler.tooltip.pad",
-                "A 3 x 3 launch pad sits in the middle; put the hatches on the control house in front.");
         GTIAMod.REGISTRATE.addRawLang("gtia.mutation_chamber", "Mutation Chamber");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.mutation_chamber.tooltip",
                 "Two caged parent bees (kept) turn a caged wild bee into a new species. No luck involved.");
-        GTIAMod.REGISTRATE.addRawLang("gtia.machine.greenhouse.tooltip.purpose",
-                "Grows Agronomica crops in bulk: fertiliser and water in, harvest out.");
-        GTIAMod.REGISTRATE.addRawLang("gtia.machine.greenhouse.tooltip.seed",
-                "Put one seed of the crop in the input bus; it is never consumed.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.seed_analyzer.tooltip",
                 "Reveals the Growth, Gain and Resistance of Agronomica seeds.");
         GTIAMod.REGISTRATE.addRawLang("gtia.machine.industrial_apiary.tooltip.purpose",

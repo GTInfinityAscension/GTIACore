@@ -110,6 +110,21 @@ public final class GTIATooltips {
                 new String[] {
                         "16 Polysilicon grow a Silicon Boule in the Electric Blast Furnace (circuit 3), half the silicon",
                         OVERCLOCK });
+        add("greenhouse",
+                "Under glass, a hectare of tomatoes yields several times what an open field does",
+                new String[] {
+                        "Grows Agronomica crops in bulk: 1 NPK Fertiliser and 1,000 mB of Water give 8 of its crop",
+                        "Compost works too, at 2 per run for 6" },
+                null,
+                new String[] { "One seed of the crop in an Input Bus as catalyst (never consumed)",
+                        "Soil floor: dirt, grass, farmland or moss", OVERCLOCK });
+        add("rocket_assembler",
+                "The Saturn V was stacked upright in a building 160 m tall, then rolled to the pad",
+                new String[] { "Builds Ad Astra rockets from their parts, GregTech components and Rocket Fuel",
+                        "The tier 1 rocket takes HV power for 2 minutes" },
+                null,
+                new String[] { "An Ad Astra Launch Pad (3 x 3) in the middle of the platform",
+                        "Hatches go on the casings of the base and the control house in front", OVERCLOCK });
     }
 
     private GTIATooltips() {}

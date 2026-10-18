@@ -9,7 +9,6 @@ import com.gregtechceu.gtceu.api.pattern.Predicates;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 
 import com.raishxn.gtia.GTIAMod;
@@ -22,13 +21,16 @@ import static com.gregtechceu.gtceu.api.pattern.Predicates.blocks;
  */
 public final class GTIAGreenhouse {
 
-    /** Front aisle, then three soil aisles, then the back aisle; each string is one layer from bottom to top. */
+    /**
+     * Back aisle, three soil aisles, then the front aisle with the controller (last: GTCEu builds aisles towards the
+     * front); each string is one layer from bottom to top.
+     */
     public static final String[][] AISLES = {
-            { "CCCCC", "CGSGC", "CGGGC", "CCCCC" },
+            { "CCCCC", "CGGGC", "CGGGC", "CCCCC" },
             { "CDDDC", "G###G", "G###G", "CGGGC" },
             { "CDDDC", "G###G", "G###G", "CGGGC" },
             { "CDDDC", "G###G", "G###G", "CGGGC" },
-            { "CCCCC", "CGGGC", "CGGGC", "CCCCC" } };
+            { "CCCCC", "CGSGC", "CGGGC", "CCCCC" } };
 
     public static final MultiblockMachineDefinition GREENHOUSE = GTIAMod.REGISTRATE
             .multiblock("greenhouse", WorkableElectricMultiblockMachine::new)
@@ -52,8 +54,7 @@ public final class GTIAGreenhouse {
             })
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_frost_proof"),
                     GTCEu.id("block/multiblock/multiblock_workable"))
-            .tooltips(Component.translatable("gtia.machine.greenhouse.tooltip.purpose"),
-                    Component.translatable("gtia.machine.greenhouse.tooltip.seed"))
+            .tooltips(GTIATooltips.multiblock("greenhouse"))
             .register();
 
     private GTIAGreenhouse() {}

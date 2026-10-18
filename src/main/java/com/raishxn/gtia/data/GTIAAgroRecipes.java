@@ -1,9 +1,13 @@
 package com.raishxn.gtia.data;
 
+import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
+import com.gregtechceu.gtceu.data.recipe.CustomTags;
+import com.gregtechceu.gtceu.data.recipe.GTCraftingComponents;
+import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +30,16 @@ public final class GTIAAgroRecipes {
     private GTIAAgroRecipes() {}
 
     public static void addRecipes(Consumer<FinishedRecipe> provider) {
+        // EN: MV controller: a hull between pumps (water) and sensors (the climate), glass for the roof.
+        // PT: Controlador MV: carcaça entre bombas (água) e sensores (o clima), vidro para o teto.
+        // ZH: MV 控制器：机壳两侧是泵（供水）和传感器（气候），玻璃作屋顶。
+        VanillaRecipeHelper.addShapedRecipe(provider, true, GTIAMod.id("greenhouse"),
+                GTIAGreenhouse.GREENHOUSE.asStack(), "GSG", "CHC", "PSP",
+                'G', Items.GLASS,
+                'S', GTCraftingComponents.SENSOR.get(GTValues.MV),
+                'C', CustomTags.MV_CIRCUITS,
+                'H', GTCraftingComponents.HULL.get(GTValues.MV),
+                'P', GTCraftingComponents.PUMP.get(GTValues.MV));
         if (!ModList.get().isLoaded("agronomica")) return;
         Item oilySeed = item("oily_seed"), latex = item("latex"), biomass = item("biomass_bundle");
         if (oilySeed == null || latex == null || biomass == null) return;

@@ -3,15 +3,18 @@ package com.raishxn.gtia.data;
 import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
+import com.gregtechceu.gtceu.api.data.chemical.material.stack.MaterialEntry;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
+import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -59,9 +62,25 @@ public final class GTIABeeRecipes {
         if (!ModList.get().isLoaded("productivebees")) return;
         Item cage = item("bee_cage"), comb = item("configurable_honeycomb");
         if (cage == null || comb == null) return;
+        // EN: Productive Bees' own recipes are dropped (GTIA-D-268), so the empty cage and the Honey Treat get GT ones;
+        // without them no bee can be caught and the Mutation Chamber has no treats.
+        // PT: As receitas do Productive Bees são descartadas (GTIA-D-268), então a gaiola vazia e o Honey Treat ganham
+        // receitas do GT; sem elas nenhuma abelha é capturada e a Câmara de mutação fica sem petisco.
+        // ZH: Productive Bees 自带配方已被移除（GTIA-D-268），因此空蜂笼和蜂蜜零食改用 GT 配方；否则无法捕捉蜜蜂，突变室也没有零食。
+        VanillaRecipeHelper.addShapedRecipe(provider, true, GTIAMod.id("bee_cage"), new ItemStack(cage, 2), "RBR",
+                "B B", "RBR",
+                'R', new MaterialEntry(TagPrefix.rod, GTMaterials.Steel),
+                'B', Items.IRON_BARS);
+        Item treat = item("honey_treat");
+        if (treat != null) {
+            GTRecipeTypes.MIXER_RECIPES.recipeBuilder(GTIAMod.id("bees/honey_treat"))
+                    .inputItems(new ItemStack(Items.HONEY_BOTTLE)).inputItems(new ItemStack(Items.WHEAT, 2))
+                    .inputItems(new ItemStack(Items.SUGAR))
+                    .outputItems(new ItemStack(treat, 4)).outputItems(new ItemStack(Items.GLASS_BOTTLE))
+                    .duration(100).EUt(GTValues.VA[GTValues.LV]).save(provider);
+        }
         var wildBee = new CompoundTag();
         wildBee.putString("entity", "minecraft:bee");
-        Item treat = item("honey_treat");
         for (Species s : SPECIES) {
             String type = "productivebees:" + s.id();
             var cagedTag = new CompoundTag();
