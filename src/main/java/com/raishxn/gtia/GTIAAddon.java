@@ -42,11 +42,13 @@ public final class GTIAAddon implements IGTAddon {
         com.raishxn.gtia.data.GTIANexusRecipes.addRecipes(provider);
         com.raishxn.gtia.organ.OrganRecipes.addRecipes(provider);
         com.raishxn.gtia.chem.ChemRecipes.addRecipes(provider);
+        com.raishxn.gtia.route.RouteRecipes.addRecipes(provider);
     }
 
     @Override
     public void removeRecipes(Consumer<ResourceLocation> consumer) {
         com.raishxn.gtia.chem.ChemRouteRemovals.removeRecipes(consumer);
+        com.raishxn.gtia.route.RouteRemovals.removeRecipes(consumer);
     }
 
     @Override

@@ -414,5 +414,8 @@
   "gtia.rules.restart.play_anyway": "仍然进入",
   "gtia.rules.screen.restart_needed": "⚠ 这些规则需要重启游戏：创建世界会先保存并退出",
   "gtia.machine.diaphragm_cell.tooltip.requirements.3": "与格雷科技机器一样可超频，并支持批处理模式",
-  "gtia.machine.diaphragm_cell.cells": "电解槽：%s（每个一个并行）"
+  "gtia.machine.diaphragm_cell.cells": "电解槽：%s（每个一个并行）",
+  "material.gtia.pig_iron": "生铁",
+  "material.gtia.slag": "炉渣",
+  "material.gtia.crude_aluminium": "粗铝"
 }

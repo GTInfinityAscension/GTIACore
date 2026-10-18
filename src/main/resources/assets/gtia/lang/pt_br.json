@@ -414,5 +414,8 @@
   "gtia.rules.restart.play_anyway": "Jogar assim mesmo",
   "gtia.rules.screen.restart_needed": "⚠ Estas regras pedem reinício: Criar Mundo vai salvar e sair antes",
   "gtia.machine.diaphragm_cell.tooltip.requirements.3": "Faz overclock como uma máquina GregTech e aceita o modo em lote",
-  "gtia.machine.diaphragm_cell.cells": "Células: %s (um paralelo cada)"
+  "gtia.machine.diaphragm_cell.cells": "Células: %s (um paralelo cada)",
+  "material.gtia.pig_iron": "Gusa",
+  "material.gtia.slag": "Escória",
+  "material.gtia.crude_aluminium": "Alumínio Bruto"
 }

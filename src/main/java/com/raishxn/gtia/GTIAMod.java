@@ -113,6 +113,7 @@ public final class GTIAMod {
     private void registerMaterials(MaterialEvent event) {
         GTIAAlloys.register();
         com.raishxn.gtia.chem.ChemMaterials.register();
+        com.raishxn.gtia.route.RouteMaterials.register();
     }
 
     private void registerRecipeTypes(GTCEuAPI.RegisterEvent<ResourceLocation, GTRecipeType> event) {
