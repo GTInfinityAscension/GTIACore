@@ -323,5 +323,7 @@ public final class GTIALang {
                 "Still");
         GTIAMod.REGISTRATE.addRawLang("gtia.diaphragm_cell",
                 "Diaphragm Cell");
+        GTIAMod.REGISTRATE.addRawLang("gtia.machine.diaphragm_cell.cells",
+                "Cells: %s (one parallel each)");
     }
 }

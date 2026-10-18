@@ -25,7 +25,7 @@ public final class ChemPlantGameTests {
     private ChemPlantGameTests() {}
 
     /** Builds the first preview at (1,1,1); with {@code missing} set, leaves out the first block of that kind. */
-    private static IMultiController build(GameTestHelper h, MultiblockMachineDefinition plant, Block missing) {
+    static IMultiController build(GameTestHelper h, MultiblockMachineDefinition plant, Block missing) {
         var shape = plant.getMatchingShapes().get(0).getBlocks();
         IMultiController controller = null;
         boolean removed = false;

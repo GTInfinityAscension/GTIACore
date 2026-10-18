@@ -19,7 +19,6 @@ public final class GTIATooltips {
 
     private static final String[] SECTIONS = { "main", "auxiliary", "requirements" };
     private static final String OVERCLOCK = "Overclocks like a GregTech machine and supports Batch Mode";
-    private static final String COKE_OVEN_HATCH = "Accepts up to 5 Coke Oven Hatches for automation";
 
     /** id -> section -> lines (English). "fact" is the optional real-world line on top. */
     private static final Map<String, Map<String, String[]>> TEXT = new LinkedHashMap<>();
@@ -30,21 +29,24 @@ public final class GTIATooltips {
                 new String[] { "Cooks 4 logs into 3 Charcoal and 1,000 mB of Charcoal Byproducts",
                         "Burns its own wood gas: no fuel, no power" },
                 null,
-                new String[] { COKE_OVEN_HATCH, "Three Retorts keep one Still busy on circuit 1" });
+                new String[] { "Up to 3 Coke Oven Hatches: two at the firebox front, one on the decanter",
+                        "Three Retorts keep one Still busy on circuit 1" });
         add("lime_kiln",
                 "Lime kilns are older than writing",
                 new String[] { "Burns 4 Calcite into 4 Quicklime",
                         "Also calcines Aluminium Hydroxide into Alumina and Sodium Bicarbonate into Soda Ash" },
                 null,
-                new String[] { "One Charcoal, Coal or Coke per batch, in the second slot", COKE_OVEN_HATCH });
+                new String[] { "One Charcoal, Coal or Coke per batch, in the second slot",
+                        "Up to 2 Coke Oven Hatches: one at the hood, one at the front foot" });
         add("diaphragm_cell",
                 "Chlorine and caustic soda always come out together, in the same ratio",
                 new String[] {
                         "Splits 4,000 mB of Salt Water into 2,000 mB Chlorine, 2,000 mB Hydrogen and 4,000 mB Cell Liquor",
                         "A Centrifuge turns the Cell Liquor into Sodium Hydroxide and returns half the salt" },
                 null,
-                new String[] { "An Asbestos Diaphragm in an Input Bus: 1% chance to wear out per run",
-                        "One Centrifuge keeps up with one Cell", OVERCLOCK });
+                new String[] { "3 to 9 cells in a row: each cell is one parallel, still limited by the Energy Hatches",
+                        "An Asbestos Diaphragm in an Input Bus: 1% chance to wear out per run",
+                        "One Centrifuge keeps up with each cell", OVERCLOCK });
         add("bayer_digester",
                 "Almost all of the world's alumina still comes from this 1888 process",
                 new String[] { "Circuit 1: Bauxite and Sodium Hydroxide in steam become Sodium Aluminate and Red Mud",

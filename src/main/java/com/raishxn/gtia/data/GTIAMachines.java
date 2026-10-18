@@ -24,6 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 
 import com.raishxn.gtia.GTIAMod;
+import com.raishxn.gtia.machine.DiaphragmCellMachine;
 import com.raishxn.gtia.machine.LimeKilnMachine;
 
 import java.util.Locale;
@@ -53,48 +54,116 @@ public final class GTIAMachines {
     public static final MachineDefinition[] FERMENTATION_VAT = registerFermentationVats();
 
     // ------------------------------------------------------------------ chemistry slice 01 (GTIA-D-228/229)
-    // Structures are provisional: the author designs the final shapes (GTIA-D-233).
+    // Structures approved in GTIA-D-302 (design/propostas/PROPOSTA_ESTRUTURAS_QUIMICA01_v01.html).
 
-    /** Destructive distillation of wood. A Coke Oven underneath, so the Coke Oven Hatch automates it. */
+    /**
+     * EN: Destructive distillation of wood (GTIA-D-302, option B). A wrought-iron retort on a firebrick bench over a
+     * bronze firebox; the gas duct rises over the bench into a water-jacketed condenser and a tar/vinegar decanter.
+     * A Coke Oven underneath, so Coke Oven Hatches (front of the firebox, decanter) automate it.
+     * PT: Destilação seca da madeira (GTIA-D-302, opção B): retorta de ferro no banco de firebrick sobre a fornalha,
+     * duto de gás, condensador com camisa d'água e decantador. Por baixo é uma Coke Oven, então aceita o Coke Oven
+     * Hatch na frente da fornalha e no decantador.
+     * ZH: 木材干馏 (GTIA-D-302, 方案 B)。炉膛上的耐火砖炉台里放着锻铁干馏罐, 煤气管通向水冷冷凝器和焦油/醋分离罐。
+     * 底层是焦炉, 可在炉膛前方和分离罐使用焦炉仓。
+     */
     public static final MultiblockMachineDefinition WOOD_RETORT = GTIAMod.REGISTRATE
             .multiblock("wood_retort", CokeOvenMachine::new)
             .langValue("Wood Retort")
-            .rotationState(RotationState.ALL)
+            .rotationState(RotationState.NON_Y_AXIS)
             .recipeType(GTIARecipeTypes.WOOD_RETORT)
             .appearanceBlock(GTBlocks.CASING_PRIMITIVE_BRICKS)
-            .pattern(definition -> FactoryBlockPattern.start()
-                    .aisle("XXX", "XXX", "XXX")
-                    .aisle("XXX", "X#X", "XPX")
-                    .aisle("XXX", "X#X", "XXX")
-                    .aisle("XXX", "XYX", "XXX")
-                    .where('X', blocks(GTBlocks.CASING_PRIMITIVE_BRICKS.get())
-                            .or(blocks(GTMachines.COKE_OVEN_HATCH.get()).setMaxGlobalLimited(5)))
-                    .where('P', blocks(GTBlocks.CASING_BRONZE_PIPE.get()))
-                    .where('#', Predicates.air())
-                    .where('Y', Predicates.controller(blocks(definition.getBlock())))
-                    .build())
+            .pattern(definition -> {
+                var hatch = blocks(GTMachines.COKE_OVEN_HATCH.get()).setMaxGlobalLimited(3);
+                return FactoryBlockPattern.start()
+                        .aisle(" SSSSSSS SSS", " KFKKKFK QTQ", " KFKKKFK QGQ", " KFKKKFK QGQ", " KFKKKFK QGQ",
+                                " KFFFFFK QGQ", " KKKKKKK QGQ", " KK P    QTQ", " KK PPPPPPP ", " KK         ",
+                                " KK         ", " II         ")
+                        .aisle(" SSSSSSS SSS", "QKFXXXFKQTPT", "QKFRRRFKQGPG", "QKFR#RFKQGPG", "QKFRRRFKQGPG",
+                                "QKFFFFFKQGPG", "QKKKKKKKQGPG", "QKK     QTPT", " KK       P ", " KK         ",
+                                " KK         ", " II         ")
+                        .aisle(" SSSSSSS SSS", " KFXXXFK QTQ", " KFRRRFK QGQ", " KFR#RFK QGQ", " KFRRRFK QGQ",
+                                " KFFFFFK QGQ", " KKKKKKK QGQ", "Q       QQTQ", "            ", "            ",
+                                "            ", "            ")
+                        .aisle(" SSSSSSS    ", " KFXXXFK  P ", " KFRRRFK    ", " KFR#RFK    ", " KFRRRFK    ",
+                                " KFFFFFK    ", " KKKKKKK    ", "Q       Q   ", "            ", "            ",
+                                "            ", "            ")
+                        .aisle(" SSSSSSS TTT", " KFXXXFK TTT", " KFRRRFK TTT", " KFR#RFK    ", " KFRRRFK    ",
+                                " KFFFFFK    ", " KKKKKKK    ", "Q       Q   ", "            ", "            ",
+                                "            ", "            ")
+                        .aisle(" SSSSSSS TTT", " KFXXXFK TTJ", " KFRRRFK TTT", " KFR#RFKPPP ", " KFRRRFK    ",
+                                " KFFFFFK    ", " KKKKKKK    ", "Q       Q   ", "            ", "            ",
+                                "            ", "            ")
+                        .aisle(" SSSSSSS TTT", "QKFXXXFKQTTT", "QKFRRRFKQTTT", "QKFR#RFKQ   ", "QKFRRRFKQ   ",
+                                "QKFFFFFKQ   ", "QKKKKKKKQ   ", "Q       Q   ", "            ", "            ",
+                                "            ", "            ")
+                        .aisle(" SSSSSSS    ", " KFHIHFK    ", " KFRRRFK    ", " KFRCRFK    ", " KFRRRFK    ",
+                                " KFFFFFK    ", " KKKKKKK    ", "            ", "            ", "            ",
+                                "            ", "            ")
+                        .where('C', Predicates.controller(blocks(definition.getBlock())))
+                        .where('S', blocks(Blocks.STONE_BRICKS))
+                        .where('K', blocks(Blocks.BRICKS))
+                        .where('F', blocks(GTBlocks.CASING_PRIMITIVE_BRICKS.get()))
+                        .where('X', blocks(GTBlocks.FIREBOX_BRONZE.get()))
+                        .where('R', blocks(GTBlocks.STEEL_BRICKS_HULL.get()))
+                        .where('P', blocks(GTBlocks.CASING_BRONZE_PIPE.get()))
+                        .where('T', blocks(GTBlocks.CASING_BRONZE_BRICKS.get()))
+                        .where('Q', Predicates.frames(GTMaterials.Bronze))
+                        .where('G', blocks(Blocks.GLASS))
+                        .where('I', blocks(Blocks.IRON_BARS))
+                        .where('H', blocks(GTBlocks.FIREBOX_BRONZE.get()).or(hatch))
+                        .where('J', blocks(GTBlocks.CASING_BRONZE_BRICKS.get()).or(hatch))
+                        .where('#', Predicates.air())
+                        .build();
+            })
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_primitive_bricks"),
                     GTIAMod.id("block/multiblock/wood_retort"))
             .tooltips(GTIATooltips.multiblock("wood_retort"))
             .register();
 
-    /** A shaft kiln burning calcite into quicklime. Also a Coke Oven underneath, for the hatch. */
+    /**
+     * EN: A shaft kiln (GTIA-D-302, option B): wrought-iron shaft with bronze bands and a firebrick lining, fire mouths
+     * at the burning zone, a discharge grate at the foot, a bronze hoist tower that lifts the charge to the CO2 hood.
+     * Also a Coke Oven underneath: Coke Oven Hatches at the hood (charge) and the front foot (discharge).
+     * PT: Forno de cuba (GTIA-D-302, opção B): cuba de ferro forjado com cintas de bronze e revestimento de firebrick,
+     * bocas de fogo, grelha de descarga, torre de guincho até a coifa de CO2. Coke Oven Hatch na coifa e no pé.
+     * ZH: 竖窑 (GTIA-D-302, 方案 B): 青铜箍的锻铁窑身, 耐火砖内衬, 燃烧带的火口, 底部卸料格栅, 青铜提升塔把料送到
+     * CO2 烟罩。焦炉仓位于烟罩 (进料) 和前方底部 (出料)。
+     */
     public static final MultiblockMachineDefinition LIME_KILN = GTIAMod.REGISTRATE
             .multiblock("lime_kiln", LimeKilnMachine::new)
             .langValue("Lime Kiln")
-            .rotationState(RotationState.ALL)
+            .rotationState(RotationState.NON_Y_AXIS)
             .recipeType(GTIARecipeTypes.LIME_KILN)
             .appearanceBlock(GTBlocks.CASING_PRIMITIVE_BRICKS)
-            .pattern(definition -> FactoryBlockPattern.start()
-                    .aisle("XXX", "XXX", "XXX", "XXX", "XXX")
-                    .aisle("XXX", "X#X", "X#X", "X#X", "XBX")
-                    .aisle("XXX", "XYX", "XXX", "XXX", "XXX")
-                    .where('X', blocks(GTBlocks.CASING_PRIMITIVE_BRICKS.get())
-                            .or(blocks(GTMachines.COKE_OVEN_HATCH.get()).setMaxGlobalLimited(5)))
-                    .where('B', blocks(Blocks.IRON_BARS))
-                    .where('#', Predicates.air())
-                    .where('Y', Predicates.controller(blocks(definition.getBlock())))
-                    .build())
+            .pattern(definition -> {
+                var hatch = blocks(GTMachines.COKE_OVEN_HATCH.get()).setMaxGlobalLimited(2);
+                return FactoryBlockPattern.start()
+                        .aisle("SSSSS  ", "RRRRR  ", "RRRRR  ", "NNNNN  ", "RRRRR  ", "RRXRR  ", "RRRRR  ",
+                                "NNNNN  ", "RRRRR  ", "RRRRR  ", "       ", "       ", "       ", "       ")
+                        .aisle("SSSSS  ", "RFFFR  ", "RFFFR  ", "NFFFN  ", "RFFFR  ", "RFFFR  ", "RFFFR  ",
+                                "NFFFN  ", "RFFFR  ", "RFFFR  ", " TTT   ", "       ", "       ", "       ")
+                        .aisle("SSSSSSS", "RFIFRQQ", "RF#FRQQ", "NF#FNQQ", "RF#FRQQ", "XF#FXQQ", "RF#FRQQ",
+                                "NF#FNQQ", "RF#FRQQ", "RF#FRQQ", " TPJQQQ", "  P QQQ", "  P  WW", "  I    ")
+                        .aisle("SSSSS  ", "RFFFR  ", "RFFFR  ", "NFFFN  ", "RFFFR  ", "RFFFR  ", "RFFFR  ",
+                                "NFFFN  ", "RFFFR  ", "RFFFR  ", " TTT   ", "       ", "       ", "       ")
+                        .aisle("SSSSS  ", "RRHRR  ", "RRRRR  ", "NNNNN  ", "RRXRR  ", "RRCRR  ", "RRRRR  ",
+                                "NNNNN  ", "RRRRR  ", "RRRRR  ", "       ", "       ", "       ", "       ")
+                        .where('C', Predicates.controller(blocks(definition.getBlock())))
+                        .where('S', blocks(Blocks.STONE_BRICKS))
+                        .where('R', blocks(GTBlocks.STEEL_BRICKS_HULL.get()))
+                        .where('N', blocks(GTBlocks.BRONZE_BRICKS_HULL.get()))
+                        .where('F', blocks(GTBlocks.CASING_PRIMITIVE_BRICKS.get()))
+                        .where('X', blocks(GTBlocks.FIREBOX_BRONZE.get()))
+                        .where('T', blocks(GTBlocks.CASING_BRONZE_BRICKS.get()))
+                        .where('P', blocks(GTBlocks.CASING_BRONZE_PIPE.get()))
+                        .where('Q', Predicates.frames(GTMaterials.Bronze))
+                        .where('W', blocks(GTBlocks.CASING_BRONZE_GEARBOX.get()))
+                        .where('I', blocks(Blocks.IRON_BARS))
+                        .where('H', blocks(GTBlocks.STEEL_BRICKS_HULL.get()).or(hatch))
+                        .where('J', blocks(GTBlocks.CASING_BRONZE_BRICKS.get()).or(hatch))
+                        .where('#', Predicates.air())
+                        .build();
+            })
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_primitive_bricks"),
                     GTIAMod.id("block/multiblock/lime_kiln"))
             .tooltips(GTIATooltips.multiblock("lime_kiln"))
@@ -117,31 +186,17 @@ public final class GTIAMachines {
                     GTMachineUtils.defaultTankSizeFunction.applyAsInt(GTValues.LV), true))
             .register();
 
-    /** LV chlor-alkali cell. The diaphragm wears out as a chanced input. */
+    /** LV chlor-alkali cell row, 3 to 9 cells (GTIA-D-302, option C). The diaphragm wears out as a chanced input. */
     public static final MultiblockMachineDefinition DIAPHRAGM_CELL = GTIAMod.REGISTRATE
-            .multiblock("diaphragm_cell", WorkableElectricMultiblockMachine::new)
+            .multiblock("diaphragm_cell", DiaphragmCellMachine::new)
             .langValue("Diaphragm Cell")
             .rotationState(RotationState.NON_Y_AXIS)
             .recipeType(GTIARecipeTypes.DIAPHRAGM_CELL)
-            .recipeModifiers(GTRecipeModifiers.OC_NON_PERFECT_SUBTICK, GTRecipeModifiers.BATCH_MODE)
+            .recipeModifiers(DiaphragmCellMachine::cellParallel, GTRecipeModifiers.OC_NON_PERFECT_SUBTICK,
+                    GTRecipeModifiers.BATCH_MODE)
             .appearanceBlock(GTBlocks.CASING_STEEL_SOLID)
-            .pattern(definition -> {
-                var casing = blocks(GTBlocks.CASING_STEEL_SOLID.get()).setMinGlobalLimited(12);
-                var abilities = Predicates.autoAbilities(definition.getRecipeTypes())
-                        .or(Predicates.autoAbilities(true, false, false));
-                var glass = blocks(GTBlocks.CASING_TEMPERED_GLASS.get())
-                        .or(blocks(Blocks.GLASS));
-                var bars = blocks(Blocks.IRON_BARS);
-                return FactoryBlockPattern.start()
-                        .aisle("XXX", "XGX", "XXX")
-                        .aisle("XXX", "GBG", "XXX")
-                        .aisle("XXX", "XSX", "XXX")
-                        .where('S', Predicates.controller(blocks(definition.getBlock())))
-                        .where('X', casing.or(abilities))
-                        .where('G', glass)
-                        .where('B', bars)
-                        .build();
-            })
+            .pattern(definition -> DiaphragmCellMachine.pattern(definition, DiaphragmCellMachine.MIN_CELLS))
+            .shapeInfos(DiaphragmCellMachine::shapes)
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_solid_steel"),
                     GTIAMod.id("block/multiblock/diaphragm_cell"))
             .tooltips(GTIATooltips.multiblock("diaphragm_cell"))
