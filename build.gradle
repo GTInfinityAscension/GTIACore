@@ -114,6 +114,7 @@ legacyForge {
             type = "gameTestServer"
             sourceSet = sourceSets.main
             systemProperty('forge.enabledGameTestNamespaces', project.mod_id)
+            if (project.hasProperty('gtia.shapeDump')) systemProperty('gtia.shapeDump', project.property('gtia.shapeDump'))
         }
         data {
             data()
