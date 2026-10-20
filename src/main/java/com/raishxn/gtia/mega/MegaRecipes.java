@@ -35,5 +35,15 @@ public final class MegaRecipes {
                 .outputItems(GTIAMegastructures.MATRIOSHKA_BRAIN.asStack())
                 .EUt(GTValues.VA[GTValues.UEV]).duration(6000)
                 .save(provider);
+        if (GTIAMegastructures.STELLAR_ENGINE_DEF == null) return;
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("stellar_engine"))
+                .inputItems(com.gregtechceu.gtceu.common.data.machines.GTMultiMachines.FUSION_REACTOR[GTValues.UV]
+                        .asStack(4))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UEV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(9216))
+                .outputItems(GTIAMegastructures.STELLAR_ENGINE_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UEV]).duration(6000)
+                .save(provider);
     }
 }

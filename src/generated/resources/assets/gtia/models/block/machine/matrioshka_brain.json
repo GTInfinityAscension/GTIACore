@@ -2,7 +2,7 @@
   "parent": "minecraft:block/block",
   "dynamic_renders": [
     {
-      "type": "gtia:matrioshka/render"
+      "type": "gtia:mega/render"
     }
   ],
   "loader": "gtceu:machine",

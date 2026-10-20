@@ -1,4 +1,4 @@
-package com.raishxn.gtia.mega.matrioshka.client;
+package com.raishxn.gtia.mega.common.client;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,10 +16,10 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
- * The Matrioshka's motion, written by gen_rings_pattern.py: for each turning ring a rotation about the star in grid
- * axes (and a shift, zero for the rings), plus the render-only meshes (star, corona and force fields) in grid cells.
+ * A megastructure's motion, written by its generator: for each moving piece a rotation about the model origin in
+ * grid axes and a shift, plus the render-only meshes (stars, coronas, force fields, jets) in grid cells.
  */
-public final class MatrioshkaMotion {
+public final class MegaMotion {
 
     /** Samples at a fixed rate over one period: quaternion x y z w, then shift x y z in blocks. */
     public record Track(double period, float[][] samples) {
@@ -36,36 +36,48 @@ public final class MatrioshkaMotion {
         }
     }
 
-    /** Triangles in grid cells, moved by {@link #track}, shown from phase {@link #phase}, in colour {@link #rgba}. */
-    public record Mesh(String track, int phase, float[] rgba, float[] triangles) {}
+    /**
+     * Triangles in grid cells, moved by {@link #track}, shown from phase {@link #phase} (only while running when
+     * {@link #ACTIVE} is set in {@link #flags}), in colour {@link #rgba}; the first opaque, the rest additive.
+     */
+    public record Mesh(String track, int phase, int flags, float[] rgba, float[] triangles) {
+
+        public static final int ACTIVE = 1, OPAQUE = 2;
+
+        public boolean active() {
+            return (flags & ACTIVE) != 0;
+        }
+
+        public boolean opaque() {
+            return (flags & OPAQUE) != 0;
+        }
+    }
 
     public final Map<String, Track> tracks = new HashMap<>();
     public final Map<String, Mesh> meshes = new LinkedHashMap<>();
 
-    private static boolean loaded;
-    @Nullable
-    private static MatrioshkaMotion motion;
+    private static final Map<String, java.util.Optional<MegaMotion>> MOTIONS = new HashMap<>();
 
     @Nullable
-    public static MatrioshkaMotion get() {
-        if (!loaded) {
-            loaded = true;
+    public static MegaMotion get(String name) {
+        return MOTIONS.computeIfAbsent(name, n -> {
             try {
-                motion = load();
+                return java.util.Optional.ofNullable(load(n));
             } catch (IOException | RuntimeException e) {
-                com.raishxn.gtia.GTIAMod.LOGGER.error("Matrioshka animation data unreadable", e);
+                com.raishxn.gtia.GTIAMod.LOGGER.error("Animation data of {} unreadable", n, e);
+                return java.util.Optional.empty();
             }
-        }
-        return motion;
+        }).orElse(null);
     }
 
     @Nullable
-    private static MatrioshkaMotion load() throws IOException {
-        var loader = MatrioshkaMotion.class.getClassLoader();
-        try (var tracksIn = loader.getResourceAsStream("gtia_matrioshka/tracks.json");
-                var meshIn = loader.getResourceAsStream("gtia_matrioshka/render.bin.gz")) {
+    private static MegaMotion load(String name) throws IOException {
+        var loader = MegaMotion.class.getClassLoader();
+        String dir = com.raishxn.gtia.mega.common.MegaShape.dir(name);
+        try (var tracksIn = loader.getResourceAsStream(dir + "tracks.json");
+                var meshIn = loader.getResourceAsStream(dir + "render.bin.gz")) {
             if (tracksIn == null || meshIn == null) return null;
-            var out = new MatrioshkaMotion();
+            var out = new MegaMotion();
             JsonObject root = JsonParser.parseReader(new InputStreamReader(tracksIn, StandardCharsets.UTF_8))
                     .getAsJsonObject();
             for (var e : root.getAsJsonObject("tracks").entrySet()) {
@@ -82,14 +94,15 @@ public final class MatrioshkaMotion {
             try (var in = new DataInputStream(new GZIPInputStream(meshIn))) {
                 int count = in.readInt();
                 for (int m = 0; m < count; m++) {
-                    byte[] name = new byte[in.readInt()];
-                    in.readFully(name);
+                    byte[] meshName = new byte[in.readInt()];
+                    in.readFully(meshName);
                     int phase = in.readInt();
+                    int flags = in.readInt();
                     float[] rgba = { in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat() };
                     float[] tri = new float[in.readInt() * 9];
                     for (int k = 0; k < tri.length; k++) tri[k] = in.readFloat();
-                    String track = new String(name, StandardCharsets.UTF_8);
-                    out.meshes.put(track, new Mesh(track, phase, rgba, tri));
+                    String track = new String(meshName, StandardCharsets.UTF_8);
+                    out.meshes.put(track, new Mesh(track, phase, flags, rgba, tri));
                 }
             }
             return out;

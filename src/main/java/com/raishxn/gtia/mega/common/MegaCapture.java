@@ -1,4 +1,4 @@
-package com.raishxn.gtia.mega.matrioshka;
+package com.raishxn.gtia.mega.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,47 +17,47 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The Matrioshka's moving rings: taken out of the world while it runs and drawn turning by the renderer, put back
+ * A megastructure's moving parts: taken out of the world while it runs and drawn moving by the renderer, put back
  * when it stops (as GTNA does with the collider's rings).
  */
-public final class MatrioshkaCapture {
+public final class MegaCapture {
 
-    private record Key(BlockPos controller, Direction front) {}
+    private record Key(String name, BlockPos controller, Direction front) {}
 
-    private static final Map<Key, Map<MatrioshkaShape.Part, long[]>> POSITIONS = new ConcurrentHashMap<>();
+    private static final Map<Key, Map<MegaShape.Part, long[]>> POSITIONS = new ConcurrentHashMap<>();
 
-    private MatrioshkaCapture() {}
+    private MegaCapture() {}
 
     /** World positions of every moving part for a controller placement. */
-    public static Map<MatrioshkaShape.Part, long[]> positions(BlockPos controller, Direction front) {
-        return POSITIONS.computeIfAbsent(new Key(controller.immutable(), front), k -> {
+    public static Map<MegaShape.Part, long[]> positions(String name, BlockPos controller, Direction front) {
+        return POSITIONS.computeIfAbsent(new Key(name, controller.immutable(), front), k -> {
             if (POSITIONS.size() > 16) POSITIONS.clear();
-            var shape = MatrioshkaShape.get();
-            Map<MatrioshkaShape.Part, LongArrayList> found = new java.util.LinkedHashMap<>();
+            var shape = MegaShape.get(name);
+            Map<MegaShape.Part, LongArrayList> found = new java.util.LinkedHashMap<>();
             if (shape != null) for (int i = 0; i < shape.nz; i++)
                 for (int j = 0; j < shape.ny; j++)
                     for (int x = 0; x < shape.nx; x++) {
-                        var part = MatrioshkaShape.Part.of(shape.letter(x, j, i));
+                        var part = shape.part(shape.letter(x, j, i));
                         if (part == null || !part.moving()) continue;
                         found.computeIfAbsent(part, p -> new LongArrayList())
                                 .add(shape.world(k.controller(), front, x, j, i).asLong());
                     }
-            Map<MatrioshkaShape.Part, long[]> out = new java.util.LinkedHashMap<>();
+            Map<MegaShape.Part, long[]> out = new java.util.LinkedHashMap<>();
             found.forEach((p, list) -> out.put(p, list.toLongArray()));
             return out;
         });
     }
 
-    public static Block block(MatrioshkaShape.Part part) {
+    public static Block block(MegaShape.Part part) {
         var block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(part.block()));
         return block == null ? Blocks.AIR : block;
     }
 
-    static void capture(MatrioshkaBrainMachine m, int phases) {
+    static void capture(MegaMachine m, int phases) {
         var level = m.getLevel();
         var air = Blocks.AIR.defaultBlockState();
         // Each removed block would otherwise trigger a structure check.
-        NexusBuildCheckGuard.quiet(m.getMultiblockState(), () -> positions(m.getPos(), m.getFrontFacing())
+        NexusBuildCheckGuard.quiet(m.getMultiblockState(), () -> positions(m.shapeName(), m.getPos(), m.getFrontFacing())
                 .forEach((part, list) -> {
                     if (part.phase() > phases) return;
                     for (long p : list) set(level, BlockPos.of(p), air);
@@ -65,9 +65,9 @@ public final class MatrioshkaCapture {
     }
 
     /** Puts back, where there is air, the rings of the phases that were captured. */
-    static void release(MatrioshkaBrainMachine m, int phases) {
+    static void release(MegaMachine m, int phases) {
         var level = m.getLevel();
-        NexusBuildCheckGuard.quiet(m.getMultiblockState(), () -> positions(m.getPos(), m.getFrontFacing())
+        NexusBuildCheckGuard.quiet(m.getMultiblockState(), () -> positions(m.shapeName(), m.getPos(), m.getFrontFacing())
                 .forEach((part, list) -> {
                     if (part.phase() > phases) return;
                     var state = block(part).defaultBlockState();

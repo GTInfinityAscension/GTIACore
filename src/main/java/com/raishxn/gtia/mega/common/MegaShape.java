@@ -1,4 +1,4 @@
-package com.raishxn.gtia.mega.matrioshka;
+package com.raishxn.gtia.mega.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,42 +11,34 @@ import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
 /**
- * The Matrioshka Brain's block layout, read from {@code gtia_matrioshka/pattern.bin.gz}.
- *
- * <p>
- * Rings tilted about one hinge axis around the star, after the old Gigastructures Matrioshka; the geometry is our
- * own (design/estudos/matrioshka/gen_rings_pattern.py). The file stays out of git until the author of Gigastructures
- * is asked; without it the machine is not registered.
+ * A megastructure's block layout, read from {@code gtia_mega/<name>/pattern.bin.gz} and {@code parts.json}, both
+ * written by the generators in design/estudos (gen_rings_pattern.py, gen_engine_pattern.py). Without the files the
+ * megastructure is not registered.
  *
  * <p>
  * Pattern axes follow {@code FactoryBlockPattern.start()}: char {@code k} goes left, string {@code j} up, aisle
  * {@code i} to the front. Grid x = k, y = j, z = i; the controller faces +z.
  */
-public final class MatrioshkaShape {
+public final class MegaShape {
 
-    public static final String RESOURCE = "gtia_matrioshka/pattern.bin.gz", PARTS = "gtia_matrioshka/parts.json";
+    /** Phases of every megastructure. */
+    public static final int PHASES = 5;
 
     /**
-     * One letter of the pattern, from {@code gtia_matrioshka/parts.json}: which ring (or the station) it belongs to,
-     * the phase, the block and, for turning rings, the track that moves it. Each ring has several letters (body,
-     * rims, ribs, light strips) with different blocks. Phase 1 holds the controller: the fixed polar ring with a
-     * station at each end of the hinge axis, and the two inner rings.
+     * One letter of the pattern: which piece it belongs to, the phase, the block and, for moving pieces, the track
+     * that moves it. A piece has several letters (body, rims, ribs, lights) with different blocks. Phase 1 holds the
+     * controller; {@link #STATION} is its station and {@link #HATCH} the casings that accept hatches.
      */
     public record Part(char letter, String ring, int phase, String block, @Nullable String track, String kind) {
 
         public static final char STATION = 'S', HATCH = 'K';
 
-        /** The part of a letter, or null for air, the controller and unknown letters. */
-        @Nullable
-        public static Part of(char letter) {
-            var shape = get();
-            return shape == null ? null : shape.parts.get(letter);
-        }
-
         public boolean moving() {
             return track != null;
         }
     }
+
+    public final String name;
 
     /** Parts by letter, in file order. */
     public final java.util.Map<Character, Part> parts = new java.util.LinkedHashMap<>();
@@ -57,16 +49,17 @@ public final class MatrioshkaShape {
     /** Model origin in grid cells: the moving parts turn about it. */
     public final float pivotX, pivotY, pivotZ;
     /** Mean distance of each phase's blocks from the origin, in blocks (index 0 = phase 1). */
-    public final float[] radius = new float[MatrioshkaShells.PHASES];
+    public final float[] radius = new float[PHASES];
     /** Letters by [aisle i][string j][char k]. */
     private final byte[] cells;
 
-    private MatrioshkaShape(InputStream raw) throws IOException {
+    private MegaShape(String name, InputStream raw) throws IOException {
+        this.name = name;
         try (var in = new DataInputStream(new GZIPInputStream(raw))) {
             byte[] magic = new byte[4];
             in.readFully(magic);
             if (!"GTMB".equals(new String(magic, java.nio.charset.StandardCharsets.US_ASCII)))
-                throw new IOException("not a Matrioshka pattern");
+                throw new IOException("not a megastructure pattern");
             nx = in.readInt();
             ny = in.readInt();
             nz = in.readInt();
@@ -80,8 +73,8 @@ public final class MatrioshkaShape {
             cells = new byte[nx * ny * nz];
             in.readFully(cells);
         }
-        try (var in = MatrioshkaShape.class.getClassLoader().getResourceAsStream(PARTS)) {
-            if (in == null) throw new IOException("missing " + PARTS);
+        try (var in = MegaShape.class.getClassLoader().getResourceAsStream(dir(name) + "parts.json")) {
+            if (in == null) throw new IOException("missing " + dir(name) + "parts.json");
             var list = com.google.gson.JsonParser.parseReader(
                     new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)).getAsJsonArray();
             for (var e : list) {
@@ -94,30 +87,33 @@ public final class MatrioshkaShape {
         }
     }
 
-    private static volatile boolean loaded;
-    @Nullable
-    private static MatrioshkaShape shape;
+    private static final java.util.Map<String, java.util.Optional<MegaShape>> SHAPES =
+            new java.util.concurrent.ConcurrentHashMap<>();
 
-    /** The shape, or null when the data file is not in the jar. */
-    @Nullable
-    public static MatrioshkaShape get() {
-        if (!loaded) {
-            synchronized (MatrioshkaShape.class) {
-                if (!loaded) {
-                    try (var in = MatrioshkaShape.class.getClassLoader().getResourceAsStream(RESOURCE)) {
-                        shape = in == null ? null : new MatrioshkaShape(in);
-                    } catch (IOException e) {
-                        throw new IllegalStateException("Broken " + RESOURCE, e);
-                    }
-                    loaded = true;
-                }
-            }
-        }
-        return shape;
+    public static String dir(String name) {
+        return "gtia_mega/" + name + "/";
     }
 
-    public static boolean present() {
-        return get() != null;
+    /** The shape of a megastructure, or null when its data files are not in the jar. */
+    @Nullable
+    public static MegaShape get(String name) {
+        return SHAPES.computeIfAbsent(name, n -> {
+            try (var in = MegaShape.class.getClassLoader().getResourceAsStream(dir(n) + "pattern.bin.gz")) {
+                return java.util.Optional.ofNullable(in == null ? null : new MegaShape(n, in));
+            } catch (IOException e) {
+                throw new IllegalStateException("Broken " + dir(n), e);
+            }
+        }).orElse(null);
+    }
+
+    public static boolean present(String name) {
+        return get(name) != null;
+    }
+
+    /** The part of a letter, or null for air, the controller and unknown letters. */
+    @Nullable
+    public Part part(char letter) {
+        return parts.get(letter);
     }
 
     public char letter(int k, int j, int i) {

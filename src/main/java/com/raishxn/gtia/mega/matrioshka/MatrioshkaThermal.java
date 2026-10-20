@@ -26,6 +26,12 @@ public final class MatrioshkaThermal {
      */
     public static Result second(float[] radius, int phases, int clockPct, Coolant coolant, double supply,
                                 double[] temps, int[] integrity) {
+        return second(radius, phases, clockPct, coolant, supply, temps, integrity, 1);
+    }
+
+    /** @param background factor on the target temperature from the region the Stellar Engine reached */
+    public static Result second(float[] radius, int phases, int clockPct, Coolant coolant, double supply,
+                                double[] temps, int[] integrity, double background) {
         double limit = MatrioshkaShells.limit(phases);
         int wear = phases >= 5 ? MatrioshkaShells.WEAR / 2 : MatrioshkaShells.WEAR;
         long cwut = 0;
@@ -37,7 +43,7 @@ public final class MatrioshkaThermal {
                 continue;
             }
             temps[i] = MatrioshkaShells.step(temps[i],
-                    MatrioshkaShells.target(radius[i], clockPct, coolant, supply));
+                    MatrioshkaShells.target(radius[i], clockPct, coolant, supply) * background);
             if (temps[i] > limit) {
                 hot |= 1 << i;
                 integrity[i] = Math.max(0, integrity[i] - wear);

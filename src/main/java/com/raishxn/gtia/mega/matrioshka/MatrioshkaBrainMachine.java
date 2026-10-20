@@ -2,23 +2,18 @@ package com.raishxn.gtia.mega.matrioshka;
 
 import com.gregtechceu.gtceu.api.capability.IOpticalComputationProvider;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
-import com.gregtechceu.gtceu.api.machine.feature.IMachineLife;
 
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 
-import com.raishxn.gtia.GTIAMod;
 import com.raishxn.gtia.mega.PsiStore;
-import com.raishxn.gtna.common.machine.multiblock.originals.OriginalMachine;
+import com.raishxn.gtia.mega.common.MegaCapture;
+import com.raishxn.gtia.mega.common.MegaMachine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -31,36 +26,15 @@ import java.util.List;
  * transmission hatches and turns the CWU nobody asks for into Ψ for its owner.
  *
  * <p>
- * Phases 2 to 5 may be missing (their places accept air); a phase counts once all its blocks and those of the
- * phases before it are in place. While it runs, the turning rings leave the world and the
- * controller draws them turning ({@link MatrioshkaCapture}).
+ * Phases, the turning rings and reloads are handled by {@link MegaMachine}.
  */
-public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalComputationProvider, IMachineLife {
+public class MatrioshkaBrainMachine extends MegaMachine implements IOpticalComputationProvider {
+
+    public static final String SHAPE = "matrioshka_brain";
 
     protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(
-            MatrioshkaBrainMachine.class, OriginalMachine.MANAGED_FIELD_HOLDER);
+            MatrioshkaBrainMachine.class, MegaMachine.MANAGED_FIELD_HOLDER);
 
-    public static final ResourceKey<Level> NEXUS_SYSTEM = ResourceKey.create(Registries.DIMENSION,
-            GTIAMod.id("nexus_system"));
-    /** Seconds between phase counts while it runs (a count reads every position of the structure). */
-    static final int RECOUNT_SECONDS = 30;
-
-    /** GameTests run in the overworld: lets them stand in for the Nexus System. */
-    @VisibleForTesting
-    public static boolean anyDimensionForTests;
-
-    @Persisted
-    @DescSynced
-    private int phases;
-    @Persisted
-    @DescSynced
-    private boolean captured;
-    /** Phases whose rings are in the controller. */
-    @Persisted
-    @DescSynced
-    private int capturedPhases;
-    @DescSynced
-    private boolean running;
     @DescSynced
     private int maxCwut;
     @DescSynced
@@ -87,10 +61,6 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
      */
     @DescSynced
     private double[] view = new double[15];
-    /** onStructureFormed ran in this session (the tick is subscribed). */
-    private boolean started;
-    private boolean recount = true;
-    private int sinceCount;
     private long tickStamp = Long.MIN_VALUE;
     private int usedThisTick;
     private long usedThisSecond;
@@ -105,21 +75,9 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
         return MANAGED_FIELD_HOLDER;
     }
 
-    public int phases() {
-        return phases;
-    }
-
-    public boolean isRunning() {
-        return running && isFormed();
-    }
-
-    /** Moving rings are in the controller and drawn by the renderer. */
-    public boolean isCaptured() {
-        return captured && isFormed();
-    }
-
-    public int capturedPhases() {
-        return isCaptured() ? capturedPhases : 0;
+    @Override
+    public String shapeName() {
+        return SHAPE;
     }
 
     public int clockPct() {
@@ -151,76 +109,17 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
     }
 
     public boolean inNexusSystem() {
-        return anyDimensionForTests || getLevel() != null && getLevel().dimension() == NEXUS_SYSTEM;
-    }
-
-    // ------------------------------------------------------------------ structure
-
-    @Override
-    public void onStructureFormed() {
-        super.onStructureFormed();
-        started = true;
-        recount = true;
-    }
-
-    /**
-     * A brain saved as formed comes back formed but without its tick: GTNA's StructureWatch skips formed machines.
-     * The first poll after loading forms it again once.
-     */
-    @Override
-    public void asyncCheckPattern(long periodID) {
-        if (isFormed() && !started && getLevel() instanceof ServerLevel level) {
-            started = true;
-            level.getServer().execute(() -> {
-                if (isInValid()) return;
-                if (checkPatternWithLock()) onStructureFormed();
-                else onStructureInvalid();
-            });
-            return;
-        }
-        super.asyncCheckPattern(periodID);
+        return inPlace();
     }
 
     @Override
-    public void onStructureInvalid() {
-        started = false;
-        release();
-        running = false;
-        maxCwut = 0;
-        super.onStructureInvalid();
-    }
-
-    @Override
-    public void onMachineRemoved() {
-        release();
-    }
-
-    @Override
-    public void setWorkingEnabled(boolean enabled) {
-        super.setWorkingEnabled(enabled);
-        if (!enabled) {
-            release();
-            running = false;
-        }
-    }
-
-    @Override
-    protected void idleSecond() {
-        running = false;
+    protected void stopped() {
         maxCwut = 0;
     }
 
     @Override
-    protected void secondTick(ServerLevel level) {
-        if (recount || ++sinceCount >= RECOUNT_SECONDS) countPhases(level);
-        if (!inNexusSystem() || phases < 1) {
-            release();
-            running = false;
-            maxCwut = 0;
-            return;
-        }
-        var shape = MatrioshkaShape.get();
-        if (shape == null) return;
+    protected boolean megaSecond(ServerLevel level) {
+        var shape = shape();
         // The best coolant in the hatches is used; it is drained in proportion to the demand.
         var used = MatrioshkaShells.Coolant.NONE;
         double supply = 0;
@@ -239,9 +138,12 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
         coolant = supply;
         coolantTier = used.ordinal();
         repair();
-        var heat = MatrioshkaThermal.second(shape.radius, phases, clockPct, used, supply, temps, integrity);
+        // The cold background of the void between the arms, once the owner's Stellar Engine reached it.
+        double background = com.raishxn.gtia.mega.engine.EnginePhysics.shellCooling(
+                com.raishxn.gtia.mega.StellarEraStore.farthest(level.getServer(), networkOwner));
+        var heat = MatrioshkaThermal.second(shape.radius, phases, clockPct, used, supply, temps, integrity,
+                background);
         maxCwut = (int) Math.min(Integer.MAX_VALUE, heat.cwut());
-        running = maxCwut > 0;
         usedCwut = (int) Math.min(Integer.MAX_VALUE, usedThisSecond / 20);
         double[] v = new double[15];
         for (int p = 0; p < MatrioshkaShells.PHASES; p++) {
@@ -264,9 +166,7 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
         }
         view = v;
         usedThisSecond = 0;
-        // A finished phase brings its rings in on the next capture.
-        if (running && captured && phases > capturedPhases) release();
-        if (running) capture();
+        return maxCwut > 0;
     }
 
     /**
@@ -274,14 +174,14 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
      * per mille, at most one per shell a second, and only while the shell is not overheated.
      */
     private void repair() {
-        var shape = MatrioshkaShape.get();
+        var shape = shape();
         double limit = MatrioshkaShells.limit(phases);
         for (int p = 1; p <= phases; p++) {
             int i = p - 1;
             if (integrity[i] >= MatrioshkaShells.INTEGRITY || temps[i] > limit) continue;
             var blocks = new java.util.HashSet<net.minecraft.world.item.Item>();
             for (var part : shape.parts.values())
-                if (part.phase() == p) blocks.add(MatrioshkaCapture.block(part).asItem());
+                if (part.phase() == p) blocks.add(MegaCapture.block(part).asItem());
             if (take(stack -> blocks.contains(stack.getItem()), 1) > 0)
                 integrity[i] = Math.min(MatrioshkaShells.INTEGRITY, integrity[i] + MatrioshkaShells.REPAIR);
         }
@@ -320,46 +220,6 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
 
     public void setClock(int pct) {
         clockPct = Math.max(MatrioshkaShells.CLOCK_MIN, Math.min(MatrioshkaShells.CLOCK_MAX, pct));
-    }
-
-    /** One second of work for GameTests, as the owner {@code owner}. */
-    @VisibleForTesting
-    public void testSecond(java.util.UUID owner) {
-        networkOwner = owner;
-        secondTick((ServerLevel) getLevel());
-    }
-
-    /** Counts the phases whose blocks are all in place, in order. */
-    @VisibleForTesting
-    public void countPhases(Level level) {
-        recount = false;
-        sinceCount = 0;
-        var layout = structureWatch().layout();
-        int[] missing = new int[MatrioshkaShells.PHASES + 1];
-        for (int i = 0; i < layout.size(); i++) {
-            var part = MatrioshkaShape.Part.of(layout.matcher(i).letter());
-            if (part == null || part.phase() < 2) continue;
-            // Captured rings are in the controller, so their air counts as built.
-            if (captured && part.moving() && part.phase() <= capturedPhases) continue;
-            if (level.getBlockState(BlockPos.of(layout.position(i))).isAir()) missing[part.phase()]++;
-        }
-        int built = 1;
-        while (built < MatrioshkaShells.PHASES && missing[built + 1] == 0) built++;
-        phases = built;
-    }
-
-    private void capture() {
-        if (captured || getLevel() == null) return;
-        MatrioshkaCapture.capture(this, phases);
-        capturedPhases = phases;
-        captured = true;
-    }
-
-    private void release() {
-        if (!captured || getLevel() == null || getLevel().isClientSide) return;
-        MatrioshkaCapture.release(this, capturedPhases);
-        captured = false;
-        capturedPhases = 0;
     }
 
     // ------------------------------------------------------------------ computation
@@ -405,7 +265,7 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
         }
         text.add(Component.translatable("gtia.matrioshka.phases", phases, MatrioshkaShells.PHASES)
                 .withStyle(ChatFormatting.AQUA));
-        var shape = MatrioshkaShape.get();
+        var shape = shape();
         if (shape != null) for (int p = 1; p <= phases; p++) {
             double r = shape.radius[p - 1];
             text.add(Component.translatable("gtia.matrioshka.shell", p,

@@ -167,7 +167,7 @@ public final class MatrioshkaScreen {
             String[] head = { "col_shell", "col_radius", "col_temp", "col_cwu", "col_integrity", "col_state" };
             for (int c = 0; c < col.length; c++) text(g, tr(head[c]), x + col[c], y + 20, T.accent(), false);
             g.fill(x + 8, y + 30, x + 284, y + 31, T.line());
-            var shape = MatrioshkaShape.get();
+            var shape = m.shape();
             double lim = limit(m);
             for (int p = 1; p <= MatrioshkaShells.PHASES; p++) {
                 int ry = y + 22 + p * 14;

@@ -1,18 +1,16 @@
 package com.raishxn.gtia.gametest;
 
-import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import com.raishxn.gtia.mega.GTIAMegastructures;
 import com.raishxn.gtia.mega.PsiStore;
 import com.raishxn.gtia.mega.matrioshka.MatrioshkaBrainMachine;
-import com.raishxn.gtia.mega.matrioshka.MatrioshkaCapture;
-import com.raishxn.gtia.mega.matrioshka.MatrioshkaShape;
+import com.raishxn.gtia.mega.common.MegaCapture;
+import com.raishxn.gtia.mega.common.MegaMachine;
+import com.raishxn.gtia.mega.common.MegaShape;
 import com.raishxn.gtia.mega.matrioshka.MatrioshkaShells;
 
 import java.util.UUID;
@@ -20,66 +18,25 @@ import java.util.UUID;
 /** Bodies of {@link MatrioshkaGameTests}, apart so the GTNA classes load only when the brain is registered. */
 final class MatrioshkaTestRig {
 
-    private static final Direction FRONT = Direction.NORTH;
+    private static final Direction FRONT = MegaTestRig.FRONT;
 
     private MatrioshkaTestRig() {}
 
-    /**
-     * Builds the phases up to {@code phases} 250 blocks above the test (clear of the terrain) and returns the
-     * controller. GameTests run
-     * side by side 63 blocks apart and other tests leave blocks around, so each test builds 3000 blocks
-     * away and {@code 400 * slot} blocks to the east of the others.
-     */
     private static MatrioshkaBrainMachine build(GameTestHelper helper, int phases, int slot) {
-        var shape = MatrioshkaShape.get();
-        var level = helper.getLevel();
-        BlockPos controller = helper.absolutePos(new BlockPos(2 + 400 * slot, 250, 3000));
-        // The test world is kept between runs: clear what an earlier run (or an older shape) left in the box.
-        var air = Blocks.AIR.defaultBlockState();
-        for (int i = 0; i < shape.nz; i++)
-            for (int j = 0; j < shape.ny; j++)
-                for (int k = 0; k < shape.nx; k++) {
-                    var pos = shape.world(controller, FRONT, k, j, i);
-                    if (!level.getBlockState(pos).isAir()) level.setBlock(pos, air, 2 | 16);
-                }
-        for (int i = 0; i < shape.nz; i++)
-            for (int j = 0; j < shape.ny; j++)
-                for (int k = 0; k < shape.nx; k++) {
-                    var part = MatrioshkaShape.Part.of(shape.letter(k, j, i));
-                    if (part == null || part.phase() > phases) continue;
-                    level.setBlock(shape.world(controller, FRONT, k, j, i),
-                            MatrioshkaCapture.block(part).defaultBlockState(), 2 | 16);
-                }
-        var state = GTIAMegastructures.MATRIOSHKA_BRAIN.getBlock().defaultBlockState();
-        if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
-            state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, FRONT);
-        level.setBlock(controller, state, 3);
-        // GTCEu's walk refuses unloaded chunks: keep the whole footprint loaded for the test.
-        int reach = Math.max(shape.nx, shape.nz) + 2;
-        for (int cx = (controller.getX() - reach) >> 4; cx <= (controller.getX() + reach) >> 4; cx++)
-            for (int cz = (controller.getZ() - reach) >> 4; cz <= (controller.getZ() + reach) >> 4; cz++)
-                level.setChunkForced(cx, cz, true);
-        return (MatrioshkaBrainMachine) ((IMachineBlockEntity) level.getBlockEntity(controller)).getMetaMachine();
+        return MegaTestRig.build(helper, MatrioshkaBrainMachine.SHAPE, GTIAMegastructures.MATRIOSHKA_BRAIN, phases,
+                slot);
     }
 
     private static String error(MatrioshkaBrainMachine m) {
-        var state = m.getMultiblockState();
-        var e = state.error;
-        return e == null ? "none" : e.getErrorInfo().getString() + " found " + state.getBlockState();
+        return MegaTestRig.error(m);
     }
 
-    private static MatrioshkaShape.Part part(MatrioshkaShape shape, String ring, String kind) {
-        for (var p : shape.parts.values()) if (p.ring().equals(ring) && p.kind().equals(kind)) return p;
-        throw new IllegalStateException("no " + kind + " of " + ring);
+    private static MegaShape.Part part(MegaShape shape, String ring, String kind) {
+        return MegaTestRig.part(shape, ring, kind);
     }
 
-    /** First lettered cell of a part (k, j, i), scanning aisle by aisle. */
-    private static int[] firstCell(MatrioshkaShape shape, MatrioshkaShape.Part part) {
-        for (int i = 0; i < shape.nz; i++)
-            for (int j = 0; j < shape.ny; j++)
-                for (int k = 0; k < shape.nx; k++)
-                    if (shape.letter(k, j, i) == part.letter()) return new int[] { k, j, i };
-        throw new IllegalStateException("no " + part);
+    private static int[] firstCell(MegaShape shape, MegaShape.Part part) {
+        return MegaTestRig.firstCell(shape, part);
     }
 
     static void phaseOneFormsAndNeedsTheStar(GameTestHelper helper) {
@@ -89,8 +46,8 @@ final class MatrioshkaTestRig {
             helper.assertTrue(m.checkPatternWithLock(), "phase 1 alone forms: " + error(m));
             m.onStructureFormed();
 
-            // The capture and the renderer place cells with MatrioshkaShape.world; it must agree with GTCEu.
-            var shape = MatrioshkaShape.get();
+            // The capture and the renderer place cells with MegaShape.world; it must agree with GTCEu.
+            var shape = MegaShape.get(MatrioshkaBrainMachine.SHAPE);
             var layout = m.structureWatch().layout();
             int checked = 0;
             for (int i = 0; i < shape.nz; i += 7)
@@ -106,11 +63,11 @@ final class MatrioshkaTestRig {
             helper.assertTrue(checked > 100, "checked " + checked + " cells");
 
             UUID owner = UUID.randomUUID();
-            MatrioshkaBrainMachine.anyDimensionForTests = false;
+            MegaMachine.anyDimensionForTests = false;
             m.testSecond(owner);
             helper.assertTrue(!m.isRunning() && m.getMaxCWUt() == 0, "no CWU outside the Nexus System");
 
-            MatrioshkaBrainMachine.anyDimensionForTests = true;
+            MegaMachine.anyDimensionForTests = true;
             m.testSecond(owner);
             helper.assertTrue(m.phases() == 1, "phase 1: " + m.phases());
             int expected = MatrioshkaShells.totalCwut(1, shape.radius);
@@ -118,7 +75,7 @@ final class MatrioshkaTestRig {
                     "one shell: " + m.getMaxCWUt() + " CWU/t, expected " + expected);
             helper.succeed();
         } finally {
-            MatrioshkaBrainMachine.anyDimensionForTests = false;
+            MegaMachine.anyDimensionForTests = false;
         }
     }
 
@@ -127,8 +84,8 @@ final class MatrioshkaTestRig {
             var m = build(helper, MatrioshkaShells.PHASES, 1);
             helper.assertTrue(m.checkPatternWithLock(), "all five phases form: " + error(m));
             m.onStructureFormed();
-            var shape = MatrioshkaShape.get();
-            MatrioshkaBrainMachine.anyDimensionForTests = true;
+            var shape = MegaShape.get(MatrioshkaBrainMachine.SHAPE);
+            MegaMachine.anyDimensionForTests = true;
             UUID owner = UUID.randomUUID();
             m.testSecond(owner);
             helper.assertTrue(m.phases() == 5, "five phases: " + m.phases());
@@ -139,7 +96,7 @@ final class MatrioshkaTestRig {
                     "the cold outer shell beats 2^26 (Landauer)");
 
             // Rings are taken in while it runs, and the phase count does not drop for it.
-            long ring = MatrioshkaCapture.positions(m.getPos(), FRONT).get(part(shape, "inner_up", "body"))[0];
+            long ring = MegaCapture.positions(MatrioshkaBrainMachine.SHAPE, m.getPos(), FRONT).get(part(shape, "inner_up", "body"))[0];
             helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
                     "the inner ring is in the controller");
             m.countPhases(helper.getLevel());
@@ -173,12 +130,12 @@ final class MatrioshkaTestRig {
             helper.assertTrue(m.checkPatternWithLock(), "and the structure still forms: " + error(m));
             helper.succeed();
         } finally {
-            MatrioshkaBrainMachine.anyDimensionForTests = false;
+            MegaMachine.anyDimensionForTests = false;
         }
     }
 
     static void landauerClockAndCoolant(GameTestHelper helper) {
-        var shape = MatrioshkaShape.get();
+        var shape = MegaShape.get(MatrioshkaBrainMachine.SHAPE);
         float[] r = shape.radius;
         for (int p = 1; p < MatrioshkaShells.PHASES; p++)
             helper.assertTrue(r[p] > r[p - 1], "shells grow outwards: " + java.util.Arrays.toString(r));
@@ -220,7 +177,7 @@ final class MatrioshkaTestRig {
 
     static void wrongBlockDoesNotForm(GameTestHelper helper) {
         var m = build(helper, MatrioshkaShells.PHASES, 2);
-        var shape = MatrioshkaShape.get();
+        var shape = MegaShape.get(MatrioshkaBrainMachine.SHAPE);
         int[] c = firstCell(shape, part(shape, "data_1", "body"));
         BlockPos dataRing = shape.world(m.getPos(), FRONT, c[0], c[1], c[2]);
 

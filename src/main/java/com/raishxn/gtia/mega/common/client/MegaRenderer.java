@@ -1,4 +1,4 @@
-package com.raishxn.gtia.mega.matrioshka.client;
+package com.raishxn.gtia.mega.common.client;
 
 import com.gregtechceu.gtceu.client.renderer.machine.DynamicRender;
 import com.gregtechceu.gtceu.client.renderer.machine.DynamicRenderManager;
@@ -27,9 +27,9 @@ import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.serialization.Codec;
 import com.raishxn.gtia.GTIAMod;
-import com.raishxn.gtia.mega.matrioshka.MatrioshkaBrainMachine;
-import com.raishxn.gtia.mega.matrioshka.MatrioshkaCapture;
-import com.raishxn.gtia.mega.matrioshka.MatrioshkaShape;
+import com.raishxn.gtia.mega.common.MegaCapture;
+import com.raishxn.gtia.mega.common.MegaMachine;
+import com.raishxn.gtia.mega.common.MegaShape;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -41,22 +41,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Draws the Matrioshka Brain's star, corona and hexagonal force fields (render only, never blocks; the outer field
- * from phase 5) and, while the machine runs, the rings it took out of the world, each turning in its own plane.
+ * Draws every megastructure's render-only meshes (stars, coronas, force fields, jets; never blocks) and, while one
+ * runs, the moving pieces it took out of the world, each moved by its track.
  */
-public final class MatrioshkaRenderer {
+public final class MegaRenderer {
 
-    private static final Map<BlockPos, MatrioshkaBrainMachine> QUEUE = new LinkedHashMap<>();
+    private static final Map<BlockPos, MegaMachine> QUEUE = new LinkedHashMap<>();
     private static final Map<Placement, Baked> BAKED = new HashMap<>();
 
-    private record Placement(BlockPos controller, Direction front) {}
+    private record Placement(String name, BlockPos controller, Direction front) {}
 
     /** GPU meshes of one placement, built once. */
     private static final class Baked {
 
         final Vec3 pivot;
         final Matrix3f axes;
-        final Map<MatrioshkaShape.Part, VertexBuffer> rings = new java.util.LinkedHashMap<>();
+        final Map<MegaShape.Part, VertexBuffer> rings = new java.util.LinkedHashMap<>();
         final Map<String, VertexBuffer> renders = new HashMap<>();
 
         Baked(Vec3 pivot, Matrix3f axes) {
@@ -70,20 +70,21 @@ public final class MatrioshkaRenderer {
         }
     }
 
-    private MatrioshkaRenderer() {}
+    private MegaRenderer() {}
 
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS || QUEUE.isEmpty()) return;
-        var shape = MatrioshkaShape.get();
-        var motion = MatrioshkaMotion.get();
         try {
-            if (shape == null || motion == null) return;
             Vec3 cam = event.getCamera().getPosition();
             Matrix4f projection = new Matrix4f(event.getProjectionMatrix());
             double seconds = (net.minecraft.Util.getMillis() % 86_400_000L) / 1000.0;
             for (var m : QUEUE.values()) {
                 if (m.isInValid() || !m.isFormed() || m.getLevel() == null) continue;
-                var baked = BAKED.computeIfAbsent(new Placement(m.getPos().immutable(), m.getFrontFacing()),
+                var shape = m.shape();
+                var motion = MegaMotion.get(m.shapeName());
+                if (shape == null || motion == null) continue;
+                var baked = BAKED.computeIfAbsent(
+                        new Placement(m.shapeName(), m.getPos().immutable(), m.getFrontFacing()),
                         p -> bake(shape, motion, p));
                 drawRings(m, baked, motion, event.getPoseStack(), cam, projection, seconds);
                 drawRenders(m, baked, motion, event.getPoseStack(), cam, projection, seconds);
@@ -94,7 +95,7 @@ public final class MatrioshkaRenderer {
     }
 
     /** World matrix of a track: grid rotation turned into world axes, about the pivot, plus its shift. */
-    private static Matrix4f model(PoseStack pose, Baked b, MatrioshkaMotion.Track track, Vec3 cam, double seconds) {
+    private static Matrix4f model(PoseStack pose, Baked b, MegaMotion.Track track, Vec3 cam, double seconds) {
         var q = new Quaternionf();
         var shift = new Vector3f();
         track.at(seconds, q, shift);
@@ -106,7 +107,7 @@ public final class MatrioshkaRenderer {
                 .mul(new Matrix4f().set(r));
     }
 
-    private static void drawRings(MatrioshkaBrainMachine m, Baked b, MatrioshkaMotion motion, PoseStack pose,
+    private static void drawRings(MegaMachine m, Baked b, MegaMotion motion, PoseStack pose,
                                   Vec3 cam, Matrix4f projection, double seconds) {
         int phases = m.capturedPhases();
         if (phases == 0) return;
@@ -117,7 +118,7 @@ public final class MatrioshkaRenderer {
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
-        for (var part : MatrioshkaShape.get().parts.values()) {
+        for (var part : m.shape().parts.values()) {
             if (!part.moving() || part.phase() > phases) continue;
             var mesh = b.rings.computeIfAbsent(part, p -> ringMesh(m, b, p));
             var track = motion.tracks.get(part.track());
@@ -129,17 +130,17 @@ public final class MatrioshkaRenderer {
         Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
     }
 
-    private static void drawRenders(MatrioshkaBrainMachine m, Baked b, MatrioshkaMotion motion, PoseStack pose,
+    private static void drawRenders(MegaMachine m, Baked b, MegaMotion motion, PoseStack pose,
                                     Vec3 cam, Matrix4f projection, double seconds) {
         var shader = GameRenderer.getPositionColorShader();
         if (shader == null) return;
         try {
             for (var mesh : motion.meshes.values()) {
-                if (mesh.phase() > Math.max(1, m.phases())) continue;
+                if (mesh.phase() > Math.max(1, m.phases()) || mesh.active() && !m.isRunning()) continue;
                 var buffer = b.renders.get(mesh.track());
                 var track = motion.tracks.get(mesh.track());
                 if (buffer == null || track == null) continue;
-                boolean glow = !"star".equals(mesh.track());
+                boolean glow = !mesh.opaque();
                 if (glow) {
                     RenderSystem.enableBlend();
                     RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
@@ -165,19 +166,19 @@ public final class MatrioshkaRenderer {
 
     // ------------------------------------------------------------------ baking
 
-    private static Baked bake(MatrioshkaShape shape, MatrioshkaMotion motion, Placement p) {
+    private static Baked bake(MegaShape shape, MegaMotion motion, Placement p) {
         if (BAKED.size() > 4) {
             BAKED.values().forEach(Baked::close);
             BAKED.clear();
         }
-        float[] a = MatrioshkaShape.axes(p.front());
+        float[] a = MegaShape.axes(p.front());
         var axes = new Matrix3f(a[0], a[3], a[6], a[1], a[4], a[7], a[2], a[5], a[8]);
         var rel = new Vector3f(shape.pivotX - shape.ck, shape.pivotY - shape.cj, shape.pivotZ - shape.ci).mul(axes);
         var pivot = new Vec3(p.controller().getX() + 0.5 + rel.x, p.controller().getY() + 0.5 + rel.y,
                 p.controller().getZ() + 0.5 + rel.z);
         var baked = new Baked(pivot, axes);
         for (var mesh : motion.meshes.values()) {
-            boolean core = "star".equals(mesh.track());
+            boolean core = mesh.opaque();
             float[] t = mesh.triangles();
             var buf = new BufferBuilder(t.length / 3 * DefaultVertexFormat.POSITION_COLOR.getVertexSize());
             buf.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
@@ -186,7 +187,7 @@ public final class MatrioshkaRenderer {
                 for (int k = 0; k < 3; k++)
                     v[k] = new Vector3f(t[i + 3 * k] - shape.pivotX, t[i + 3 * k + 1] - shape.pivotY,
                             t[i + 3 * k + 2] - shape.pivotZ).mul(axes);
-                // The star burns with granules: a cheap per-face flicker of brightness, no lighting.
+                // Opaque meshes (stars) burn with granules: a cheap per-face flicker of brightness, no lighting.
                 float grain = 0.85f + 0.15f * (float) Math.abs(Math.sin(i * 12.9898));
                 float[] c = mesh.rgba();
                 for (var x : v) {
@@ -205,12 +206,12 @@ public final class MatrioshkaRenderer {
     }
 
     /** A captured ring from its block models, positioned around the pivot. */
-    private static VertexBuffer ringMesh(MatrioshkaBrainMachine m, Baked b, MatrioshkaShape.Part part) {
-        long[] positions = MatrioshkaCapture.positions(m.getPos(), m.getFrontFacing()).get(part);
+    private static VertexBuffer ringMesh(MegaMachine m, Baked b, MegaShape.Part part) {
+        long[] positions = MegaCapture.positions(m.shapeName(), m.getPos(), m.getFrontFacing()).get(part);
         if (positions == null || positions.length == 0) return null;
         long t0 = System.nanoTime();
         var occupied = new LongOpenHashSet(positions);
-        var state = MatrioshkaCapture.block(part).defaultBlockState();
+        var state = MegaCapture.block(part).defaultBlockState();
         var level = m.getLevel();
         var dispatcher = Minecraft.getInstance().getBlockRenderer();
         var blockModel = dispatcher.getBlockModel(state);
@@ -240,26 +241,26 @@ public final class MatrioshkaRenderer {
         mesh.bind();
         mesh.upload(builder.end());
         VertexBuffer.unbind();
-        GTIAMod.LOGGER.info("[GTIA perf] matrioshka {} mesh: {} blocks in {} ms", part.track(), positions.length,
+        GTIAMod.LOGGER.info("[GTIA perf] {} {} mesh: {} blocks in {} ms", m.shapeName(), part.track(), positions.length,
                 (System.nanoTime() - t0) / 1_000_000);
         return mesh;
     }
 
     // ------------------------------------------------------------------ dynamic render hook
 
-    public static final class Render extends DynamicRender<MatrioshkaBrainMachine, Render> {
+    public static final class Render extends DynamicRender<MegaMachine, Render> {
 
         public static final Codec<Render> CODEC = Codec.unit(Render::new);
-        public static final DynamicRenderType<MatrioshkaBrainMachine, Render> TYPE = DynamicRenderManager
-                .register(GTIAMod.id("matrioshka/render"), new DynamicRenderType<>(CODEC));
+        public static final DynamicRenderType<MegaMachine, Render> TYPE = DynamicRenderManager
+                .register(GTIAMod.id("mega/render"), new DynamicRenderType<>(CODEC));
 
         @Override
-        public DynamicRenderType<MatrioshkaBrainMachine, Render> getType() {
+        public DynamicRenderType<MegaMachine, Render> getType() {
             return TYPE;
         }
 
         @Override
-        public boolean shouldRenderOffScreen(MatrioshkaBrainMachine machine) {
+        public boolean shouldRenderOffScreen(MegaMachine machine) {
             return true;
         }
 
@@ -269,19 +270,21 @@ public final class MatrioshkaRenderer {
         }
 
         @Override
-        public boolean shouldRender(MatrioshkaBrainMachine machine, Vec3 cameraPos) {
+        public boolean shouldRender(MegaMachine machine, Vec3 cameraPos) {
             return machine.isFormed();
         }
 
         @Override
-        public void render(MatrioshkaBrainMachine machine, float partialTicks, PoseStack poseStack,
+        public void render(MegaMachine machine, float partialTicks, PoseStack poseStack,
                            MultiBufferSource buffer, int light, int overlay) {
             if (machine.getLevel() != null && machine.isFormed()) QUEUE.put(machine.getPos().immutable(), machine);
         }
 
         @Override
-        public AABB getRenderBoundingBox(MatrioshkaBrainMachine machine) {
-            return new AABB(machine.getPos()).inflate(260);
+        public AABB getRenderBoundingBox(MegaMachine machine) {
+            var shape = machine.shape();
+            int reach = shape == null ? 64 : Math.max(shape.nx, Math.max(shape.ny, shape.nz)) + 64;
+            return new AABB(machine.getPos()).inflate(reach);
         }
     }
 }

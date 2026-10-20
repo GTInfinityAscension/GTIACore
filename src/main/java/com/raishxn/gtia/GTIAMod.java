@@ -75,11 +75,11 @@ public final class GTIAMod {
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onClientTick);
             if (com.raishxn.gtia.mega.GTIAMegastructures.available()) {
                 // The dynamic render type has to exist before the machine models load.
-                var ignored = com.raishxn.gtia.mega.matrioshka.client.MatrioshkaRenderer.Render.TYPE;
+                var ignored = com.raishxn.gtia.mega.common.client.MegaRenderer.Render.TYPE;
                 MinecraftForge.EVENT_BUS.addListener(
-                        com.raishxn.gtia.mega.matrioshka.client.MatrioshkaRenderer::onRenderLevelStage);
+                        com.raishxn.gtia.mega.common.client.MegaRenderer::onRenderLevelStage);
                 MinecraftForge.EVENT_BUS.addListener(
-                        com.raishxn.gtia.mega.matrioshka.client.MatrioshkaDevCommand::register);
+                        com.raishxn.gtia.mega.common.client.MegaDevCommand::register);
             }
             // Same test as GTIARulesSelfTest.ENABLED, read here: that class touches EMI, which may be absent.
             if (Boolean.getBoolean("gtia.rulesSelfTest") || java.nio.file.Files.exists(
