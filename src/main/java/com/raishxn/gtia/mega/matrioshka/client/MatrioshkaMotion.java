@@ -16,9 +16,8 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
- * The Matrioshka's idle animation, sampled from the Gigastructural model (gen_pattern.py): for each moving part a
- * rotation about the model origin and a shift, both in grid axes, plus the render-only meshes (core orb and energy
- * shells) in grid cells.
+ * The Matrioshka's motion, written by gen_rings_pattern.py: for each turning ring a rotation about the star in grid
+ * axes (and a shift, zero for the rings), plus the render-only meshes (star and corona) in grid cells.
  */
 public final class MatrioshkaMotion {
 

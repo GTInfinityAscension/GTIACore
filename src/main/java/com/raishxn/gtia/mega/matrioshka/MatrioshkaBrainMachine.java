@@ -32,7 +32,7 @@ import java.util.List;
  *
  * <p>
  * Phases 2 to 5 may be missing (their places accept air); a phase counts once all its blocks and those of the
- * phases before it are in place. While it runs, the gyroscope and decompressor rings leave the world and the
+ * phases before it are in place. While it runs, the turning rings leave the world and the
  * controller draws them turning ({@link MatrioshkaCapture}).
  */
 public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalComputationProvider, IMachineLife {

@@ -34,6 +34,14 @@ final class MatrioshkaTestRig {
         var shape = MatrioshkaShape.get();
         var level = helper.getLevel();
         BlockPos controller = helper.absolutePos(new BlockPos(2 + 400 * slot, 250, 3000));
+        // The test world is kept between runs: clear what an earlier run (or an older shape) left in the box.
+        var air = Blocks.AIR.defaultBlockState();
+        for (int i = 0; i < shape.nz; i++)
+            for (int j = 0; j < shape.ny; j++)
+                for (int k = 0; k < shape.nx; k++) {
+                    var pos = shape.world(controller, FRONT, k, j, i);
+                    if (!level.getBlockState(pos).isAir()) level.setBlock(pos, air, 2 | 16);
+                }
         for (int i = 0; i < shape.nz; i++)
             for (int j = 0; j < shape.ny; j++)
                 for (int k = 0; k < shape.nx; k++) {
@@ -126,9 +134,9 @@ final class MatrioshkaTestRig {
                     "the cold outer shell beats 2^26 (Landauer)");
 
             // Rings are taken in while it runs, and the phase count does not drop for it.
-            long gyro = MatrioshkaCapture.positions(m.getPos(), FRONT).get(MatrioshkaShape.Part.GYRO_OUTER)[0];
-            helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(gyro)).isAir(),
-                    "the gyroscope ring is in the controller");
+            long ring = MatrioshkaCapture.positions(m.getPos(), FRONT).get(MatrioshkaShape.Part.INNER_RING_UP)[0];
+            helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
+                    "the inner ring is in the controller");
             m.countPhases(helper.getLevel());
             helper.assertTrue(m.phases() == 5, "captured rings still count: " + m.phases());
 
@@ -143,7 +151,7 @@ final class MatrioshkaTestRig {
             helper.assertTrue(Math.abs(psi - idle) <= 1, "idle CWU becomes Ψ: " + psi + ", expected " + idle);
 
             m.setWorkingEnabled(false);
-            helper.assertTrue(!helper.getLevel().getBlockState(BlockPos.of(gyro)).isAir(),
+            helper.assertTrue(!helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
                     "switching off puts the rings back");
             helper.assertTrue(m.checkPatternWithLock(), "and the structure still forms: " + error(m));
             helper.succeed();
@@ -155,11 +163,11 @@ final class MatrioshkaTestRig {
     static void wrongBlockDoesNotForm(GameTestHelper helper) {
         var m = build(helper, MatrioshkaShells.PHASES, 2);
         var shape = MatrioshkaShape.get();
-        int[] c = firstCell(shape, MatrioshkaShape.Part.ANCHORAGE);
-        BlockPos anchorage = shape.world(m.getPos(), FRONT, c[0], c[1], c[2]);
+        int[] c = firstCell(shape, MatrioshkaShape.Part.DATA_RING_1);
+        BlockPos dataRing = shape.world(m.getPos(), FRONT, c[0], c[1], c[2]);
 
         // A missing phase-3 block leaves phases 1 and 2.
-        helper.getLevel().setBlock(anchorage, Blocks.AIR.defaultBlockState(), 2 | 16);
+        helper.getLevel().setBlock(dataRing, Blocks.AIR.defaultBlockState(), 2 | 16);
         helper.assertTrue(m.checkPatternWithLock(), "a missing phase-3 block still forms: " + error(m));
         m.onStructureFormed();
         m.countPhases(helper.getLevel());
@@ -167,13 +175,13 @@ final class MatrioshkaTestRig {
 
         // A wrong block does not form at all, nor does a missing platform block.
         m.onStructureInvalid();
-        helper.getLevel().setBlock(anchorage, Blocks.STONE.defaultBlockState(), 2 | 16);
-        helper.assertTrue(!m.checkPatternWithLock(), "stone in the anchorage keeps it from forming");
-        helper.getLevel().setBlock(anchorage, Blocks.AIR.defaultBlockState(), 2 | 16);
-        int[] p = firstCell(shape, MatrioshkaShape.Part.PLATFORM);
+        helper.getLevel().setBlock(dataRing, Blocks.STONE.defaultBlockState(), 2 | 16);
+        helper.assertTrue(!m.checkPatternWithLock(), "stone in the data sphere keeps it from forming");
+        helper.getLevel().setBlock(dataRing, Blocks.AIR.defaultBlockState(), 2 | 16);
+        int[] p = firstCell(shape, MatrioshkaShape.Part.POLAR_RING);
         helper.getLevel().setBlock(shape.world(m.getPos(), FRONT, p[0], p[1], p[2]), Blocks.AIR.defaultBlockState(),
                 2 | 16);
-        helper.assertTrue(!m.checkPatternWithLock(), "a missing platform block keeps it from forming");
+        helper.assertTrue(!m.checkPatternWithLock(), "a missing polar ring block keeps it from forming");
         helper.succeed();
     }
 }

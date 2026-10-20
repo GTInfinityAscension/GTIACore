@@ -103,6 +103,8 @@ legacyForge {
             systemProperty('forge.enabledGameTestNamespaces', project.mod_id)
             // ./gradlew runClient -PgtiaRulesSelfTest runs the create-world rules self-test and quits.
             if (project.hasProperty('gtiaRulesSelfTest')) systemProperty('gtia.rulesSelfTest', 'true')
+            // ./gradlew runClient -PquickPlay="New World" opens that save directly (smoke tests).
+            if (project.hasProperty('quickPlay')) programArguments.addAll('--quickPlaySingleplayer', project.quickPlay)
         }
         server {
             server()

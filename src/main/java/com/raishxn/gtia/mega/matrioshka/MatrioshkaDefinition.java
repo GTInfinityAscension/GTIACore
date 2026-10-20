@@ -32,12 +32,12 @@ public final class MatrioshkaDefinition {
                 .allowExtendedFacing(false)
                 .allowFlip(false)
                 .recipeType(GTRecipeTypes.DUMMY_RECIPES)
-                .appearanceBlock(() -> block(MatrioshkaShape.Part.PLATFORM.block))
+                .appearanceBlock(() -> block(MatrioshkaShape.Part.STATION.block))
                 .pattern(MatrioshkaDefinition::pattern)
                 .modelProperty(com.gregtechceu.gtceu.api.machine.property.GTMachineModelProperties.RECIPE_LOGIC_STATUS,
                         com.gregtechceu.gtceu.api.machine.trait.RecipeLogic.Status.IDLE)
                 .model(com.gregtechceu.gtceu.common.data.models.GTMachineModels.createWorkableCasingMachineModel(
-                        GTCEu.id("block/casings/hpca/advanced_computer_casing/back"),
+                        GTCEu.id("block/casings/hpca/high_power_casing"),
                         GTCEu.id("block/multiblock/hpca"))
                         .andThen(builder -> builder.addDynamicRenderer(
                                 com.raishxn.gtia.mega.matrioshka.client.MatrioshkaRenderer.Render::new)))

@@ -42,9 +42,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Draws the Matrioshka Brain's moving parts: the core orb and its energy shell (render only, never blocks), the
- * outer energy shell once phase 5 is built, and, while the machine runs, the gyroscope and decompressor rings it
- * took out of the world, all turning with the Gigastructural model's own idle animation.
+ * Draws the Matrioshka Brain's star and corona (render only, never blocks) and, while the machine runs, the rings it
+ * took out of the world, each turning in its own plane.
  */
 public final class MatrioshkaRenderer {
 
@@ -141,7 +140,7 @@ public final class MatrioshkaRenderer {
                 var buffer = b.renders.get(mesh.track());
                 var track = motion.tracks.get(mesh.track());
                 if (buffer == null || track == null) continue;
-                boolean glow = !"core".equals(mesh.track());
+                boolean glow = !"star".equals(mesh.track());
                 if (glow) {
                     RenderSystem.enableBlend();
                     RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
@@ -178,9 +177,8 @@ public final class MatrioshkaRenderer {
         var pivot = new Vec3(p.controller().getX() + 0.5 + rel.x, p.controller().getY() + 0.5 + rel.y,
                 p.controller().getZ() + 0.5 + rel.z);
         var baked = new Baked(pivot, axes);
-        var light = new Vector3f(0.4f, 0.8f, 0.3f).normalize();
         for (var mesh : motion.meshes.values()) {
-            boolean core = "core".equals(mesh.track());
+            boolean core = "star".equals(mesh.track());
             float[] t = mesh.triangles();
             var buf = new BufferBuilder(t.length / 3 * DefaultVertexFormat.POSITION_COLOR.getVertexSize());
             buf.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
@@ -189,17 +187,12 @@ public final class MatrioshkaRenderer {
                 for (int k = 0; k < 3; k++)
                     v[k] = new Vector3f(t[i + 3 * k] - shape.pivotX, t[i + 3 * k + 1] - shape.pivotY,
                             t[i + 3 * k + 2] - shape.pivotZ).mul(axes);
-                float shade = 1;
-                if (core) {
-                    var n = new Vector3f(v[1]).sub(v[0]).cross(new Vector3f(v[2]).sub(v[0])).normalize();
-                    shade = 0.45f + 0.55f * Math.max(0, n.dot(light));
-                }
+                // The star burns with granules: a cheap per-face flicker of brightness, no lighting.
+                float grain = 0.85f + 0.15f * (float) Math.abs(Math.sin(i * 12.9898));
                 for (var x : v) {
-                    if (core) buf.vertex(x.x, x.y, x.z).color(0.17f * shade, 0.45f * shade, 0.65f * shade, 1f)
+                    if (core) buf.vertex(x.x, x.y, x.z).color(1f * grain, 0.82f * grain, 0.45f * grain, 1f)
                             .endVertex();
-                    else buf.vertex(x.x, x.y, x.z)
-                            .color(0.35f, 0.85f, 1f, "outer_shell".equals(mesh.track()) ? 0.035f : 0.09f)
-                            .endVertex();
+                    else buf.vertex(x.x, x.y, x.z).color(1f, 0.62f, 0.2f, 0.10f).endVertex();
                 }
             }
             var vb = new VertexBuffer(VertexBuffer.Usage.STATIC);

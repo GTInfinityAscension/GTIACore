@@ -14,8 +14,9 @@ import java.util.zip.GZIPInputStream;
  * The Matrioshka Brain's block layout, read from {@code gtia_matrioshka/pattern.bin.gz}.
  *
  * <p>
- * The shape is the Gigastructural mod's model turned into blocks (design/estudos/matrioshka/gen_pattern.py). Until
- * that mod's author allows it, the file is kept out of git; without it the machine is not registered.
+ * Rings tilted about one hinge axis around the star, after the old Gigastructures Matrioshka; the geometry is our
+ * own (design/estudos/matrioshka/gen_rings_pattern.py). The file stays out of git until the author of Gigastructures
+ * is asked; without it the machine is not registered.
  *
  * <p>
  * Pattern axes follow {@code FactoryBlockPattern.start()}: char {@code k} goes left, string {@code j} up, aisle
@@ -25,20 +26,32 @@ public final class MatrioshkaShape {
 
     public static final String RESOURCE = "gtia_matrioshka/pattern.bin.gz";
 
-    /** Letter of each part. */
+    /**
+     * Letter of each part. Phase 1 holds the controller: the fixed polar ring with a station at each end of the
+     * hinge axis, and the two inner rings; every ring but the polar one turns in its own plane while the brain runs.
+     */
     public enum Part {
 
-        PLATFORM('A', 1, null, "gtna:singularity_reinforced_stellar_shielding_casing"),
-        GYRO_OUTER('B', 2, "gyro_outer", "gtna:graviton_field_constraint_casing"),
-        GYRO_INNER('C', 2, "gyro_inner", "gtna:transcendentally_amplified_magnetic_confinement_casing"),
-        ANCHORAGE('D', 3, null, "gtna:space_elevator_mechanical_casing"),
-        COORDINATION('E', 3, null, "gtna:graviton_computer_casing"),
-        DECOMPRESSOR('F', 4, null, "gtna:dimensionally_transcendent_casing"),
-        DECOMP_TOP('G', 4, "decomp_top", "gtna:infinite_spacetime_energy_boundary_casing"),
-        DECOMP_BOTTOM('H', 4, "decomp_bottom", "gtna:infinite_spacetime_energy_boundary_casing"),
-        RELAYS('I', 5, null, "gtna:three_proof_computer_casing"),
-        CENTRAL_RING('J', 5, null, "gtna:force_field_glass"),
-        HATCH('K', 1, null, "gtna:singularity_reinforced_stellar_shielding_casing");
+        POLAR_RING('A', 1, null, "gtceu:advanced_computer_casing"),
+        STATION('S', 1, null, "gtceu:high_power_casing"),
+        HATCH('K', 1, null, "gtceu:high_power_casing"),
+        INNER_RING_UP('B', 1, "ring_b", "gtceu:computer_casing"),
+        INNER_RING_DOWN('C', 1, "ring_c", "gtceu:computer_casing"),
+        COMPUTING_RING_UPPER('D', 2, "ring_d", "gtceu:advanced_computer_casing"),
+        COMPUTING_RING_LOWER('E', 2, "ring_e", "gtceu:advanced_computer_casing"),
+        DATA_RING_1('F', 3, "ring_f", "gtceu:high_power_casing"),
+        DATA_RING_2('G', 3, "ring_g", "gtceu:high_power_casing"),
+        DATA_RING_3('H', 3, "ring_h", "gtceu:high_power_casing"),
+        DATA_RING_4('I', 3, "ring_i", "gtceu:high_power_casing"),
+        DATA_RING_5('J', 3, "ring_j", "gtceu:high_power_casing"),
+        DATA_RING_6('L', 3, "ring_l", "gtceu:high_power_casing"),
+        DATA_RING_7('M', 3, "ring_m", "gtceu:high_power_casing"),
+        DATA_RING_8('N', 3, "ring_n", "gtceu:high_power_casing"),
+        MAIN_RING_UP('O', 4, "ring_o", "gtceu:computer_casing"),
+        MAIN_RING_DOWN('P', 4, "ring_p", "gtceu:computer_casing"),
+        OUTER_RING('Q', 5, "ring_q", "gtceu:advanced_computer_casing"),
+        OUTER_DATA_RING_UP('R', 5, "ring_r", "gtceu:high_power_casing"),
+        OUTER_DATA_RING_DOWN('T', 5, "ring_t", "gtceu:high_power_casing");
 
         public final char letter;
         public final int phase;
