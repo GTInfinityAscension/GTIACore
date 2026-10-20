@@ -78,6 +78,8 @@ public final class GTIAMod {
                 var ignored = com.raishxn.gtia.mega.matrioshka.client.MatrioshkaRenderer.Render.TYPE;
                 MinecraftForge.EVENT_BUS.addListener(
                         com.raishxn.gtia.mega.matrioshka.client.MatrioshkaRenderer::onRenderLevelStage);
+                MinecraftForge.EVENT_BUS.addListener(
+                        com.raishxn.gtia.mega.matrioshka.client.MatrioshkaDevCommand::register);
             }
             // Same test as GTIARulesSelfTest.ENABLED, read here: that class touches EMI, which may be absent.
             if (Boolean.getBoolean("gtia.rulesSelfTest") || java.nio.file.Files.exists(

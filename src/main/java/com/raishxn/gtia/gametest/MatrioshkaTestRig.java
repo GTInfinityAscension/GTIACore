@@ -46,7 +46,7 @@ final class MatrioshkaTestRig {
             for (int j = 0; j < shape.ny; j++)
                 for (int k = 0; k < shape.nx; k++) {
                     var part = MatrioshkaShape.Part.of(shape.letter(k, j, i));
-                    if (part == null || part.phase > phases) continue;
+                    if (part == null || part.phase() > phases) continue;
                     level.setBlock(shape.world(controller, FRONT, k, j, i),
                             MatrioshkaCapture.block(part).defaultBlockState(), 2 | 16);
                 }
@@ -68,12 +68,17 @@ final class MatrioshkaTestRig {
         return e == null ? "none" : e.getErrorInfo().getString() + " found " + state.getBlockState();
     }
 
+    private static MatrioshkaShape.Part part(MatrioshkaShape shape, String ring, String kind) {
+        for (var p : shape.parts.values()) if (p.ring().equals(ring) && p.kind().equals(kind)) return p;
+        throw new IllegalStateException("no " + kind + " of " + ring);
+    }
+
     /** First lettered cell of a part (k, j, i), scanning aisle by aisle. */
     private static int[] firstCell(MatrioshkaShape shape, MatrioshkaShape.Part part) {
         for (int i = 0; i < shape.nz; i++)
             for (int j = 0; j < shape.ny; j++)
                 for (int k = 0; k < shape.nx; k++)
-                    if (shape.letter(k, j, i) == part.letter) return new int[] { k, j, i };
+                    if (shape.letter(k, j, i) == part.letter()) return new int[] { k, j, i };
         throw new IllegalStateException("no " + part);
     }
 
@@ -134,7 +139,7 @@ final class MatrioshkaTestRig {
                     "the cold outer shell beats 2^26 (Landauer)");
 
             // Rings are taken in while it runs, and the phase count does not drop for it.
-            long ring = MatrioshkaCapture.positions(m.getPos(), FRONT).get(MatrioshkaShape.Part.INNER_RING_UP)[0];
+            long ring = MatrioshkaCapture.positions(m.getPos(), FRONT).get(part(shape, "inner_up", "body"))[0];
             helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
                     "the inner ring is in the controller");
             m.countPhases(helper.getLevel());
@@ -150,6 +155,16 @@ final class MatrioshkaTestRig {
             long idle = ((long) expected * 20 - 1000) / MatrioshkaShells.CWU_PER_PSI;
             helper.assertTrue(Math.abs(psi - idle) <= 1, "idle CWU becomes Ψ: " + psi + ", expected " + idle);
 
+            // Overclocking without helium overheats the inner shells: more clock, but not twice the CWU.
+            m.setClock(MatrioshkaShells.CLOCK_MAX);
+            m.testSecond(owner);
+            int hot = (int) m.view()[5];
+            helper.assertTrue((hot & 1) != 0, "the inner shell overheats at 200% clock: mask " + hot);
+            helper.assertTrue(m.getMaxCWUt() < 2L * expected && m.getMaxCWUt() > expected,
+                    "200% clock without helium: " + m.getMaxCWUt() + " vs " + expected);
+            m.setClock(100);
+            m.testSecond(owner);
+
             m.setWorkingEnabled(false);
             helper.assertTrue(!helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
                     "switching off puts the rings back");
@@ -160,10 +175,28 @@ final class MatrioshkaTestRig {
         }
     }
 
+    static void landauerClockAndCoolant(GameTestHelper helper) {
+        var shape = MatrioshkaShape.get();
+        float[] r = shape.radius;
+        for (int p = 1; p < MatrioshkaShells.PHASES; p++)
+            helper.assertTrue(r[p] > r[p - 1], "shells grow outwards: " + java.util.Arrays.toString(r));
+        helper.assertTrue(MatrioshkaShells.temperature(r[4]) < MatrioshkaShells.temperature(r[0]),
+                "the outer shell is colder");
+        helper.assertTrue(MatrioshkaShells.shellCwut(5, r[4]) > 1L << 26, "the cold outer shell beats 2^26");
+        double t = MatrioshkaShells.temperature(r[0], 100, 0);
+        helper.assertTrue(Math.abs(MatrioshkaShells.temperature(r[0], 100, 1) - 0.6 * t) < 1e-6,
+                "full helium makes a shell 40% colder");
+        helper.assertTrue(MatrioshkaShells.shellCwut(1, r[0], 200, 0) == 0, "200% clock overheats the inner shell");
+        helper.assertTrue(MatrioshkaShells.shellCwut(1, r[0], 200, 1) > 2 * MatrioshkaShells.shellCwut(1, r[0]),
+                "with helium, 200% clock more than doubles it (colder and faster)");
+        helper.assertTrue(MatrioshkaShells.coolantDemand(5, 200) == 2500, "helium: 250 mB/s x 5 phases x 2");
+        helper.succeed();
+    }
+
     static void wrongBlockDoesNotForm(GameTestHelper helper) {
         var m = build(helper, MatrioshkaShells.PHASES, 2);
         var shape = MatrioshkaShape.get();
-        int[] c = firstCell(shape, MatrioshkaShape.Part.DATA_RING_1);
+        int[] c = firstCell(shape, part(shape, "data_1", "body"));
         BlockPos dataRing = shape.world(m.getPos(), FRONT, c[0], c[1], c[2]);
 
         // A missing phase-3 block leaves phases 1 and 2.
@@ -178,7 +211,7 @@ final class MatrioshkaTestRig {
         helper.getLevel().setBlock(dataRing, Blocks.STONE.defaultBlockState(), 2 | 16);
         helper.assertTrue(!m.checkPatternWithLock(), "stone in the data sphere keeps it from forming");
         helper.getLevel().setBlock(dataRing, Blocks.AIR.defaultBlockState(), 2 | 16);
-        int[] p = firstCell(shape, MatrioshkaShape.Part.POLAR_RING);
+        int[] p = firstCell(shape, part(shape, "polar", "body"));
         helper.getLevel().setBlock(shape.world(m.getPos(), FRONT, p[0], p[1], p[2]), Blocks.AIR.defaultBlockState(),
                 2 | 16);
         helper.assertTrue(!m.checkPatternWithLock(), "a missing polar ring block keeps it from forming");

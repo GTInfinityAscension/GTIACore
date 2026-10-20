@@ -67,6 +67,19 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
     private int usedCwut;
     @DescSynced
     private long psiView;
+    /** Clock in percent, set from the screen. */
+    @Persisted
+    @DescSynced
+    private int clockPct = 100;
+    /** Coolant supply of the last second, 0..1. */
+    @DescSynced
+    private double coolant;
+    /**
+     * What the screen shows: [0..4] shell temperatures (K, 0 if not built), [5] overheated shells as a bit mask,
+     * [6] Ψ per second, [7] coolant demand mB/s.
+     */
+    @DescSynced
+    private double[] view = new double[8];
     private boolean recount = true;
     private int sinceCount;
     private long tickStamp = Long.MIN_VALUE;
@@ -98,6 +111,30 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
 
     public int capturedPhases() {
         return isCaptured() ? capturedPhases : 0;
+    }
+
+    public int clockPct() {
+        return clockPct;
+    }
+
+    public double coolant() {
+        return coolant;
+    }
+
+    public int maxCwut() {
+        return maxCwut;
+    }
+
+    public int usedCwut() {
+        return usedCwut;
+    }
+
+    public long psi() {
+        return psiView;
+    }
+
+    public double[] view() {
+        return view;
     }
 
     public boolean inNexusSystem() {
@@ -150,22 +187,62 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
             return;
         }
         var shape = MatrioshkaShape.get();
-        maxCwut = shape == null ? 0 : MatrioshkaShells.totalCwut(phases, shape.radius);
+        long demand = MatrioshkaShells.coolantDemand(phases, clockPct);
+        coolant = demand <= 0 ? 0 : (double) drain(MatrioshkaBrainMachine::isCoolant, demand) / demand;
+        maxCwut = shape == null ? 0 : MatrioshkaShells.totalCwut(phases, shape.radius, clockPct, coolant);
         running = maxCwut > 0;
         usedCwut = (int) Math.min(Integer.MAX_VALUE, usedThisSecond / 20);
+        double[] v = new double[8];
+        int hot = 0;
+        if (shape != null) for (int p = 1; p <= phases; p++) {
+            v[p - 1] = MatrioshkaShells.temperature(shape.radius[p - 1], clockPct, coolant);
+            if (MatrioshkaShells.overheated(v[p - 1])) hot |= 1 << (p - 1);
+        }
+        v[5] = hot;
+        v[7] = demand;
         if (networkOwner != null) {
             // EN: CWU nobody asked for this second becomes Ψ: 2^20 idle CWU-ticks per thought cycle.
             // PT: O CWU que ninguém pediu neste segundo vira Ψ: 2^20 CWU-tick ociosos por ciclo de pensamento.
             // ZH: 本秒无人请求的 CWU 转为 Ψ：每 2^20 个空闲 CWU-tick 产生一个思维周期。
             long idle = Math.max(0, (long) maxCwut * 20 - usedThisSecond) + psiRemainder;
             PsiStore.get(level.getServer()).add(networkOwner, idle / MatrioshkaShells.CWU_PER_PSI);
+            v[6] = idle / MatrioshkaShells.CWU_PER_PSI;
             psiRemainder = idle % MatrioshkaShells.CWU_PER_PSI;
             psiView = PsiStore.get(level.getServer()).balance(networkOwner);
         }
+        view = v;
         usedThisSecond = 0;
         // A finished phase brings its rings in on the next capture.
         if (running && captured && phases > capturedPhases) release();
         if (running) capture();
+    }
+
+    /** Liquid helium, the coolant of the shells. */
+    static boolean isCoolant(net.minecraft.world.level.material.Fluid fluid) {
+        var helium = com.gregtechceu.gtceu.common.data.GTMaterials.Helium
+                .getFluid(com.gregtechceu.gtceu.api.fluids.store.FluidStorageKeys.LIQUID);
+        return helium != null && fluid.isSame(helium);
+    }
+
+    // ------------------------------------------------------------------ screen
+
+    @Override
+    public com.lowdragmc.lowdraglib.gui.modular.ModularUI createUI(net.minecraft.world.entity.player.Player player) {
+        return MatrioshkaScreen.create(this, player);
+    }
+
+    @Override
+    public void handleDisplayClick(String data, com.lowdragmc.lowdraglib.gui.util.ClickData click) {
+        if (click.isRemote) return;
+        switch (data) {
+            case "clock_down" -> setClock(clockPct - MatrioshkaShells.CLOCK_STEP);
+            case "clock_up" -> setClock(clockPct + MatrioshkaShells.CLOCK_STEP);
+            default -> super.handleDisplayClick(data, click);
+        }
+    }
+
+    public void setClock(int pct) {
+        clockPct = Math.max(MatrioshkaShells.CLOCK_MIN, Math.min(MatrioshkaShells.CLOCK_MAX, pct));
     }
 
     /** One second of work for GameTests, as the owner {@code owner}. */
@@ -184,10 +261,10 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
         int[] missing = new int[MatrioshkaShells.PHASES + 1];
         for (int i = 0; i < layout.size(); i++) {
             var part = MatrioshkaShape.Part.of(layout.matcher(i).letter());
-            if (part == null || part.phase < 2) continue;
+            if (part == null || part.phase() < 2) continue;
             // Captured rings are in the controller, so their air counts as built.
-            if (captured && part.track != null && part.phase <= capturedPhases) continue;
-            if (level.getBlockState(BlockPos.of(layout.position(i))).isAir()) missing[part.phase]++;
+            if (captured && part.moving() && part.phase() <= capturedPhases) continue;
+            if (level.getBlockState(BlockPos.of(layout.position(i))).isAir()) missing[part.phase()]++;
         }
         int built = 1;
         while (built < MatrioshkaShells.PHASES && missing[built + 1] == 0) built++;
@@ -255,8 +332,9 @@ public class MatrioshkaBrainMachine extends OriginalMachine implements IOpticalC
         if (shape != null) for (int p = 1; p <= phases; p++) {
             double r = shape.radius[p - 1];
             text.add(Component.translatable("gtia.matrioshka.shell", p,
-                    String.format("%.0f", MatrioshkaShells.temperature(r)),
-                    String.format("%,d", MatrioshkaShells.shellCwut(p, r))).withStyle(ChatFormatting.GRAY));
+                    String.format("%.0f", MatrioshkaShells.temperature(r, clockPct, coolant)),
+                    String.format("%,d", MatrioshkaShells.shellCwut(p, r, clockPct, coolant)))
+                    .withStyle(ChatFormatting.GRAY));
         }
         text.add(Component.translatable("gtia.matrioshka.cwut", String.format("%,d", usedCwut),
                 String.format("%,d", maxCwut)).withStyle(ChatFormatting.GREEN));

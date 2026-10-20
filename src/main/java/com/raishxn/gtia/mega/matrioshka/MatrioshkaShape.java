@@ -24,55 +24,32 @@ import java.util.zip.GZIPInputStream;
  */
 public final class MatrioshkaShape {
 
-    public static final String RESOURCE = "gtia_matrioshka/pattern.bin.gz";
+    public static final String RESOURCE = "gtia_matrioshka/pattern.bin.gz", PARTS = "gtia_matrioshka/parts.json";
 
     /**
-     * Letter of each part. Phase 1 holds the controller: the fixed polar ring with a station at each end of the
-     * hinge axis, and the two inner rings; every ring but the polar one turns in its own plane while the brain runs.
+     * One letter of the pattern, from {@code gtia_matrioshka/parts.json}: which ring (or the station) it belongs to,
+     * the phase, the block and, for turning rings, the track that moves it. Each ring has several letters (body,
+     * rims, ribs, light strips) with different blocks. Phase 1 holds the controller: the fixed polar ring with a
+     * station at each end of the hinge axis, and the two inner rings.
      */
-    public enum Part {
+    public record Part(char letter, String ring, int phase, String block, @Nullable String track, String kind) {
 
-        POLAR_RING('A', 1, null, "gtceu:advanced_computer_casing"),
-        STATION('S', 1, null, "gtceu:high_power_casing"),
-        HATCH('K', 1, null, "gtceu:high_power_casing"),
-        INNER_RING_UP('B', 1, "ring_b", "gtceu:computer_casing"),
-        INNER_RING_DOWN('C', 1, "ring_c", "gtceu:computer_casing"),
-        COMPUTING_RING_UPPER('D', 2, "ring_d", "gtceu:advanced_computer_casing"),
-        COMPUTING_RING_LOWER('E', 2, "ring_e", "gtceu:advanced_computer_casing"),
-        DATA_RING_1('F', 3, "ring_f", "gtceu:high_power_casing"),
-        DATA_RING_2('G', 3, "ring_g", "gtceu:high_power_casing"),
-        DATA_RING_3('H', 3, "ring_h", "gtceu:high_power_casing"),
-        DATA_RING_4('I', 3, "ring_i", "gtceu:high_power_casing"),
-        DATA_RING_5('J', 3, "ring_j", "gtceu:high_power_casing"),
-        DATA_RING_6('L', 3, "ring_l", "gtceu:high_power_casing"),
-        DATA_RING_7('M', 3, "ring_m", "gtceu:high_power_casing"),
-        DATA_RING_8('N', 3, "ring_n", "gtceu:high_power_casing"),
-        MAIN_RING_UP('O', 4, "ring_o", "gtceu:computer_casing"),
-        MAIN_RING_DOWN('P', 4, "ring_p", "gtceu:computer_casing"),
-        OUTER_RING('Q', 5, "ring_q", "gtceu:advanced_computer_casing"),
-        OUTER_DATA_RING_UP('R', 5, "ring_r", "gtceu:high_power_casing"),
-        OUTER_DATA_RING_DOWN('T', 5, "ring_t", "gtceu:high_power_casing");
+        public static final char STATION = 'S', HATCH = 'K';
 
-        public final char letter;
-        public final int phase;
-        /** Moving part drawn by the controller while it runs, or null. */
-        @Nullable
-        public final String track;
-        public final String block;
-
-        Part(char letter, int phase, @Nullable String track, String block) {
-            this.letter = letter;
-            this.phase = phase;
-            this.track = track;
-            this.block = block;
-        }
-
+        /** The part of a letter, or null for air, the controller and unknown letters. */
         @Nullable
         public static Part of(char letter) {
-            for (Part p : values()) if (p.letter == letter) return p;
-            return null;
+            var shape = get();
+            return shape == null ? null : shape.parts.get(letter);
+        }
+
+        public boolean moving() {
+            return track != null;
         }
     }
+
+    /** Parts by letter, in file order. */
+    public final java.util.Map<Character, Part> parts = new java.util.LinkedHashMap<>();
 
     public final int nx, ny, nz;
     /** Controller cell (k, j, i). */
@@ -102,6 +79,18 @@ public final class MatrioshkaShape {
             for (int p = 0; p < radius.length; p++) radius[p] = in.readFloat();
             cells = new byte[nx * ny * nz];
             in.readFully(cells);
+        }
+        try (var in = MatrioshkaShape.class.getClassLoader().getResourceAsStream(PARTS)) {
+            if (in == null) throw new IOException("missing " + PARTS);
+            var list = com.google.gson.JsonParser.parseReader(
+                    new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)).getAsJsonArray();
+            for (var e : list) {
+                var o = e.getAsJsonObject();
+                char letter = o.get("letter").getAsString().charAt(0);
+                parts.put(letter, new Part(letter, o.get("part").getAsString(), o.get("phase").getAsInt(),
+                        o.get("block").getAsString(), o.get("track").isJsonNull() ? null : o.get("track").getAsString(),
+                        o.get("kind").getAsString()));
+            }
         }
     }
 

@@ -17,7 +17,7 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * The Matrioshka's motion, written by gen_rings_pattern.py: for each turning ring a rotation about the star in grid
- * axes (and a shift, zero for the rings), plus the render-only meshes (star and corona) in grid cells.
+ * axes (and a shift, zero for the rings), plus the render-only meshes (star, corona and force fields) in grid cells.
  */
 public final class MatrioshkaMotion {
 
@@ -36,8 +36,8 @@ public final class MatrioshkaMotion {
         }
     }
 
-    /** Triangles in grid cells, moved by {@link #track}, shown from phase {@link #phase}. */
-    public record Mesh(String track, int phase, float[] triangles) {}
+    /** Triangles in grid cells, moved by {@link #track}, shown from phase {@link #phase}, in colour {@link #rgba}. */
+    public record Mesh(String track, int phase, float[] rgba, float[] triangles) {}
 
     public final Map<String, Track> tracks = new HashMap<>();
     public final Map<String, Mesh> meshes = new LinkedHashMap<>();
@@ -85,10 +85,11 @@ public final class MatrioshkaMotion {
                     byte[] name = new byte[in.readInt()];
                     in.readFully(name);
                     int phase = in.readInt();
+                    float[] rgba = { in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat() };
                     float[] tri = new float[in.readInt() * 9];
                     for (int k = 0; k < tri.length; k++) tri[k] = in.readFloat();
                     String track = new String(name, StandardCharsets.UTF_8);
-                    out.meshes.put(track, new Mesh(track, phase, tri));
+                    out.meshes.put(track, new Mesh(track, phase, rgba, tri));
                 }
             }
             return out;

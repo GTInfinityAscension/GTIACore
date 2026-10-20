@@ -41,6 +41,11 @@ public final class MatrioshkaGameTests {
         if (!skip(helper)) MatrioshkaTestRig.allPhasesComputeAndTurn(helper);
     }
 
+    @GameTest(template = TEMPLATE, batch = "matrioshka_math", timeoutTicks = 100)
+    public static void landauerClockAndCoolant(GameTestHelper helper) {
+        if (!skip(helper)) MatrioshkaTestRig.landauerClockAndCoolant(helper);
+    }
+
     @GameTest(template = TEMPLATE, batch = "matrioshka_wrong_block", timeoutTicks = 2400)
     public static void wrongBlockDoesNotForm(GameTestHelper helper) {
         if (!skip(helper)) MatrioshkaTestRig.wrongBlockDoesNotForm(helper);

@@ -32,7 +32,7 @@ public final class MatrioshkaDefinition {
                 .allowExtendedFacing(false)
                 .allowFlip(false)
                 .recipeType(GTRecipeTypes.DUMMY_RECIPES)
-                .appearanceBlock(() -> block(MatrioshkaShape.Part.STATION.block))
+                .appearanceBlock(() -> block(MatrioshkaShape.Part.of(MatrioshkaShape.Part.STATION).block()))
                 .pattern(MatrioshkaDefinition::pattern)
                 .modelProperty(com.gregtechceu.gtceu.api.machine.property.GTMachineModelProperties.RECIPE_LOGIC_STATUS,
                         com.gregtechceu.gtceu.api.machine.trait.RecipeLogic.Status.IDLE)
@@ -56,21 +56,22 @@ public final class MatrioshkaDefinition {
         var shape = MatrioshkaShape.get();
         var pattern = FactoryBlockPattern.start();
         for (int i = 0; i < shape.nz; i++) pattern.aisle(shape.aisle(i));
-        for (var part : MatrioshkaShape.Part.values()) {
-            Block block = block(part.block);
-            char letter = part.letter;
+        for (var part : MatrioshkaShape.get().parts.values()) {
+            Block block = block(part.block());
+            char letter = part.letter();
             // Every predicate is registered with what it accepts, so GTNA's StructureWatch tests single positions.
-            if (part == MatrioshkaShape.Part.HATCH)
+            if (part.letter() == MatrioshkaShape.Part.HATCH)
                 pattern.where(letter, OriginalLayout.register(blocks(block)
                         .or(abilities(PartAbility.COMPUTATION_DATA_TRANSMISSION).setMaxGlobalLimited(2)
-                                .setPreviewCount(1)),
+                                .setPreviewCount(1))
+                        .or(abilities(PartAbility.IMPORT_FLUIDS).setMaxGlobalLimited(2).setPreviewCount(1)),
                         new OriginalLayout.Matcher(letter, OriginalLayout.Kind.HATCH, block, null)));
-            else if (part.phase == 1)
+            else if (part.phase() == 1)
                 pattern.where(letter, OriginalLayout.register(blocks(block),
                         new OriginalLayout.Matcher(letter, OriginalLayout.Kind.BLOCK, block, null)));
             else pattern.where(letter, OriginalLayout.register(blocks(block).or(air()),
                     new OriginalLayout.Matcher(letter, OriginalLayout.Kind.BLOCK_OR_AIR, block,
-                            part.track != null ? part.track : "phase" + part.phase)));
+                            part.moving() ? part.track() : "phase" + part.phase())));
         }
         return pattern.where('~', OriginalLayout.register(controller(blocks(definition.getBlock())),
                 new OriginalLayout.Matcher('~', OriginalLayout.Kind.CONTROLLER, definition.getBlock(), null)))

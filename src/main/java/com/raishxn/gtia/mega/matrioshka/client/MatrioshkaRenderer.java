@@ -36,14 +36,13 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Draws the Matrioshka Brain's star and corona (render only, never blocks) and, while the machine runs, the rings it
- * took out of the world, each turning in its own plane.
+ * Draws the Matrioshka Brain's star, corona and hexagonal force fields (render only, never blocks; the outer field
+ * from phase 5) and, while the machine runs, the rings it took out of the world, each turning in its own plane.
  */
 public final class MatrioshkaRenderer {
 
@@ -57,7 +56,7 @@ public final class MatrioshkaRenderer {
 
         final Vec3 pivot;
         final Matrix3f axes;
-        final Map<MatrioshkaShape.Part, VertexBuffer> rings = new EnumMap<>(MatrioshkaShape.Part.class);
+        final Map<MatrioshkaShape.Part, VertexBuffer> rings = new java.util.LinkedHashMap<>();
         final Map<String, VertexBuffer> renders = new HashMap<>();
 
         Baked(Vec3 pivot, Matrix3f axes) {
@@ -118,10 +117,10 @@ public final class MatrioshkaRenderer {
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
-        for (var part : MatrioshkaShape.Part.values()) {
-            if (part.track == null || part.phase > phases) continue;
+        for (var part : MatrioshkaShape.get().parts.values()) {
+            if (!part.moving() || part.phase() > phases) continue;
             var mesh = b.rings.computeIfAbsent(part, p -> ringMesh(m, b, p));
-            var track = motion.tracks.get(part.track);
+            var track = motion.tracks.get(part.track());
             if (mesh == null || track == null) continue;
             mesh.bind();
             mesh.drawWithShader(model(pose, b, track, cam, seconds), projection, shader);
@@ -189,10 +188,11 @@ public final class MatrioshkaRenderer {
                             t[i + 3 * k + 2] - shape.pivotZ).mul(axes);
                 // The star burns with granules: a cheap per-face flicker of brightness, no lighting.
                 float grain = 0.85f + 0.15f * (float) Math.abs(Math.sin(i * 12.9898));
+                float[] c = mesh.rgba();
                 for (var x : v) {
-                    if (core) buf.vertex(x.x, x.y, x.z).color(1f * grain, 0.82f * grain, 0.45f * grain, 1f)
+                    if (core) buf.vertex(x.x, x.y, x.z).color(c[0] * grain, c[1] * grain, c[2] * grain, c[3])
                             .endVertex();
-                    else buf.vertex(x.x, x.y, x.z).color(1f, 0.62f, 0.2f, 0.10f).endVertex();
+                    else buf.vertex(x.x, x.y, x.z).color(c[0], c[1], c[2], c[3]).endVertex();
                 }
             }
             var vb = new VertexBuffer(VertexBuffer.Usage.STATIC);
@@ -240,7 +240,7 @@ public final class MatrioshkaRenderer {
         mesh.bind();
         mesh.upload(builder.end());
         VertexBuffer.unbind();
-        GTIAMod.LOGGER.info("[GTIA perf] matrioshka {} mesh: {} blocks in {} ms", part.track, positions.length,
+        GTIAMod.LOGGER.info("[GTIA perf] matrioshka {} mesh: {} blocks in {} ms", part.track(), positions.length,
                 (System.nanoTime() - t0) / 1_000_000);
         return mesh;
     }

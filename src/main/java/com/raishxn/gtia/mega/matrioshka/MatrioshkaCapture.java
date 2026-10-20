@@ -13,7 +13,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.raishxn.gtna.common.item.terminal.NexusBuildCheckGuard;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,23 +33,23 @@ public final class MatrioshkaCapture {
         return POSITIONS.computeIfAbsent(new Key(controller.immutable(), front), k -> {
             if (POSITIONS.size() > 16) POSITIONS.clear();
             var shape = MatrioshkaShape.get();
-            Map<MatrioshkaShape.Part, LongArrayList> found = new EnumMap<>(MatrioshkaShape.Part.class);
+            Map<MatrioshkaShape.Part, LongArrayList> found = new java.util.LinkedHashMap<>();
             if (shape != null) for (int i = 0; i < shape.nz; i++)
                 for (int j = 0; j < shape.ny; j++)
                     for (int x = 0; x < shape.nx; x++) {
                         var part = MatrioshkaShape.Part.of(shape.letter(x, j, i));
-                        if (part == null || part.track == null) continue;
+                        if (part == null || !part.moving()) continue;
                         found.computeIfAbsent(part, p -> new LongArrayList())
                                 .add(shape.world(k.controller(), front, x, j, i).asLong());
                     }
-            Map<MatrioshkaShape.Part, long[]> out = new EnumMap<>(MatrioshkaShape.Part.class);
+            Map<MatrioshkaShape.Part, long[]> out = new java.util.LinkedHashMap<>();
             found.forEach((p, list) -> out.put(p, list.toLongArray()));
             return out;
         });
     }
 
     public static Block block(MatrioshkaShape.Part part) {
-        var block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(part.block));
+        var block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(part.block()));
         return block == null ? Blocks.AIR : block;
     }
 
@@ -60,7 +59,7 @@ public final class MatrioshkaCapture {
         // Each removed block would otherwise trigger a structure check.
         NexusBuildCheckGuard.quiet(m.getMultiblockState(), () -> positions(m.getPos(), m.getFrontFacing())
                 .forEach((part, list) -> {
-                    if (part.phase > phases) return;
+                    if (part.phase() > phases) return;
                     for (long p : list) set(level, BlockPos.of(p), air);
                 }));
     }
@@ -70,7 +69,7 @@ public final class MatrioshkaCapture {
         var level = m.getLevel();
         NexusBuildCheckGuard.quiet(m.getMultiblockState(), () -> positions(m.getPos(), m.getFrontFacing())
                 .forEach((part, list) -> {
-                    if (part.phase > phases) return;
+                    if (part.phase() > phases) return;
                     var state = block(part).defaultBlockState();
                     for (long p : list) {
                         var pos = BlockPos.of(p);
