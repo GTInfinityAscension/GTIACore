@@ -64,7 +64,7 @@ public final class GTIAMegaLang {
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.cwu",
                 "Computation");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant",
-                "Liquid helium");
+                "Coolant");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.hottest",
                 "Hottest shell");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.psi",
@@ -72,7 +72,7 @@ public final class GTIAMegaLang {
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.psi_rate",
                 "+%s Ψ/s from idle CWU");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.overheat_warning",
-                "%s shell(s) overheated: lower the clock or add helium");
+                "%s shell(s) overheated: lower the clock or add coolant");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.col_shell",
                 "Shell");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.col_radius",
@@ -94,30 +94,62 @@ public final class GTIAMegaLang {
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.0",
                 "The Matrioshka Brain wraps the Nexus star in shells of computers. Each finished phase is one shell, computing with the starlight that reaches it.");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.1",
-                "= T = 278.6 K / sqrt(r / 100 blocks) × clock^(1/4) × (1 - 0.4 × coolant)");
+                "= T = 278.6 K / sqrt(r / 100 blocks) × clock^(1/4)");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.2",
-                "A shell at radius r sits in the star's light. Radiating more power (a higher clock) needs a hotter shell; liquid helium carries part of the heat away.");
+                "A shell at radius r sits in the star's light. Radiating more power (a higher clock) needs a hotter shell.");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.3",
                 "= CWU/t of shell n = 2^(21+n) × clock × 300 K / T");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.4",
                 "Landauer's limit: erasing a bit costs k·T·ln 2, so a colder shell computes more with the same energy. The cold outer shells give the most.");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.5",
-                "= T > 500 K → the shell overheats and computes nothing");
+                "= T' = Tc + (T - Tc) × (1 - η × supply)");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.6",
-                "Raise the clock for more CWU and watch the hottest shell: the inner shells overheat first.");
+                "A coolant pulls the shells towards its own temperature Tc. The best one in the fluid hatches is used:");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.7",
-                "= Helium = 250 mB/s × phases × clock");
+                "= He 4 K, η 0.40, 250 mB/s · He-II 2 K, η 0.60, 100 mB/s · DSS 0.1 K, η 0.85, 10 mB/s (per phase, × clock)");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.8",
-                "Feed liquid helium through a Fluid Input Hatch on the station. A full supply makes every shell 40% colder.");
+                "Superfluid helium comes from liquid helium in a Vacuum Freezer; the Dimensionally Shifted Superfluid from the Forge of the Gods' chain.");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.9",
-                "= Ψ/s = (max CWU/t × 20 - CWU used in the second) / 2^20");
+                "= T(next s) = T + (T' - T) × 0.1");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.10",
-                "CWU nobody asks for becomes Ψ (thought cycles), kept for the owner like the Nexus network's EU.");
+                "Temperatures move slowly (10 s time constant): a short clock peak can be held before the shells heat up.");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.11",
-                "Send CWU through up to 2 Optical Data Transmission Hatches on the station. The brain only works in the Nexus System, around its star.");
+                "= T > 500 K (540 K with phase 4) → overheated: no CWU, -2% integrity a second");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.12",
-                "Phases 2 to 5 can come later: a phase counts once all its blocks and those of the phases before it are in place.");
+                "An overheated shell computes nothing and wears; the outer field of phase 5 halves the wear. At 0% the shell fractures and stays off.");
         GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.13",
+                "Repair: put the shell's own blocks in an input bus on the station. Each block gives back 5%, one per shell a second, while it is not overheated.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant_short.liquid_helium",
+                "He");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant_short.superfluid_helium",
+                "He-II");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant_short.shifted_superfluid",
+                "DSS");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant_name.liquid_helium",
+                "Liquid helium");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant_name.superfluid_helium",
+                "Superfluid helium");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.coolant_name.shifted_superfluid",
+                "Shifted superfluid");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.fracture_warning",
+                "%s shell(s) fractured: put their blocks in an input bus");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.col_integrity",
+                "Integr.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.fractured",
+                "fractured");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.limit_hint",
+                "Limit now: %s K (the main rings of phase 4 add 40 K).");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.14",
+                "= Ψ/s = (max CWU/t × 20 - CWU used in the second) / 2^20");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.15",
+                "CWU nobody asks for becomes Ψ (thought cycles), kept for the owner like the Nexus network's EU.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.16",
+                "Send CWU through up to 2 Optical Data Transmission Hatches on the station; coolant and repair blocks enter through fluid hatches and input buses there too.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.17",
+                "The brain only works in the Nexus System, around its star.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.18",
+                "Phases 2 to 5 can come later: a phase counts once all its blocks and those of the phases before it are in place.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.matrioshka.ui.manual.19",
                 "While it runs, every ring but the polar one leaves the world and turns; switching off puts them back.");
     }
 }

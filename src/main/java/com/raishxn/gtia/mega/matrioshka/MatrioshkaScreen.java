@@ -21,11 +21,15 @@ import static com.raishxn.gtna.common.machine.multiblock.originals.ui.OriginalSc
  */
 public final class MatrioshkaScreen {
 
-    /** The Stellar Chamber's art, in the brain's amber. */
-    private static final Theme T = new Theme("stellar", 0xFFFFB347, 0xFFFFE6B0, 0xFF0A0E1C, 0xFF3A548C, 0xFF8498C4);
+    /**
+     * Its own art (assets/gtna/textures/gui/originals_v2/gtia_matrioshka, the GTNA kit's folder): dark warm grey with
+     * amber accents and circuit traces on the display.
+     */
+    private static final Theme T = new Theme("gtia_matrioshka", 0xFFFFB347, 0xFFFFE6B0, 0xFF16130F, 0xFF5A4A34,
+            0xFFB0A088);
     /** Ring tilts of the display, one per phase (the build's ±15°, 0°, 90°, ±30°, ±4°). */
     private static final double[] TILT = { 15, 0, 90, 30, 4 };
-    private static final int MANUAL_LINES = 14;
+    private static final int MANUAL_LINES = 20;
 
     private MatrioshkaScreen() {}
 
@@ -33,7 +37,10 @@ public final class MatrioshkaScreen {
         Nav nav = new Nav();
         var root = window(T, m, player, (g, x, y) -> display(g, m, x, y), (g, x, y) -> {
             chip(g, T, x, y, 52, tr("star"), m.inNexusSystem() ? 0xFFFFD27A : RED);
-            chip(g, T, x + 56, y, 52, tr("cool"), m.coolant() > 0.99 ? GREEN : m.coolant() > 0 ? YELLOW : T.dim());
+            var tier = m.coolantTier();
+            chip(g, T, x + 56, y, 52, tier == MatrioshkaShells.Coolant.NONE ? tr("cool") : tr("coolant_short." +
+                    tier.name().toLowerCase(java.util.Locale.ROOT)),
+                    tier == MatrioshkaShells.Coolant.NONE ? T.dim() : m.coolant() > 0.99 ? GREEN : YELLOW);
         });
         root.addWidget(gridButton(T, 0, "minus", "mb_clock_down", () -> false, c -> act(m, "clock_down", c)));
         root.addWidget(gridButton(T, 1, "plus", "mb_clock_up", () -> false, c -> act(m, "clock_up", c)));
@@ -60,12 +67,25 @@ public final class MatrioshkaScreen {
         return phase - 1 < v.length ? v[phase - 1] : 0;
     }
 
-    private static boolean hot(MatrioshkaBrainMachine m, int phase) {
+    private static double v(MatrioshkaBrainMachine m, int i) {
         double[] v = m.view();
-        return v.length > 5 && (((int) v[5]) & (1 << (phase - 1))) != 0;
+        return i < v.length ? v[i] : 0;
     }
 
-    /** Blue at 200 K, amber at 400 K, red at the limit. */
+    private static boolean hot(MatrioshkaBrainMachine m, int phase) {
+        return (((int) v(m, 5)) & (1 << (phase - 1))) != 0;
+    }
+
+    private static boolean fractured(MatrioshkaBrainMachine m, int phase) {
+        return (((int) v(m, 6)) & (1 << (phase - 1))) != 0;
+    }
+
+    private static double limit(MatrioshkaBrainMachine m) {
+        double l = v(m, 14);
+        return l > 0 ? l : MatrioshkaShells.T_LIMIT;
+    }
+
+    /** Blue at 200 K, amber halfway, red at the limit. */
     static int heat(double t) {
         double f = Math.max(0, Math.min(1, (t - 200) / (MatrioshkaShells.T_LIMIT - 200)));
         int r = (int) (80 + 175 * f), gr = (int) (170 + 40 * Math.sin(Math.PI * f) - 120 * f),
@@ -86,7 +106,7 @@ public final class MatrioshkaScreen {
         for (int p = 1; p <= MatrioshkaShells.PHASES; p++) {
             boolean built = p <= m.phases();
             int r = 12 + p * 8;
-            int colour = !built ? 0xFF2A3044 :
+            int colour = !built ? 0xFF2A3044 : fractured(m, p) ? 0xFF5A1A1A :
                     hot(m, p) && (int) (time * 3) % 2 == 0 ? RED : heat(temp(m, p));
             double spin = m.isRunning() ? time * (0.25 + 0.12 * p) * (p % 2 == 0 ? -1 : 1) : 0;
             ring(g, cx, cy, r, TILT[p - 1], spin, colour, built ? 0 : 3);
@@ -101,18 +121,22 @@ public final class MatrioshkaScreen {
         double max = m.maxCwut();
         bar(g, T, x0, y + 16, w, tr("cwu"), sci(m.usedCwut()) + " / " + sci(max),
                 max > 0 ? m.usedCwut() / max : 0, T.accent());
-        double[] v = m.view();
-        double demand = v.length > 7 ? v[7] : 0;
-        bar(g, T, x0, y + 33, w, tr("coolant"), String.format("%.0f%% · %.0f mB/s", m.coolant() * 100, demand),
+        var tier = m.coolantTier();
+        String coolantLabel = tier == MatrioshkaShells.Coolant.NONE ? tr("coolant") :
+                tr("coolant_name." + tier.name().toLowerCase(java.util.Locale.ROOT));
+        bar(g, T, x0, y + 33, w, coolantLabel, String.format("%.0f%% · %.0f mB/s", m.coolant() * 100, v(m, 8)),
                 m.coolant(), 0xFF7ED8FF);
         double hottest = 0;
         for (int p = 1; p <= m.phases(); p++) hottest = Math.max(hottest, temp(m, p));
-        bar(g, T, x0, y + 50, w, tr("hottest"), String.format("%.0f / %.0f K", hottest, MatrioshkaShells.T_LIMIT),
-                hottest / MatrioshkaShells.T_LIMIT, heat(hottest));
+        double lim = limit(m);
+        bar(g, T, x0, y + 50, w, tr("hottest"), String.format("%.0f / %.0f K", hottest, lim), hottest / lim,
+                heat(hottest * MatrioshkaShells.T_LIMIT / lim));
         text(g, tr("psi", sci(m.psi())), x0, y + 70, VIOLET, false);
-        text(g, tr("psi_rate", sci(v.length > 6 ? v[6] : 0)), x0, y + 81, T.dim(), false);
-        int overheated = v.length > 5 ? (int) v[5] : 0;
-        if (overheated != 0) text(g, tr("overheat_warning", Integer.bitCount(overheated)), x0, y + 94, RED, false);
+        text(g, tr("psi_rate", sci(v(m, 7))), x0, y + 81, T.dim(), false);
+        int broken = (int) v(m, 6), overheated = (int) v(m, 5);
+        if (broken != 0) text(g, tr("fracture_warning", Integer.bitCount(broken)), x0, y + 94, RED, false);
+        else if (overheated != 0)
+            text(g, tr("overheat_warning", Integer.bitCount(overheated)), x0, y + 94, RED, false);
     }
 
     /** A ring seen from the side: an ellipse tilted by {@code tilt}, with a marker turning along it. */
@@ -139,31 +163,38 @@ public final class MatrioshkaScreen {
 
     private static WidgetGroup shells(MatrioshkaBrainMachine m, Nav nav) {
         return panel(T, nav, "shells", "mb_shells_title", (g, x, y) -> {
-            int[] col = { 10, 58, 118, 170, 240 };
-            String[] head = { "col_shell", "col_radius", "col_temp", "col_cwu", "col_state" };
+            int[] col = { 10, 50, 98, 150, 200, 240 };
+            String[] head = { "col_shell", "col_radius", "col_temp", "col_cwu", "col_integrity", "col_state" };
             for (int c = 0; c < col.length; c++) text(g, tr(head[c]), x + col[c], y + 20, T.accent(), false);
             g.fill(x + 8, y + 30, x + 284, y + 31, T.line());
             var shape = MatrioshkaShape.get();
+            double lim = limit(m);
             for (int p = 1; p <= MatrioshkaShells.PHASES; p++) {
                 int ry = y + 22 + p * 14;
                 boolean built = p <= m.phases();
                 double r = shape == null ? 0 : shape.radius[p - 1];
-                double t = built ? temp(m, p) : MatrioshkaShells.temperature(r, m.clockPct(), m.coolant());
-                long cwu = MatrioshkaShells.shellCwut(p, r, m.clockPct(), m.coolant());
+                double t = built ? temp(m, p) : MatrioshkaShells.target(r, m.clockPct(), m.coolantTier(), m.coolant());
+                boolean off = built && (hot(m, p) || fractured(m, p));
+                long cwu = off ? 0 : MatrioshkaShells.shellCwut(p, t, m.clockPct());
                 int c = built ? 0xFFE0E0E4 : T.dim();
                 text(g, String.valueOf(p), x + col[0] + 4, ry, c, false);
                 text(g, String.format("%.0f", r), x + col[1], ry, c, false);
-                text(g, String.format("%.0f K", t), x + col[2], ry, heat(t), false);
+                text(g, String.format("%.0f K", t), x + col[2], ry, heat(t * MatrioshkaShells.T_LIMIT / lim), false);
                 text(g, built ? sci(cwu) : "-", x + col[3], ry, c, false);
-                String state = !built ? tr("not_built") : MatrioshkaShells.overheated(t) ? tr("overheat") : tr("ok");
-                text(g, state, x + col[4], ry, !built ? T.dim() : MatrioshkaShells.overheated(t) ? RED : GREEN, false);
+                double integ = v(m, 8 + p) / 10;
+                text(g, built ? String.format("%.0f%%", integ) : "-", x + col[4], ry,
+                        !built ? T.dim() : integ < 25 ? RED : integ < 75 ? YELLOW : GREEN, false);
+                String state = !built ? tr("not_built") : fractured(m, p) ? tr("fractured") :
+                        hot(m, p) ? tr("overheat") : tr("ok");
+                text(g, state, x + col[5], ry, !built ? T.dim() : off ? RED : GREEN, false);
             }
-            text(g, tr("shells_hint"), x + 10, y + 118, T.dim(), false);
+            text(g, tr("shells_hint"), x + 10, y + 112, T.dim(), false);
+            text(g, tr("limit_hint", String.format("%.0f", lim)), x + 10, y + 124, T.dim(), false);
         });
     }
 
-    /** Manual lines per page: two pages of seven. */
-    private static final int PAGE_LINES = 7;
+    /** Manual lines per page: four pages of five. */
+    private static final int PAGE_LINES = 5;
 
     private static WidgetGroup manual(Nav nav) {
         int pages = (MANUAL_LINES + PAGE_LINES - 1) / PAGE_LINES;

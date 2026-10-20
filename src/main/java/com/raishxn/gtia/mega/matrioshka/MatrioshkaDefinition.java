@@ -64,7 +64,8 @@ public final class MatrioshkaDefinition {
                 pattern.where(letter, OriginalLayout.register(blocks(block)
                         .or(abilities(PartAbility.COMPUTATION_DATA_TRANSMISSION).setMaxGlobalLimited(2)
                                 .setPreviewCount(1))
-                        .or(abilities(PartAbility.IMPORT_FLUIDS).setMaxGlobalLimited(2).setPreviewCount(1)),
+                        .or(abilities(PartAbility.IMPORT_FLUIDS).setMaxGlobalLimited(2).setPreviewCount(1))
+                        .or(abilities(PartAbility.IMPORT_ITEMS).setMaxGlobalLimited(2).setPreviewCount(1)),
                         new OriginalLayout.Matcher(letter, OriginalLayout.Kind.HATCH, block, null)));
             else if (part.phase() == 1)
                 pattern.where(letter, OriginalLayout.register(blocks(block),

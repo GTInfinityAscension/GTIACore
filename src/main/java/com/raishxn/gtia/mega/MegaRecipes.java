@@ -19,6 +19,13 @@ public final class MegaRecipes {
     private MegaRecipes() {}
 
     public static void addRecipes(Consumer<FinishedRecipe> provider) {
+        // Helium II: liquid helium cooled below the lambda point (2.17 K).
+        GTRecipeTypes.VACUUM_RECIPES.recipeBuilder(GTIAMod.id("superfluid_helium"))
+                .inputFluids(GTMaterials.Helium.getFluid(
+                        com.gregtechceu.gtceu.api.fluids.store.FluidStorageKeys.LIQUID, 1000))
+                .outputFluids(MegaMaterials.SUPERFLUID_HELIUM.getFluid(1000))
+                .EUt(GTValues.VA[GTValues.UHV]).duration(200)
+                .save(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))

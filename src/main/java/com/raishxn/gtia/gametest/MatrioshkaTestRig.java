@@ -158,12 +158,14 @@ final class MatrioshkaTestRig {
             // Overclocking without helium overheats the inner shells: more clock, but not twice the CWU.
             m.setClock(MatrioshkaShells.CLOCK_MAX);
             m.testSecond(owner);
+            helper.assertTrue((((int) m.view()[5]) & 1) == 0, "a clock peak does not overheat at once (inertia)");
+            for (int s = 0; s < 40; s++) m.testSecond(owner);
             int hot = (int) m.view()[5];
-            helper.assertTrue((hot & 1) != 0, "the inner shell overheats at 200% clock: mask " + hot);
-            helper.assertTrue(m.getMaxCWUt() < 2L * expected && m.getMaxCWUt() > expected,
-                    "200% clock without helium: " + m.getMaxCWUt() + " vs " + expected);
+            helper.assertTrue((hot & 1) != 0, "the inner shell overheats after a while at 200%: mask " + hot);
+            helper.assertTrue(m.integrity(1) < MatrioshkaShells.INTEGRITY, "and wears: " + m.integrity(1));
+            helper.assertTrue(m.getMaxCWUt() > expected, "200% clock still gives more: " + m.getMaxCWUt());
             m.setClock(100);
-            m.testSecond(owner);
+            for (int s = 0; s < 40; s++) m.testSecond(owner);
 
             m.setWorkingEnabled(false);
             helper.assertTrue(!helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
@@ -183,13 +185,36 @@ final class MatrioshkaTestRig {
         helper.assertTrue(MatrioshkaShells.temperature(r[4]) < MatrioshkaShells.temperature(r[0]),
                 "the outer shell is colder");
         helper.assertTrue(MatrioshkaShells.shellCwut(5, r[4]) > 1L << 26, "the cold outer shell beats 2^26");
-        double t = MatrioshkaShells.temperature(r[0], 100, 0);
-        helper.assertTrue(Math.abs(MatrioshkaShells.temperature(r[0], 100, 1) - 0.6 * t) < 1e-6,
-                "full helium makes a shell 40% colder");
-        helper.assertTrue(MatrioshkaShells.shellCwut(1, r[0], 200, 0) == 0, "200% clock overheats the inner shell");
-        helper.assertTrue(MatrioshkaShells.shellCwut(1, r[0], 200, 1) > 2 * MatrioshkaShells.shellCwut(1, r[0]),
-                "with helium, 200% clock more than doubles it (colder and faster)");
-        helper.assertTrue(MatrioshkaShells.coolantDemand(5, 200) == 2500, "helium: 250 mB/s x 5 phases x 2");
+        var helium = MatrioshkaShells.Coolant.LIQUID_HELIUM;
+        var shifted = MatrioshkaShells.Coolant.SHIFTED_SUPERFLUID;
+        double t = MatrioshkaShells.temperature(r[0], 100);
+        double cooled = MatrioshkaShells.target(r[0], 100, helium, 1);
+        helper.assertTrue(Math.abs(cooled - (4 + (t - 4) * 0.6)) < 1e-6, "helium pulls a shell 40% towards 4 K");
+        helper.assertTrue(MatrioshkaShells.target(r[0], 100, shifted, 1) < MatrioshkaShells.target(r[0], 100,
+                MatrioshkaShells.Coolant.SUPERFLUID_HELIUM, 1) && MatrioshkaShells.target(r[0], 100,
+                        MatrioshkaShells.Coolant.SUPERFLUID_HELIUM, 1) < cooled,
+                "each coolant tier is colder than the one before");
+        helper.assertTrue(MatrioshkaShells.temperature(r[0], 200) > MatrioshkaShells.limit(5),
+                "200% clock overheats the uncooled inner shell even with the main rings");
+        helper.assertTrue(MatrioshkaShells.target(r[0], 200, helium, 1) < MatrioshkaShells.T_LIMIT,
+                "with helium it stays under the limit");
+        helper.assertTrue(MatrioshkaShells.coolantDemand(helium, 5, 200) == 2500 &&
+                MatrioshkaShells.coolantDemand(shifted, 5, 200) == 100, "coolant demand per tier");
+        // Inertia: one second closes a tenth of the gap.
+        helper.assertTrue(Math.abs(MatrioshkaShells.step(400, 500) - 410) < 1e-9, "10 s time constant");
+        helper.assertTrue(MatrioshkaShells.limit(4) == 540 && MatrioshkaShells.limit(3) == 500,
+                "the main rings of phase 4 raise the limit by 40 K");
+        // Wear: an overheated shell loses integrity and, at zero, stops even when cool again.
+        double[] temps = { 1000, 0, 0, 0, 0 };
+        int[] integrity = { 20, 1000, 1000, 1000, 1000 };
+        var res = com.raishxn.gtia.mega.matrioshka.MatrioshkaThermal.second(r, 1, 100,
+                MatrioshkaShells.Coolant.NONE, 0, temps, integrity);
+        helper.assertTrue(integrity[0] == 0 && (res.fractured() & 1) != 0 && res.cwut() == 0,
+                "an overheated shell wears to zero and fractures: " + integrity[0]);
+        temps[0] = 200;
+        res = com.raishxn.gtia.mega.matrioshka.MatrioshkaThermal.second(r, 1, 100,
+                MatrioshkaShells.Coolant.NONE, 0, temps, integrity);
+        helper.assertTrue(res.cwut() == 0, "a fractured shell computes nothing until repaired");
         helper.succeed();
     }
 
