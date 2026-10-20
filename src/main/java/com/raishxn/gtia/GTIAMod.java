@@ -45,6 +45,7 @@ public final class GTIAMod {
         com.raishxn.gtia.station.GTIAStation.init();
         com.raishxn.gtia.data.rocket.GTIARocketBlocks.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        com.raishxn.gtia.miner.GTIAMiners.registerSerializers(modBus);
         modBus.addListener(this::registerMaterialRegistry);
         modBus.addListener(this::sendCraftingSources);
         modBus.addListener(this::registerMaterials);
@@ -124,6 +125,7 @@ public final class GTIAMod {
     private void registerMachines(GTCEuAPI.RegisterEvent<ResourceLocation, MachineDefinition> event) {
         GTIAMachines.init();
         GTIABeeMachines.init();
+        com.raishxn.gtia.miner.GTIAMiners.init();
         GTIAGreenhouse.init();
         com.raishxn.gtia.chem.ChemPlants.init();
         com.raishxn.gtia.data.rocket.GTIARocketAssembler.init();

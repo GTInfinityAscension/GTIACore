@@ -27,6 +27,13 @@ public final class GTIAItems {
                     GTIAMod.id("item/carbon_anode")))
             .register();
 
+    /** Records a bedrock vein for the Entangled Miner (GTIA-D-310). Placeholder texture until the author draws one. */
+    public static final ItemEntry<com.raishxn.gtia.miner.VeinCardItem> VEIN_CARD = GTIAMod.REGISTRATE
+            .item("vein_card", com.raishxn.gtia.miner.VeinCardItem::new)
+            .lang("Vein Card")
+            .model((context, provider) -> provider.generated(context, GTIAMod.id("item/vein_card")))
+            .register();
+
     private GTIAItems() {}
 
     public static void init() {}

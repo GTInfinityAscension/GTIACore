@@ -47,6 +47,13 @@ public final class GTIARecipeTypes {
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
             .setSound(GTSoundEntries.SCIENCE);
 
+    /** Entangled Miner (GTIA-D-310): the recipe is built per operation from the Vein Card (custom logic). */
+    public static final GTRecipeType ENTANGLED_MINER = register("entangled_miner")
+            .setMaxIOSize(1, 4, 0, 0)
+            .setEUIO(IO.IN)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.MINER);
+
     /** Rocket Assembler (GTIA-D-274): Ad Astra rocket parts and GT components become a rocket. */
     public static final GTRecipeType ROCKET_ASSEMBLY = register("rocket_assembly", GTRecipeTypes.MULTIBLOCK)
             .setMaxIOSize(9, 1, 1, 0)

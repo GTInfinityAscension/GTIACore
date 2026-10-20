@@ -43,6 +43,7 @@ public final class GTIAAddon implements IGTAddon {
         com.raishxn.gtia.organ.OrganRecipes.addRecipes(provider);
         com.raishxn.gtia.chem.ChemRecipes.addRecipes(provider);
         com.raishxn.gtia.route.RouteRecipes.addRecipes(provider);
+        com.raishxn.gtia.miner.GTIAMiners.addRecipes(provider);
     }
 
     @Override
@@ -54,6 +55,11 @@ public final class GTIAAddon implements IGTAddon {
     @Override
     public void registerOreVeins() {
         GTIAPhaseOres.register();
+    }
+
+    @Override
+    public void registerBedrockOreVeins() {
+        com.raishxn.gtia.miner.BedrockVeins.register();
     }
 
     @Override
