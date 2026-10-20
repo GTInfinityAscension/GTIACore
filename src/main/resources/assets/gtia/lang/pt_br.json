@@ -450,5 +450,17 @@
   "block.gtia.mv_entangled_miner": "Minerador Entrelaçado Avançado",
   "block.gtia.hv_entangled_miner": "Minerador Entrelaçado Avançado II",
   "block.gtia.ev_entangled_miner": "Minerador Entrelaçado Avançado III",
-  "block.gtia.iv_entangled_miner": "Minerador Entrelaçado Elite"
+  "block.gtia.iv_entangled_miner": "Minerador Entrelaçado Elite",
+  "block.gtia.matrioshka_brain": "Cérebro Matrioshka",
+  "gtia.machine.matrioshka_brain.tooltip.0": "Cascas de computadores em volta da estrela do Sistema Nexus, construídas em cinco fases. Só funciona lá.",
+  "gtia.machine.matrioshka_brain.tooltip.1": "Cada fase soma uma casca: 2^(21+n) CWU/t a 300 K, mais nas cascas frias de fora (limite de Landauer).",
+  "gtia.machine.matrioshka_brain.tooltip.2": "Envia CWU por Hatches de Transmissão Óptica de Dados; o CWU que ninguém pede vira Ψ.",
+  "gtia.matrioshka.needs_star": "Sem estrela aqui: o Cérebro Matrioshka só funciona no Sistema Nexus.",
+  "gtia.matrioshka.phases": "Fases construídas: %s de %s",
+  "gtia.matrioshka.shell": "Casca %s: %s K, %s CWU/t",
+  "gtia.matrioshka.cwut": "Computação em uso: %s de %s CWU/t",
+  "gtia.matrioshka.psi": "Ψ do dono: %s ciclos de pensamento",
+  "dimension.gtia.nexus_system": "Sistema Nexus",
+  "planet.gtia.nexus_system": "Sistema Nexus",
+  "solar_system.gtia.nexus_system": "Sistema Nexus"
 }

@@ -450,5 +450,17 @@
   "block.gtia.mv_entangled_miner": "§b进阶纠缠采矿机 §r",
   "block.gtia.hv_entangled_miner": "§6进阶纠缠采矿机 II §r",
   "block.gtia.ev_entangled_miner": "§5进阶纠缠采矿机 III §r",
-  "block.gtia.iv_entangled_miner": "§9精英纠缠采矿机 §r"
+  "block.gtia.iv_entangled_miner": "§9精英纠缠采矿机 §r",
+  "block.gtia.matrioshka_brain": "套娃脑",
+  "gtia.machine.matrioshka_brain.tooltip.0": "环绕连结星系恒星的计算机外壳，分五个阶段建造。只能在那里运作。",
+  "gtia.machine.matrioshka_brain.tooltip.1": "每个阶段增加一层外壳：300 K 时 2^(21+n) CWU/t，外层冷壳更多（兰道尔极限）。",
+  "gtia.machine.matrioshka_brain.tooltip.2": "通过光学数据传输仓输出 CWU；无人请求的 CWU 转为 Ψ。",
+  "gtia.matrioshka.needs_star": "这里没有恒星：套娃脑只能在连结星系运作。",
+  "gtia.matrioshka.phases": "已建阶段：%s / %s",
+  "gtia.matrioshka.shell": "外壳 %s：%s K，%s CWU/t",
+  "gtia.matrioshka.cwut": "使用中的算力：%s / %s CWU/t",
+  "gtia.matrioshka.psi": "所有者的 Ψ：%s 个思维周期",
+  "dimension.gtia.nexus_system": "连结星系",
+  "planet.gtia.nexus_system": "连结星系",
+  "solar_system.gtia.nexus_system": "连结星系"
 }

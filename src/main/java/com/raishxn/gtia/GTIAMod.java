@@ -38,6 +38,7 @@ public final class GTIAMod {
     public GTIAMod() {
         GTIALang.init();
         com.raishxn.gtia.chem.ChemLang.init();
+        com.raishxn.gtia.mega.GTIAMegaLang.init();
         com.raishxn.gtia.rules.GTIARuleEffects.applyStartupRules();
         GTIAItems.init();
         com.raishxn.gtia.organ.GTIAOrgans.init();
@@ -72,6 +73,8 @@ public final class GTIAMod {
                     (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) -> WorldRules.leaveWorld());
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onRegisterCommands);
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesClient::onClientTick);
+            if (com.raishxn.gtia.mega.GTIAMegastructures.available()) MinecraftForge.EVENT_BUS.addListener(
+                    com.raishxn.gtia.mega.matrioshka.client.MatrioshkaRenderer::onRenderLevelStage);
             if (com.raishxn.gtia.client.GTIARulesSelfTest.ENABLED) {
                 MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.client.GTIARulesSelfTest::onClientTick);
             }
@@ -129,6 +132,7 @@ public final class GTIAMod {
         GTIAGreenhouse.init();
         com.raishxn.gtia.chem.ChemPlants.init();
         com.raishxn.gtia.data.rocket.GTIARocketAssembler.init();
+        com.raishxn.gtia.mega.GTIAMegastructures.init();
     }
 
     public static ResourceLocation id(String path) {

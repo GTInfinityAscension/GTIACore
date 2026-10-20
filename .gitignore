@@ -32,3 +32,6 @@ run/
 run-data/
 work/
 /src/generated/resources/.cache/*
+
+# Gigastructural-derived Matrioshka data: local only until the author allows it (GTIA-D-311)
+src/main/resources/gtia_matrioshka/
