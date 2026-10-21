@@ -1,0 +1,172 @@
+{
+ "block.gtia.nidavellir": [
+  "Nidavellir Hyperforge",
+  "Hiperforja Nidavellir",
+  "尼达维勒超级熔炉"
+ ],
+ "gtia.machine.nidavellir.tooltip.0": [
+  "A ring forge round the star of its system, built in five phases. Runs Alloy Blast Smelter and Ultimate Material Forge recipes in huge batches.",
+  "Uma forja em anel em volta da estrela do sistema, construída em cinco fases. Roda receitas do Alloy Blast Smelter e da Ultimate Material Forge em lotes enormes.",
+  "围绕所在恒星系恒星的环形熔炉，分五个阶段建造。以巨量批次运行合金冶炼炉和终极材料熔炉配方。"
+ ],
+ "gtia.machine.nidavellir.tooltip.1": [
+  "Each batch is pressed under neutronium dust: compression 0-4 gives 256 × 2^c parallels for 2^c dust.",
+  "Cada lote é prensado sob pó de neutrônio: compressão 0-4 dá 256 × 2^c paralelos por 2^c de pó.",
+  "每批次在中子素粉下压制：压缩等级 0-4 提供 256 × 2^c 并行，消耗 2^c 粉。"
+ ],
+ "gtia.machine.nidavellir.tooltip.2": [
+  "Around a neutron star the magnetosphere presses four times as fast; from the pulsar vicinity, half the neutronium.",
+  "Em volta de uma estrela de nêutrons a magnetosfera prensa quatro vezes mais rápido; a partir das vizinhanças do pulsar, metade do neutrônio.",
+  "在中子星周围，磁层压制速度提高四倍；到达脉冲星附近后，中子素消耗减半。"
+ ],
+ "gtia.nidavellir.state": [
+  "Parallel %s, speed ×%s",
+  "Paralelo %s, velocidade ×%s",
+  "并行 %s，速度 ×%s"
+ ],
+ "gtia.nidavellir.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.nidavellir.ui.manual.tip": [
+  "How the forge works, with its formulas.",
+  "Como a forja funciona, com as fórmulas.",
+  "熔炉的原理和公式。"
+ ],
+ "gtia.nidavellir.ui.magnetar": [
+  "Neutron star: magnetic press ×4",
+  "Estrela de nêutrons: prensa magnética ×4",
+  "中子星：磁压 ×4"
+ ],
+ "gtia.nidavellir.ui.no_magnetar": [
+  "No neutron star: speed ×1",
+  "Sem estrela de nêutrons: velocidade ×1",
+  "无中子星：速度 ×1"
+ ],
+ "gtia.nidavellir.ui.wind": [
+  "Pulsar wind",
+  "Vento do pulsar",
+  "脉冲星风"
+ ],
+ "gtia.nidavellir.ui.crafts": [
+  "%s crafts, %s EU this second",
+  "%s produções, %s EU neste segundo",
+  "本秒 %s 次产出，%s EU"
+ ],
+ "gtia.nidavellir.ui.idle.no_recipe": [
+  "Waiting: no alloy recipe matches the buses",
+  "Esperando: nenhuma receita de liga bate com os barramentos",
+  "等待中：输入总线无匹配的合金配方"
+ ],
+ "gtia.nidavellir.ui.idle.inputs": [
+  "Waiting: inputs ran short",
+  "Esperando: faltaram insumos",
+  "等待中：原料不足"
+ ],
+ "gtia.nidavellir.ui.idle.power": [
+  "Waiting: not enough EU in the Nexus network",
+  "Esperando: falta EU na rede Nexus",
+  "等待中：Nexus 网络 EU 不足"
+ ],
+ "gtia.nidavellir.ui.idle.neutronium": [
+  "Waiting: not enough neutronium dust for a batch",
+  "Esperando: pó de neutrônio insuficiente para um lote",
+  "等待中：中子素粉不足一批"
+ ],
+ "gtia.nidavellir.ui.parallel": [
+  "Parallel",
+  "Paralelo",
+  "并行"
+ ],
+ "gtia.nidavellir.ui.speed": [
+  "Speed ×%s",
+  "Velocidade ×%s",
+  "速度 ×%s"
+ ],
+ "gtia.nidavellir.ui.per_batch": [
+  "Dust/batch: %s",
+  "Pó/lote: %s",
+  "每批粉：%s"
+ ],
+ "gtia.nidavellir.ui.crafted": [
+  "Forged: %s",
+  "Forjado: %s",
+  "已锻造：%s"
+ ],
+ "gtia.nidavellir.ui.used": [
+  "Dust spent: %s",
+  "Pó gasto: %s",
+  "已耗粉：%s"
+ ],
+ "gtia.nidavellir.ui.manual_title": [
+  "Field manual - Nidavellir Hyperforge",
+  "Manual de campo - Hiperforja Nidavellir",
+  "现场手册 - 尼达维勒超级熔炉"
+ ],
+ "gtna.ui.o.nd_press": [
+  "Compression: left click presses harder, right click eases.",
+  "Compressão: clique esquerdo aperta, direito alivia.",
+  "压缩：左键加压，右键减压。"
+ ],
+ "gtia.nidavellir.ui.manual.0": [
+  "#Degenerate press",
+  "#Prensa degenerada",
+  "#简并压机"
+ ],
+ "gtia.nidavellir.ui.manual.1": [
+  "Neutron-star matter is packed to ~4 × 10¹⁷ kg/m³: a thin layer of neutronium dust under the hammers presses a whole batch at once.",
+  "A matéria de estrela de nêutrons chega a ~4 × 10¹⁷ kg/m³: uma camada fina de pó de neutrônio sob os martelos prensa um lote inteiro de uma vez.",
+  "中子星物质密度约为 4 × 10¹⁷ kg/m³：锤下薄薄一层中子素粉即可一次压制整批。"
+ ],
+ "gtia.nidavellir.ui.manual.2": [
+  "=parallel = 256 × 2^c;  neutronium per batch = 2^c  (compression c from 0 to 4)",
+  "=paralelo = 256 × 2^c;  neutrônio por lote = 2^c  (compressão c de 0 a 4)",
+  "=并行 = 256 × 2^c；每批中子素 = 2^c（压缩 c 为 0 至 4）"
+ ],
+ "gtia.nidavellir.ui.manual.3": [
+  "Each built phase opens one more step of compression (c ≤ phases - 1). EU is paid from the Nexus network as in the base recipe.",
+  "Cada fase construída libera mais um passo de compressão (c ≤ fases - 1). O EU sai da rede Nexus como na receita base.",
+  "每建成一个阶段解锁一级压缩（c ≤ 阶段数 - 1）。EU 按原配方从 Nexus 网络支付。"
+ ],
+ "gtia.nidavellir.ui.manual.4": [
+  "#Magnetosphere",
+  "#Magnetosfera",
+  "#磁层"
+ ],
+ "gtia.nidavellir.ui.manual.5": [
+  "A neutron star's field reaches 10⁸–10¹¹ T. The yokes (phase 2) ride it, and the hammers strike four times as often.",
+  "O campo de uma estrela de nêutrons chega a 10⁸–10¹¹ T. As cangas (fase 2) se apoiam nele, e os martelos batem quatro vezes mais.",
+  "中子星磁场可达 10⁸–10¹¹ T。磁轭（阶段 2）借助该磁场，使锤击频率提高四倍。"
+ ],
+ "gtia.nidavellir.ui.manual.6": [
+  "=speed = 4 around a neutron star, 1 elsewhere",
+  "=velocidade = 4 em volta de uma estrela de nêutrons, 1 nos outros casos",
+  "=速度：中子星周围为 4，其他为 1"
+ ],
+ "gtia.nidavellir.ui.manual.7": [
+  "Make one with the Interstellar System Creator, or let the Fusion Suppressor collapse a star of 8-20 M☉.",
+  "Crie uma com o Interstellar System Creator, ou deixe o Fusion Suppressor colapsar uma estrela de 8-20 M☉.",
+  "可用星系创造器创建，或让聚变抑制器使 8-20 M☉ 的恒星坍缩。"
+ ],
+ "gtia.nidavellir.ui.manual.8": [
+  "#Pulsar wind",
+  "#Vento do pulsar",
+  "#脉冲星风"
+ ],
+ "gtia.nidavellir.ui.manual.9": [
+  "Once the Stellar Engine has carried the network to the pulsar vicinity, the catchers (phase 3) pull fresh neutronium from its wind.",
+  "Quando o Motor Estelar levar a rede às vizinhanças do pulsar, os coletores (fase 3) puxam neutrônio fresco do vento dele.",
+  "恒星引擎将网络推进到脉冲星附近后，收集器（阶段 3）可从脉冲星风中获取新鲜中子素。"
+ ],
+ "gtia.nidavellir.ui.manual.10": [
+  "=neutronium per batch = max(1, 2^c / 2) after the pulsar vicinity",
+  "=neutrônio por lote = max(1, 2^c / 2) depois das vizinhanças do pulsar",
+  "=到达脉冲星附近后每批中子素 = max(1, 2^c / 2)"
+ ],
+ "gtia.nidavellir.ui.manual.11": [
+  "Without enough dust for one batch the forge waits; it never runs a batch it cannot press.",
+  "Sem pó para um lote a forja espera; ela nunca roda um lote que não consegue prensar.",
+  "若中子素粉不足一批，熔炉会等待；不会运行无法压制的批次。"
+ ]
+}

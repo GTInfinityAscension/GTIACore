@@ -33,10 +33,21 @@ public final class MegaRecipeEngine {
         public String last = "";
     }
 
-    public record Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed) {}
+    /** {@code maxBatches}: at most this many batches this second (a fuel that runs out caps it). */
+    public record Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed, int maxBatches) {
+
+        public Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed) {
+            this(parallel, speed, euFactor, allowed, MAX_BATCHES);
+        }
+    }
 
     /** What one second did: crafts, EU spent, the recipe that ran (or the reason it did not). */
-    public record Result(long crafts, double eu, String recipe, String blocked) {}
+    public record Result(long crafts, double eu, String recipe, String blocked, int batches) {
+
+        public Result(long crafts, double eu, String recipe, String blocked) {
+            this(crafts, eu, recipe, blocked, 0);
+        }
+    }
 
     private MegaRecipeEngine() {}
 
@@ -58,8 +69,10 @@ public final class MegaRecipeEngine {
         long crafts = 0;
         double eu = 0;
         String blocked = "";
-        int batches = 0;
-        while (progress.ticks >= duration && batches++ < MAX_BATCHES) {
+        int batches = 0, done = 0;
+        int cap = Math.min(MAX_BATCHES, lim.maxBatches());
+        while (progress.ticks >= duration && batches < cap) {
+            batches++;
             int p = ParallelLogic.getParallelAmountWithoutEU(m, recipe, Math.max(1, lim.parallel()));
             if (p <= 0) {
                 blocked = "inputs";
@@ -79,6 +92,7 @@ public final class MegaRecipeEngine {
             }
             RecipeHelper.handleRecipeIO(m, run, IO.OUT, caches);
             progress.ticks -= duration;
+            done++;
             crafts += p;
             eu += cost;
         }
@@ -86,7 +100,7 @@ public final class MegaRecipeEngine {
         if (!blocked.isEmpty()) progress.ticks = Math.min(progress.ticks, duration);
         progress.crafted += crafts;
         progress.last = id;
-        return new Result(crafts, eu, id, blocked);
+        return new Result(crafts, eu, id, blocked, done);
     }
 
     /** The recipe without its EU: the megastructure pays it from the Nexus network instead of an energy hatch. */

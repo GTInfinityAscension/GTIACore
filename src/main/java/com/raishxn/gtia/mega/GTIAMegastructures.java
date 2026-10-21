@@ -15,16 +15,18 @@ public final class GTIAMegastructures {
     public static final String MATRIOSHKA = "matrioshka_brain", STELLAR_ENGINE = "stellar_engine",
             STAR_LIFTER = "star_lifter", STELLAR_HOOP = "stellar_hoop",
             SYSTEM_CREATOR = "system_creator", FUSION_SUPPRESSOR = "fusion_suppressor",
-            KUGELBLITZ = "kugelblitz", HRAEMC = "hraemc";
+            KUGELBLITZ = "kugelblitz", HRAEMC = "hraemc",
+            NIDAVELLIR = "nidavellir";
 
     /** Every megastructure, for the client renderer check. */
     static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
-            FUSION_SUPPRESSOR, KUGELBLITZ, HRAEMC };
+            FUSION_SUPPRESSOR, KUGELBLITZ, HRAEMC,
+            NIDAVELLIR };
 
     @Nullable
     public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF,
             STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF, FUSION_SUPPRESSOR_DEF,
-            KUGELBLITZ_DEF, HRAEMC_DEF;
+            KUGELBLITZ_DEF, HRAEMC_DEF, NIDAVELLIR_DEF;
 
     private GTIAMegastructures() {}
 
@@ -56,5 +58,7 @@ public final class GTIAMegastructures {
             FUSION_SUPPRESSOR_DEF = com.raishxn.gtia.mega.suppressor.FusionSuppressorDefinition.register();
         if (available(KUGELBLITZ)) KUGELBLITZ_DEF = com.raishxn.gtia.mega.kugelblitz.KugelblitzDefinition.register();
         if (available(HRAEMC)) HRAEMC_DEF = com.raishxn.gtia.mega.hraemc.HraeDefinition.register();
+        if (available(NIDAVELLIR))
+            NIDAVELLIR_DEF = com.raishxn.gtia.mega.nidavellir.NidavellirDefinition.register();
     }
 }

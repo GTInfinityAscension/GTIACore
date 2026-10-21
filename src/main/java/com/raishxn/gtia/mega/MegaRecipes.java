@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-323): the forge is pressed out of neutronium. */
+    private static void nidavellir(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("nidavellir"))
+                .inputItems(com.gregtechceu.gtceu.common.data.machines.GCYMMachines.BLAST_ALLOY_SMELTER.asStack(16))
+                .inputItems(GTItems.ELECTRIC_PISTON_UV.asStack(64))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(36864))
+                .outputItems(GTIAMegastructures.NIDAVELLIR_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-322): superconducting coils for the Penrose ring, sensors for the antennas. */
     private static void hraemc(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("hraemc"))
@@ -112,6 +125,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.FUSION_SUPPRESSOR_DEF != null) fusionSuppressor(provider);
         if (GTIAMegastructures.KUGELBLITZ_DEF != null) kugelblitz(provider);
         if (GTIAMegastructures.HRAEMC_DEF != null) hraemc(provider);
+        if (GTIAMegastructures.NIDAVELLIR_DEF != null) nidavellir(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))
