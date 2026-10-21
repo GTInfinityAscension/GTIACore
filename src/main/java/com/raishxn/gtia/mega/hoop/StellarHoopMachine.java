@@ -62,6 +62,8 @@ public class StellarHoopMachine extends MegaMachine {
     @DescSynced
     private double[] view = new double[10];
     private final MegaRecipeEngine.Progress progress = new MegaRecipeEngine.Progress();
+    /** Dev aid ({@code /gtia_dev_click <pos> dev_show}): seconds left showing the forge lit for screenshots. */
+    private int devShow;
 
     public StellarHoopMachine(IMachineBlockEntity holder, Object... args) {
         super(holder, args);
@@ -181,6 +183,10 @@ public class StellarHoopMachine extends MegaMachine {
         // The hoop turns whenever it is on and whole; the forge glow shows only while recipes run.
         boolean on = integrity > 0 && isWorkingEnabled();
         boolean forging = on && (result.busy() || "inputs".equals(blocked));
+        if (devShow > 0) {
+            devShow--;
+            forging = on;
+        }
         view = new double[] { parallel, kelvin, load, cooled, tier, result.crafts(), result.eu(), forging ? 1 : 0,
                 star.temperature(), star.drawnScale() };
         return on;
@@ -223,7 +229,10 @@ public class StellarHoopMachine extends MegaMachine {
         switch (data) {
             case "dive" -> setHeight(heightPct - HoopPhysics.HEIGHT_STEP);
             case "rise" -> setHeight(heightPct + HoopPhysics.HEIGHT_STEP);
-            default -> super.handleDisplayClick(data, click);
+            default -> {
+                if (data.equals("dev_show") && !net.minecraftforge.fml.loading.FMLEnvironment.production) devShow = 600;
+                else super.handleDisplayClick(data, click);
+            }
         }
     }
 
