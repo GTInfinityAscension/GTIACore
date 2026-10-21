@@ -1,0 +1,162 @@
+{
+ "block.gtia.stellar_harvester": [
+  "Stellar Harvester",
+  "Colhedora Estelar",
+  "恒星收割器"
+ ],
+ "gtia.machine.stellar_harvester.tooltip.0": [
+  "Heats the core of its system's star until it burns its whole life in hours, built in five phases.",
+  "Aquece o núcleo da estrela do sistema até ela queimar a vida inteira em horas, construída em cinco fases.",
+  "加热所在恒星系恒星的核心，使其在数小时内燃尽一生，分五个阶段建造。"
+ ],
+ "gtia.machine.stellar_harvester.tooltip.1": [
+  "Pays the boosted starlight to the Nexus network: the budget is the core's hydrogen, 2^60 EU per solar mass.",
+  "Paga a luz reforçada para a rede Nexus: o orçamento é o hidrogênio do núcleo, 2^60 EU por massa solar.",
+  "将增强的星光输入 Nexus 网络：预算为核心氢，每个太阳质量 2^60 EU。"
+ ],
+ "gtia.machine.stellar_harvester.tooltip.2": [
+  "When it runs out the star ends by its mass: white dwarf, neutron star or black hole.",
+  "Quando acaba, a estrela termina pela massa: anã branca, estrela de nêutrons ou buraco negro.",
+  "耗尽后恒星按质量终结：白矮星、中子星或黑洞。"
+ ],
+ "gtia.stellar_harvester.state": [
+  "Heat %s, boost x%s, fuel %s",
+  "Aquecimento %s, reforço x%s, combustível %s",
+  "加热 %s，增强 x%s，燃料 %s"
+ ],
+ "gtia.stellar_harvester.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.stellar_harvester.ui.manual.tip": [
+  "How the harvest works, with its formulas.",
+  "Como a colheita funciona, com as fórmulas.",
+  "收割的原理和公式。"
+ ],
+ "gtia.stellar_harvester.ui.heat.tip": [
+  "Core heating: left click +0.05, right click -0.05.",
+  "Aquecimento do núcleo: clique esquerdo +0,05, direito -0,05.",
+  "核心加热：左键 +0.05，右键 -0.05。"
+ ],
+ "gtia.stellar_harvester.ui.output": [
+  "%s EU/t · heat %s · rate ~ T^%s",
+  "%s EU/t · aquecimento %s · taxa ~ T^%s",
+  "%s EU/t · 加热 %s · 速率 ~ T^%s"
+ ],
+ "gtia.stellar_harvester.ui.spent.0": [
+  "No burning star here",
+  "Nenhuma estrela queimando aqui",
+  "此处没有燃烧中的恒星"
+ ],
+ "gtia.stellar_harvester.ui.spent.1": [
+  "Spent: the star is a white dwarf",
+  "Esgotada: a estrela virou anã branca",
+  "已耗尽：恒星成为白矮星"
+ ],
+ "gtia.stellar_harvester.ui.spent.2": [
+  "Spent: the core collapsed to a neutron star",
+  "Esgotada: o núcleo colapsou em estrela de nêutrons",
+  "已耗尽：核心坍缩为中子星"
+ ],
+ "gtia.stellar_harvester.ui.spent.3": [
+  "Spent: the core collapsed to a black hole",
+  "Esgotada: o núcleo colapsou em buraco negro",
+  "已耗尽：核心坍缩为黑洞"
+ ],
+ "gtia.stellar_harvester.ui.fuel": [
+  "core %s",
+  "núcleo %s",
+  "核心 %s"
+ ],
+ "gtia.stellar_harvester.ui.left": [
+  "Left",
+  "Resta",
+  "剩余"
+ ],
+ "gtia.stellar_harvester.ui.becomes": [
+  "ends as %s",
+  "vira %s",
+  "将成为%s"
+ ],
+ "gtia.stellar_harvester.ui.remnant.white_dwarf": [
+  "white dwarf",
+  "anã branca",
+  "白矮星"
+ ],
+ "gtia.stellar_harvester.ui.remnant.neutron_star": [
+  "neutron star",
+  "est. nêutrons",
+  "中子星"
+ ],
+ "gtia.stellar_harvester.ui.remnant.black_hole": [
+  "black hole",
+  "buraco negro",
+  "黑洞"
+ ],
+ "gtia.stellar_harvester.ui.manual_title": [
+  "Field manual - Stellar Harvester",
+  "Manual de campo - Colhedora Estelar",
+  "现场手册 - 恒星收割器"
+ ],
+ "gtia.stellar_harvester.ui.manual.0": [
+  "#Heating the core",
+  "#Aquecendo o núcleo",
+  "#加热核心"
+ ],
+ "gtia.stellar_harvester.ui.manual.1": [
+  "Fusion speeds up steeply with core temperature: as T^4 in the proton-proton chain of light stars, T^16 in the CNO cycle of stars above 1.3 M☉.",
+  "A fusão acelera muito com a temperatura do núcleo: como T^4 na cadeia próton-próton das estrelas leves, T^16 no ciclo CNO das acima de 1,3 M☉.",
+  "核聚变随核心温度急剧加快：轻恒星的质子-质子链约为 T^4，1.3 M☉ 以上恒星的 CNO 循环约为 T^16。"
+ ],
+ "gtia.stellar_harvester.ui.manual.2": [
+  "=boost = (1 + h)^n,  n = 4 or 16;  h up to 0.3 x phases",
+  "=reforço = (1 + h)^n,  n = 4 ou 16;  h até 0,3 x fases",
+  "=增强 = (1 + h)^n，n = 4 或 16；h 最高 0.3 x 阶段数"
+ ],
+ "gtia.stellar_harvester.ui.manual.3": [
+  "=power = 2^30 EU/t x L/L☉ x boost  (boost at most a million)",
+  "=potência = 2^30 EU/t x L/L☉ x reforço  (reforço até um milhão)",
+  "=功率 = 2^30 EU/t x L/L☉ x 增强（增强最高一百万）"
+ ],
+ "gtia.stellar_harvester.ui.manual.4": [
+  "#The budget",
+  "#O orçamento",
+  "#预算"
+ ],
+ "gtia.stellar_harvester.ui.manual.5": [
+  "Only the core hydrogen burns: 0.7% of the mass of a tenth of the star turns into light.",
+  "Só o hidrogênio do núcleo queima: 0,7% da massa de um décimo da estrela vira luz.",
+  "只有核心氢燃烧：恒星十分之一质量的 0.7% 转化为光。"
+ ],
+ "gtia.stellar_harvester.ui.manual.6": [
+  "=budget = 2^60 EU x M/M☉ x fuel left",
+  "=orçamento = 2^60 EU x M/M☉ x combustível restante",
+  "=预算 = 2^60 EU x M/M☉ x 剩余燃料"
+ ],
+ "gtia.stellar_harvester.ui.manual.7": [
+  "Heating harder burns the same budget faster: the total never grows. Heavy stars hold more and burn far faster.",
+  "Aquecer mais queima o mesmo orçamento mais rápido: o total não cresce. Estrelas pesadas guardam mais e queimam muito mais rápido.",
+  "加热越强，同样的预算烧得越快：总量不会增加。重恒星储量更多，燃烧也快得多。"
+ ],
+ "gtia.stellar_harvester.ui.manual.8": [
+  "#The end",
+  "#O fim",
+  "#终结"
+ ],
+ "gtia.stellar_harvester.ui.manual.9": [
+  "When the core is spent the star ends by its mass: below 8 M☉ a white dwarf, to 20 M☉ a neutron star, above a black hole.",
+  "Quando o núcleo acaba, a estrela termina pela massa: abaixo de 8 M☉ anã branca, até 20 M☉ estrela de nêutrons, acima buraco negro.",
+  "核心耗尽后恒星按质量终结：8 M☉ 以下为白矮星，20 M☉ 以下为中子星，以上为黑洞。"
+ ],
+ "gtia.stellar_harvester.ui.manual.10": [
+  "A neutron star feeds the Nidavellir, a black hole the HRAE-MC. Make a star for the purpose with the System Creator.",
+  "Uma estrela de nêutrons alimenta a Nidavellir, um buraco negro o HRAE-MC. Faça uma estrela para isso com o System Creator.",
+  "中子星可供尼达维勒，黑洞可供 HRAE-MC。可用星系创造器专门制造恒星。"
+ ],
+ "gtia.stellar_harvester.ui.manual.11": [
+  "The countdown shows the time left at the present heat; it cannot be undone once the core is gone.",
+  "A contagem mostra o tempo restante no aquecimento atual; depois que o núcleo acaba, não há volta.",
+  "倒计时显示当前加热下的剩余时间；核心耗尽后无法逆转。"
+ ]
+}

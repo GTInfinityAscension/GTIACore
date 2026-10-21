@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-328): emitters to heat a core and the coils of the magnetic mirrors. */
+    private static void stellarHarvester(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("stellar_harvester"))
+                .inputItems(GTItems.EMITTER_UV.asStack(64))
+                .inputItems(com.gregtechceu.gtceu.common.data.GTBlocks.SUPERCONDUCTING_COIL.asStack(64))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(36864))
+                .outputItems(GTIAMegastructures.STELLAR_HARVESTER_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-327): greenhouses by the dozen and the field generators that hold the gardens aloft. */
     private static void yggdrasil(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("yggdrasil"))
@@ -154,6 +167,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.NIDAVELLIR_DEF != null) nidavellir(provider);
         if (GTIAMegastructures.ASSEMBLY_YARD_DEF != null) assemblyYard(provider);
         if (GTIAMegastructures.YGGDRASIL_DEF != null) yggdrasil(provider);
+        if (GTIAMegastructures.STELLAR_HARVESTER_DEF != null) stellarHarvester(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))
