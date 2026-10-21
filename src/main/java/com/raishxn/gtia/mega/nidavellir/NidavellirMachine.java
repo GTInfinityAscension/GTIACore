@@ -123,6 +123,7 @@ public class NidavellirMachine extends MegaMachine {
     public float fxLevel(String effect) {
         boolean on = view[8] > 0;
         if (effect.startsWith("strike")) return on ? 0.6f + compression * 0.2f : 0;
+        if (effect.equals("press_feed")) return on ? 1 : 0;
         if (effect.startsWith("pulsar") || effect.equals("neutron_star") || effect.equals("magnetosphere"))
             return view[6] > 0 ? 1 : 0.35f;
         return 1;

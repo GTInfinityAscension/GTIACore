@@ -11,7 +11,7 @@ import com.raishxn.gtia.mega.GTIAMegastructures;
 /**
  * The Nidavellir Hyperforge (GTIA-D-323): parallels and neutronium by compression; it forges an alloy in parallel,
  * spending neutronium per batch, four times as fast round a neutron star; without neutronium it waits; without the
- * anvil ring it does not form. Slots 18, 19.
+ * outer ring it does not form. Slots 18, 19.
  */
 @PrefixGameTestTemplate(false)
 @GameTestHolder(GTIAMod.MOD_ID)
@@ -39,7 +39,7 @@ public final class NidavellirGameTests {
     }
 
     @GameTest(template = TEMPLATE, batch = "nidavellir_wrong", timeoutTicks = 2400)
-    public static void noAnvilNoForge(GameTestHelper helper) {
-        if (!skip(helper)) NidavellirTestRig.noAnvilNoForge(helper);
+    public static void noOuterRingNoForge(GameTestHelper helper) {
+        if (!skip(helper)) NidavellirTestRig.noOuterRingNoForge(helper);
     }
 }

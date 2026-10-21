@@ -5,9 +5,9 @@
   "尼达维勒超级熔炉"
  ],
  "gtia.machine.nidavellir.tooltip.0": [
-  "A ring forge round the star of its system, built in five phases. Runs Alloy Blast Smelter and Ultimate Material Forge recipes in huge batches.",
-  "Uma forja em anel em volta da estrela do sistema, construída em cinco fases. Roda receitas do Alloy Blast Smelter e da Ultimate Material Forge em lotes enormes.",
-  "围绕所在恒星系恒星的环形熔炉，分五个阶段建造。以巨量批次运行合金冶炼炉和终极材料熔炉配方。"
+  "A disc of five concentric rings round the star of its system, built in five phases. Runs Alloy Blast Smelter and Ultimate Material Forge recipes in huge batches.",
+  "Um disco de cinco anéis concêntricos em volta da estrela do sistema, construído em cinco fases. Roda receitas do Alloy Blast Smelter e da Ultimate Material Forge em lotes enormes.",
+  "围绕所在恒星系恒星的五重同心环圆盘，分五个阶段建造。以巨量批次运行合金冶炼炉和终极材料熔炉配方。"
  ],
  "gtia.machine.nidavellir.tooltip.1": [
   "Each batch is pressed under neutronium dust: compression 0-4 gives 256 × 2^c parallels for 2^c dust.",
@@ -135,9 +135,9 @@
   "#磁层"
  ],
  "gtia.nidavellir.ui.manual.5": [
-  "A neutron star's field reaches 10⁸–10¹¹ T. The yokes (phase 2) ride it, and the hammers strike four times as often.",
-  "O campo de uma estrela de nêutrons chega a 10⁸–10¹¹ T. As cangas (fase 2) se apoiam nele, e os martelos batem quatro vezes mais.",
-  "中子星磁场可达 10⁸–10¹¹ T。磁轭（阶段 2）借助该磁场，使锤击频率提高四倍。"
+  "A neutron star's field reaches 10⁸–10¹¹ T. The superconducting ring (phase 2) rides it, and the press strikes four times as often.",
+  "O campo de uma estrela de nêutrons chega a 10⁸–10¹¹ T. O anel supercondutor (fase 2) se apoia nele, e a prensa bate quatro vezes mais.",
+  "中子星磁场可达 10⁸–10¹¹ T。超导环（阶段 2）借助该磁场，使压制频率提高四倍。"
  ],
  "gtia.nidavellir.ui.manual.6": [
   "=speed = 4 around a neutron star, 1 elsewhere",
@@ -155,9 +155,9 @@
   "#脉冲星风"
  ],
  "gtia.nidavellir.ui.manual.9": [
-  "Once the Stellar Engine has carried the network to the pulsar vicinity, the catchers (phase 3) pull fresh neutronium from its wind.",
-  "Quando o Motor Estelar levar a rede às vizinhanças do pulsar, os coletores (fase 3) puxam neutrônio fresco do vento dele.",
-  "恒星引擎将网络推进到脉冲星附近后，收集器（阶段 3）可从脉冲星风中获取新鲜中子素。"
+  "Once the Stellar Engine has carried the network to the pulsar vicinity, the press arm (phase 3) pulls fresh neutronium from its wind.",
+  "Quando o Motor Estelar levar a rede às vizinhanças do pulsar, o braço de prensa (fase 3) puxa neutrônio fresco do vento dele.",
+  "恒星引擎将网络推进到脉冲星附近后，压臂（阶段 3）可从脉冲星风中获取新鲜中子素。"
  ],
  "gtia.nidavellir.ui.manual.10": [
   "=neutronium per batch = max(1, 2^c / 2) after the pulsar vicinity",

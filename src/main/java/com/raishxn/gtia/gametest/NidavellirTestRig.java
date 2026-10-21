@@ -95,14 +95,14 @@ final class NidavellirTestRig {
         }
     }
 
-    static void noAnvilNoForge(GameTestHelper helper) {
+    static void noOuterRingNoForge(GameTestHelper helper) {
         NidavellirMachine m = MegaTestRig.build(helper, NidavellirMachine.SHAPE, GTIAMegastructures.NIDAVELLIR_DEF, 5,
                 19);
         var shape = MegaShape.get(NidavellirMachine.SHAPE);
-        int[] c = MegaTestRig.firstCell(shape, MegaTestRig.part(shape, "anvil", "body"));
+        int[] c = MegaTestRig.firstCell(shape, MegaTestRig.part(shape, "outer", "body"));
         helper.getLevel().setBlock(shape.world(m.getPos(), MegaTestRig.FRONT, c[0], c[1], c[2]),
                 Blocks.AIR.defaultBlockState(), 2 | 16);
-        helper.assertTrue(!m.checkPatternWithLock(), "a missing anvil block keeps the forge from forming");
+        helper.assertTrue(!m.checkPatternWithLock(), "a missing outer-ring block keeps the forge from forming");
         helper.succeed();
     }
 }
