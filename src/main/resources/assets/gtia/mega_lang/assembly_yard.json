@@ -1,0 +1,187 @@
+{
+ "block.gtia.assembly_yard": [
+  "Hyperstructural Assembly Yard",
+  "Estaleiro Hiperestrutural",
+  "超结构装配船坞"
+ ],
+ "gtia.machine.assembly_yard.tooltip.0": [
+  "A shipyard ring round the star of its system, built in five phases: up to ninety slipways.",
+  "Um estaleiro em anel em volta da estrela do sistema, construído em cinco fases: até noventa rampas.",
+  "围绕所在恒星系恒星的环形船坞，分五个阶段建造：最多九十条船台。"
+ ],
+ "gtia.machine.assembly_yard.tooltip.1": [
+  "Runs Assembly Line and Assembler recipes: 16 parallels per open slipway.",
+  "Roda receitas da Assembly Line e do Assembler: 16 paralelos por rampa aberta.",
+  "运行装配线和组装机配方：每条开放船台 16 并行。"
+ ],
+ "gtia.machine.assembly_yard.tooltip.2": [
+  "The fabrication lasers run on starlight: brighter stars build faster. Rush shifts: x2 speed, x2.5 EU.",
+  "Os lasers de fabricação usam a luz da estrela: estrelas mais claras constroem mais rápido. Turno acelerado: velocidade x2, EU x2,5.",
+  "制造激光以星光为能源：恒星越亮建造越快。赶工班次：速度 x2，EU x2.5。"
+ ],
+ "gtia.assembly_yard.state": [
+  "Slipways %s/%s, speed x%s",
+  "Rampas %s/%s, velocidade x%s",
+  "船台 %s/%s，速度 x%s"
+ ],
+ "gtia.assembly_yard.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.assembly_yard.ui.manual.tip": [
+  "How the yard works, with its formulas.",
+  "Como o estaleiro funciona, com as fórmulas.",
+  "船坞的原理和公式。"
+ ],
+ "gtia.assembly_yard.ui.rush": [
+  "Rush shift",
+  "Turno acelerado",
+  "赶工班次"
+ ],
+ "gtia.assembly_yard.ui.slipways": [
+  "Slipways %s / %s",
+  "Rampas %s / %s",
+  "船台 %s / %s"
+ ],
+ "gtia.assembly_yard.ui.parallel": [
+  "Parallel",
+  "Paralelo",
+  "并行"
+ ],
+ "gtia.assembly_yard.ui.speed": [
+  "Build rate x%s",
+  "Velocidade x%s",
+  "建造速度 x%s"
+ ],
+ "gtia.assembly_yard.ui.crafted": [
+  "Assembled: %s",
+  "Montado: %s",
+  "已装配：%s"
+ ],
+ "gtia.assembly_yard.ui.starlight": [
+  "Starlight",
+  "Luz da estrela",
+  "星光"
+ ],
+ "gtia.assembly_yard.ui.luminosity": [
+  "L = %s L☉",
+  "L = %s L☉",
+  "L = %s L☉"
+ ],
+ "gtia.assembly_yard.ui.temperature": [
+  "T = %s K",
+  "T = %s K",
+  "T = %s K"
+ ],
+ "gtia.assembly_yard.ui.rush_on": [
+  "Rush shift on",
+  "Turno acelerado ligado",
+  "赶工班次开启"
+ ],
+ "gtia.assembly_yard.ui.rush_off": [
+  "Normal shifts",
+  "Turnos normais",
+  "正常班次"
+ ],
+ "gtia.assembly_yard.ui.crafts": [
+  "%s assembled, %s EU this second",
+  "%s montados, %s EU neste segundo",
+  "本秒装配 %s 件，%s EU"
+ ],
+ "gtia.assembly_yard.ui.idle.no_recipe": [
+  "Waiting: no assembly recipe matches the buses",
+  "Esperando: nenhuma receita de montagem bate com os barramentos",
+  "等待中：输入总线无匹配的装配配方"
+ ],
+ "gtia.assembly_yard.ui.idle.inputs": [
+  "Waiting: inputs ran short",
+  "Esperando: faltaram insumos",
+  "等待中：原料不足"
+ ],
+ "gtia.assembly_yard.ui.idle.power": [
+  "Waiting: not enough EU in the Nexus network",
+  "Esperando: falta EU na rede Nexus",
+  "等待中：Nexus 网络 EU 不足"
+ ],
+ "gtia.assembly_yard.ui.idle.slipways": [
+  "Waiting: no slipway open",
+  "Esperando: nenhuma rampa aberta",
+  "等待中：没有开放的船台"
+ ],
+ "gtia.assembly_yard.ui.manual_title": [
+  "Field manual - Assembly Yard",
+  "Manual de campo - Estaleiro",
+  "现场手册 - 装配船坞"
+ ],
+ "gtia.assembly_yard.ui.manual.0": [
+  "#Slipways",
+  "#Rampas",
+  "#船台"
+ ],
+ "gtia.assembly_yard.ui.manual.1": [
+  "Every phase built opens eighteen slipways, ninety at the fifth. Each open slipway assembles sixteen at a time.",
+  "Cada fase construída abre dezoito rampas, noventa na quinta. Cada rampa aberta monta dezesseis de uma vez.",
+  "每建成一个阶段开放十八条船台，第五阶段共九十条。每条开放船台一次装配十六件。"
+ ],
+ "gtia.assembly_yard.ui.manual.2": [
+  "=parallel = 16 x open slipways;  slipways = 18 x phases",
+  "=paralelo = 16 x rampas abertas;  rampas = 18 x fases",
+  "=并行 = 16 x 开放船台；船台 = 18 x 阶段数"
+ ],
+ "gtia.assembly_yard.ui.manual.3": [
+  "Recipes: the Assembly Line and the Assembler. EU comes from the Nexus network, as in the base recipe.",
+  "Receitas: a Assembly Line e o Assembler. O EU sai da rede Nexus, como na receita base.",
+  "配方：装配线和组装机。EU 按原配方从 Nexus 网络支付。"
+ ],
+ "gtia.assembly_yard.ui.manual.4": [
+  "#Starlight",
+  "#Luz da estrela",
+  "#星光"
+ ],
+ "gtia.assembly_yard.ui.manual.5": [
+  "The fabrication lasers are fed by the star's light: the power they get grows with its luminosity.",
+  "Os lasers de fabricação são alimentados pela luz da estrela: a potência que recebem cresce com a luminosidade dela.",
+  "制造激光由恒星光供能：获得的功率随恒星光度增长。"
+ ],
+ "gtia.assembly_yard.ui.manual.6": [
+  "=build rate = 1 + log10(L / L☉), from x0.5 to x4",
+  "=velocidade = 1 + log10(L / L☉), de x0,5 a x4",
+  "=建造速度 = 1 + log10(L / L☉)，范围 x0.5 至 x4"
+ ],
+ "gtia.assembly_yard.ui.manual.7": [
+  "The Sun gives x1; a 15 M☉ blue giant (L ~ 10^4.6 L☉) reaches the ceiling. Make one with the System Creator.",
+  "O Sol dá x1; uma gigante azul de 15 M☉ (L ~ 10^4,6 L☉) chega ao teto. Crie uma com o System Creator.",
+  "太阳为 x1；15 M☉ 的蓝巨星（L ~ 10^4.6 L☉）达到上限。可用星系创造器创建。"
+ ],
+ "gtia.assembly_yard.ui.manual.8": [
+  "#Rush shifts",
+  "#Turno acelerado",
+  "#赶工班次"
+ ],
+ "gtia.assembly_yard.ui.manual.9": [
+  "Crews on every shift double the build rate, but the lasers run hot and waste power.",
+  "Equipes em todos os turnos dobram a velocidade, mas os lasers esquentam e desperdiçam energia.",
+  "全班次作业使建造速度翻倍，但激光过热并浪费能量。"
+ ],
+ "gtia.assembly_yard.ui.manual.10": [
+  "=rush: rate x2, EU x2.5",
+  "=turno acelerado: velocidade x2, EU x2,5",
+  "=赶工：速度 x2，EU x2.5"
+ ],
+ "gtia.assembly_yard.ui.manual.11": [
+  "Close slipways to save EU when the buses run short: idle slipways cost nothing.",
+  "Feche rampas para poupar EU quando os barramentos estiverem curtos: rampa parada não custa nada.",
+  "总线原料不足时可关闭船台以节省 EU：闲置船台不耗能。"
+ ],
+ "gtia.assembly_yard.ui.lever.tip.up": [
+  "Open six more slipways.",
+  "Abrir mais seis rampas.",
+  "再开放六条船台。"
+ ],
+ "gtia.assembly_yard.ui.lever.tip.down": [
+  "Close six slipways.",
+  "Fechar seis rampas.",
+  "关闭六条船台。"
+ ]
+}

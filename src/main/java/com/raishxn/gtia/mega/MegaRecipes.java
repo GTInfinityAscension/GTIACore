@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-326): the yard is assembled from assembly lines and the robot arms that run them. */
+    private static void assemblyYard(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("assembly_yard"))
+                .inputItems(com.gregtechceu.gtceu.common.data.machines.GTMultiMachines.ASSEMBLY_LINE.asStack(16))
+                .inputItems(GTItems.ROBOT_ARM_UV.asStack(64))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(16))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(18432))
+                .outputItems(GTIAMegastructures.ASSEMBLY_YARD_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-323): the forge is pressed out of neutronium. */
     private static void nidavellir(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("nidavellir"))
@@ -126,6 +139,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.KUGELBLITZ_DEF != null) kugelblitz(provider);
         if (GTIAMegastructures.HRAEMC_DEF != null) hraemc(provider);
         if (GTIAMegastructures.NIDAVELLIR_DEF != null) nidavellir(provider);
+        if (GTIAMegastructures.ASSEMBLY_YARD_DEF != null) assemblyYard(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))

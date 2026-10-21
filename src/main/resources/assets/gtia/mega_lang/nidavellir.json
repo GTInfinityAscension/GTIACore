@@ -104,11 +104,6 @@
   "Manual de campo - Hiperforja Nidavellir",
   "现场手册 - 尼达维勒超级熔炉"
  ],
- "gtna.ui.o.nd_press": [
-  "Compression: left click presses harder, right click eases.",
-  "Compressão: clique esquerdo aperta, direito alivia.",
-  "压缩：左键加压，右键减压。"
- ],
  "gtia.nidavellir.ui.manual.0": [
   "#Degenerate press",
   "#Prensa degenerada",
@@ -168,5 +163,15 @@
   "Without enough dust for one batch the forge waits; it never runs a batch it cannot press.",
   "Sem pó para um lote a forja espera; ela nunca roda um lote que não consegue prensar.",
   "若中子素粉不足一批，熔炉会等待；不会运行无法压制的批次。"
+ ],
+ "gtna.ui.o.nd_press.up": [
+  "Press harder: more parallels, more neutronium a batch.",
+  "Apertar: mais paralelos, mais neutrônio por lote.",
+  "加压：更多并行，每批消耗更多中子素。"
+ ],
+ "gtna.ui.o.nd_press.down": [
+  "Ease off: fewer parallels, less neutronium a batch.",
+  "Aliviar: menos paralelos, menos neutrônio por lote.",
+  "减压：更少并行，每批消耗更少中子素。"
  ]
 }

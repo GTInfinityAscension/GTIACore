@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "gtia:block/machine/assembly_yard",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "gtia:block/machine/assembly_yard"
+    },
+    "facing=south": {
+      "model": "gtia:block/machine/assembly_yard",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gtia:block/machine/assembly_yard",
+      "y": 270
+    }
+  }
+}
