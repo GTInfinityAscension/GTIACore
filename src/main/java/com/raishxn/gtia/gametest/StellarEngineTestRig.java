@@ -29,7 +29,7 @@ final class StellarEngineTestRig {
     }
 
     /** A Nexus network for {@code owner} with plenty of EU, as GTNA's own GameTests set one up. */
-    private static void power(GameTestHelper helper, UUID owner) {
+    static void power(GameTestHelper helper, UUID owner) {
         var level = helper.getLevel();
         var network = NexusEnergyNetwork.get(level);
         network.setMatrixStats(owner, 750, 14, 1.0, Int128.fromString("100000000000000000000000000000"), true);

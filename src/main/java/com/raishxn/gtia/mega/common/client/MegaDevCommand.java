@@ -33,6 +33,37 @@ public final class MegaDevCommand {
                     });
                     return 1;
                 })));
+        // /gtia_dev_click <pos> <action>: runs a screen button's action on the server copy of the machine.
+        event.getDispatcher().register(Commands.literal("gtia_dev_click")
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.word())
+                                .executes(ctx -> {
+                                    var mc = Minecraft.getInstance();
+                                    var server = mc.getSingleplayerServer();
+                                    if (server == null || mc.player == null) return 0;
+                                    var pos = BlockPosArgument.getBlockPos(ctx, "pos");
+                                    String action = com.mojang.brigadier.arguments.StringArgumentType
+                                            .getString(ctx, "action");
+                                    var dim = mc.player.level().dimension();
+                                    // A server-side click: what the screen sends, read back on the server.
+                                    var buf = new net.minecraft.network.FriendlyByteBuf(
+                                            io.netty.buffer.Unpooled.buffer());
+                                    new com.lowdragmc.lowdraglib.gui.util.ClickData().writeToBuf(buf);
+                                    var click = com.lowdragmc.lowdraglib.gui.util.ClickData.readFromBuf(buf);
+                                    server.execute(() -> {
+                                        var level = server.getLevel(dim);
+                                        if (level != null && MetaMachine.getMachine(level, pos) instanceof
+                                                com.raishxn.gtia.mega.common.MegaMachine m)
+                                            m.handleDisplayClick(action, click);
+                                    });
+                                    return 1;
+                                }))));
+        event.getDispatcher().register(Commands.literal("gtia_fx_debug").then(Commands
+                .argument("mask", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0)).executes(ctx -> {
+                    MegaFxRenderer.debugMask = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx,
+                            "mask");
+                    return 1;
+                })));
         event.getDispatcher().register(Commands.literal("gtia_dev_power")
                 .then(Commands.argument("pos", BlockPosArgument.blockPos()).executes(ctx -> {
                     var mc = Minecraft.getInstance();

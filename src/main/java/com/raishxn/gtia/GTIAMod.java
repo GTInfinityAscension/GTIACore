@@ -39,6 +39,7 @@ public final class GTIAMod {
         GTIALang.init();
         com.raishxn.gtia.chem.ChemLang.init();
         com.raishxn.gtia.mega.GTIAMegaLang.init();
+        com.raishxn.gtia.mega.common.MegaLang.init();
         com.raishxn.gtia.rules.GTIARuleEffects.applyStartupRules();
         GTIAItems.init();
         com.raishxn.gtia.organ.GTIAOrgans.init();
@@ -52,6 +53,9 @@ public final class GTIAMod {
         modBus.addListener(this::registerMaterials);
         modBus.addGenericListener(GTRecipeType.class, this::registerRecipeTypes);
         modBus.addGenericListener(MachineDefinition.class, this::registerMachines);
+        if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient() &&
+                com.raishxn.gtia.mega.GTIAMegastructures.gtna())
+            modBus.addListener(com.raishxn.gtia.mega.common.client.MegaFxShaders::register);
         REGISTRATE.registerRegistrate();
         MinecraftForge.EVENT_BUS.addListener(
                 (net.minecraftforge.event.server.ServerStartedEvent e) -> WorldRules.onServerStarted(e.getServer()));

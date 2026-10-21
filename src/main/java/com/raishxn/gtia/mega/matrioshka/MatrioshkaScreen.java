@@ -100,9 +100,8 @@ public final class MatrioshkaScreen {
         int cx = x + 58, cy = y + 54;
         double time = (net.minecraft.Util.getMillis() % 3_600_000L) / 1000.0;
         boolean star = m.inNexusSystem();
-        glow(g, cx, cy, 20, star ? 0xFFFF9A2E : 0xFF2A2030, 0.8);
-        glow(g, cx, cy, 12, star ? 0xFFFFD27A : 0xFF3A3040, 0.9);
-        disc(g, cx, cy, 6, star ? 0xFFFFF0C0 : 0xFF4A4050);
+        if (star) com.raishxn.gtia.mega.common.client.MegaArt.star(g, cx, cy, 7, 5800);
+        else disc(g, cx, cy, 6, 0xFF4A4050);
         for (int p = 1; p <= MatrioshkaShells.PHASES; p++) {
             boolean built = p <= m.phases();
             int r = 12 + p * 8;

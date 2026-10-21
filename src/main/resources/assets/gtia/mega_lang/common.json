@@ -1,0 +1,97 @@
+{
+ "biome.gtia.deep_space": [
+  "Deep Space",
+  "Espaço Profundo",
+  "深空"
+ ],
+ "dimension.gtia.stellar_system_1": [
+  "Star System 1",
+  "Sistema Estelar 1",
+  "恒星系 1"
+ ],
+ "planet.gtia.stellar_system_1": [
+  "Star System 1",
+  "Sistema Estelar 1",
+  "恒星系 1"
+ ],
+ "solar_system.gtia.stellar_system_1": [
+  "Star System 1",
+  "Sistema Estelar 1",
+  "恒星系 1"
+ ],
+ "dimension.gtia.stellar_system_2": [
+  "Star System 2",
+  "Sistema Estelar 2",
+  "恒星系 2"
+ ],
+ "planet.gtia.stellar_system_2": [
+  "Star System 2",
+  "Sistema Estelar 2",
+  "恒星系 2"
+ ],
+ "solar_system.gtia.stellar_system_2": [
+  "Star System 2",
+  "Sistema Estelar 2",
+  "恒星系 2"
+ ],
+ "dimension.gtia.stellar_system_3": [
+  "Star System 3",
+  "Sistema Estelar 3",
+  "恒星系 3"
+ ],
+ "planet.gtia.stellar_system_3": [
+  "Star System 3",
+  "Sistema Estelar 3",
+  "恒星系 3"
+ ],
+ "solar_system.gtia.stellar_system_3": [
+  "Star System 3",
+  "Sistema Estelar 3",
+  "恒星系 3"
+ ],
+ "dimension.gtia.stellar_system_4": [
+  "Star System 4",
+  "Sistema Estelar 4",
+  "恒星系 4"
+ ],
+ "planet.gtia.stellar_system_4": [
+  "Star System 4",
+  "Sistema Estelar 4",
+  "恒星系 4"
+ ],
+ "solar_system.gtia.stellar_system_4": [
+  "Star System 4",
+  "Sistema Estelar 4",
+  "恒星系 4"
+ ],
+ "dimension.gtia.stellar_system_5": [
+  "Star System 5",
+  "Sistema Estelar 5",
+  "恒星系 5"
+ ],
+ "planet.gtia.stellar_system_5": [
+  "Star System 5",
+  "Sistema Estelar 5",
+  "恒星系 5"
+ ],
+ "solar_system.gtia.stellar_system_5": [
+  "Star System 5",
+  "Sistema Estelar 5",
+  "恒星系 5"
+ ],
+ "dimension.gtia.stellar_system_6": [
+  "Star System 6",
+  "Sistema Estelar 6",
+  "恒星系 6"
+ ],
+ "planet.gtia.stellar_system_6": [
+  "Star System 6",
+  "Sistema Estelar 6",
+  "恒星系 6"
+ ],
+ "solar_system.gtia.stellar_system_6": [
+  "Star System 6",
+  "Sistema Estelar 6",
+  "恒星系 6"
+ ]
+}

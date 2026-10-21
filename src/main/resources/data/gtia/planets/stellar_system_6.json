@@ -1,0 +1,9 @@
+{
+  "dimension": "gtia:stellar_system_6",
+  "gravity": 0.0,
+  "oxygen": false,
+  "solar_power": 120,
+  "solar_system": "gtia:stellar_system_6",
+  "temperature": -270,
+  "tier": 4
+}

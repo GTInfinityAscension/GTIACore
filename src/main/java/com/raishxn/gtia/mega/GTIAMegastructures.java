@@ -12,10 +12,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class GTIAMegastructures {
 
-    public static final String MATRIOSHKA = "matrioshka_brain", STELLAR_ENGINE = "stellar_engine";
+    public static final String MATRIOSHKA = "matrioshka_brain", STELLAR_ENGINE = "stellar_engine",
+            STAR_LIFTER = "star_lifter";
+
+    /** Every megastructure, for the client renderer check. */
+    static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER };
 
     @Nullable
-    public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF;
+    public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF;
 
     private GTIAMegastructures() {}
 
@@ -29,7 +33,8 @@ public final class GTIAMegastructures {
 
     /** Any megastructure can be registered: the client then needs the shared renderer. */
     public static boolean available() {
-        return available(MATRIOSHKA) || available(STELLAR_ENGINE);
+        for (String name : ALL) if (available(name)) return true;
+        return false;
     }
 
     public static void init() {
@@ -37,5 +42,6 @@ public final class GTIAMegastructures {
             MATRIOSHKA_BRAIN = com.raishxn.gtia.mega.matrioshka.MatrioshkaDefinition.register();
         if (available(STELLAR_ENGINE))
             STELLAR_ENGINE_DEF = com.raishxn.gtia.mega.engine.StellarEngineDefinition.register();
+        if (available(STAR_LIFTER)) STAR_LIFTER_DEF = com.raishxn.gtia.mega.lifter.StarLifterDefinition.register();
     }
 }

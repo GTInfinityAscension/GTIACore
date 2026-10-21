@@ -112,6 +112,13 @@ public class MatrioshkaBrainMachine extends MegaMachine implements IOpticalCompu
         return inPlace();
     }
 
+    /** The feed beams to the stations brighten with the computation in use. */
+    @Override
+    public float fxLevel(String effect) {
+        if (effect.startsWith("feed")) return maxCwut <= 0 ? 0 : 0.45f + 0.75f * usedCwut / (float) maxCwut;
+        return 1;
+    }
+
     @Override
     protected void stopped() {
         maxCwut = 0;
@@ -143,7 +150,14 @@ public class MatrioshkaBrainMachine extends MegaMachine implements IOpticalCompu
                 com.raishxn.gtia.mega.StellarEraStore.farthest(level.getServer(), networkOwner));
         var heat = MatrioshkaThermal.second(shape.radius, phases, clockPct, used, supply, temps, integrity,
                 background);
-        maxCwut = (int) Math.min(Integer.MAX_VALUE, heat.cwut());
+        // EN: Landauer: bits per second = P / (k T ln 2); a dimmer star (Star Lifter) gives less power P and colder
+        // shells (T ~ L^¼), so the computation scales with L^¾.
+        // PT: Landauer: bits por segundo = P / (k T ln 2); uma estrela mais fraca (Elevador Estelar) dá menos potência
+        // P e cascas mais frias (T ~ L^¼), então o cálculo escala com L^¾.
+        // ZH: 兰道尔原理：每秒比特数 = P / (k T ln 2)；更暗的恒星（恒星抽取器）功率 P 更低、壳层更冷（T ~ L^¼），因此算力按 L^¾ 缩放。
+        var star = star();
+        double light = star == null ? 1 : Math.pow(Math.max(0, star.luminosity()), 0.75);
+        maxCwut = (int) Math.min(Integer.MAX_VALUE, heat.cwut() * light);
         usedCwut = (int) Math.min(Integer.MAX_VALUE, usedThisSecond / 20);
         double[] v = new double[15];
         for (int p = 0; p < MatrioshkaShells.PHASES; p++) {

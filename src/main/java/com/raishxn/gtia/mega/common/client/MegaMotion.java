@@ -6,18 +6,15 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 /**
- * A megastructure's motion, written by its generator: for each moving piece a rotation about the model origin in
- * grid axes and a shift, plus the render-only meshes (stars, coronas, force fields, jets) in grid cells.
+ * A megastructure's motion, written by its generator: for each moving piece (and each moving effect, see
+ * {@link MegaFx}) a rotation about the model origin in grid axes and a shift.
  */
 public final class MegaMotion {
 
@@ -36,25 +33,7 @@ public final class MegaMotion {
         }
     }
 
-    /**
-     * Triangles in grid cells, moved by {@link #track}, shown from phase {@link #phase} (only while running when
-     * {@link #ACTIVE} is set in {@link #flags}), in colour {@link #rgba}; the first opaque, the rest additive.
-     */
-    public record Mesh(String track, int phase, int flags, float[] rgba, float[] triangles) {
-
-        public static final int ACTIVE = 1, OPAQUE = 2;
-
-        public boolean active() {
-            return (flags & ACTIVE) != 0;
-        }
-
-        public boolean opaque() {
-            return (flags & OPAQUE) != 0;
-        }
-    }
-
     public final Map<String, Track> tracks = new HashMap<>();
-    public final Map<String, Mesh> meshes = new LinkedHashMap<>();
 
     private static final Map<String, java.util.Optional<MegaMotion>> MOTIONS = new HashMap<>();
 
@@ -74,9 +53,8 @@ public final class MegaMotion {
     private static MegaMotion load(String name) throws IOException {
         var loader = MegaMotion.class.getClassLoader();
         String dir = com.raishxn.gtia.mega.common.MegaShape.dir(name);
-        try (var tracksIn = loader.getResourceAsStream(dir + "tracks.json");
-                var meshIn = loader.getResourceAsStream(dir + "render.bin.gz")) {
-            if (tracksIn == null || meshIn == null) return null;
+        try (var tracksIn = loader.getResourceAsStream(dir + "tracks.json")) {
+            if (tracksIn == null) return null;
             var out = new MegaMotion();
             JsonObject root = JsonParser.parseReader(new InputStreamReader(tracksIn, StandardCharsets.UTF_8))
                     .getAsJsonObject();
@@ -90,20 +68,6 @@ public final class MegaMotion {
                     for (int k = 0; k < s.size(); k++) samples[i][k] = s.get(k).getAsFloat();
                 }
                 out.tracks.put(e.getKey(), new Track(t.get("period").getAsDouble(), samples));
-            }
-            try (var in = new DataInputStream(new GZIPInputStream(meshIn))) {
-                int count = in.readInt();
-                for (int m = 0; m < count; m++) {
-                    byte[] meshName = new byte[in.readInt()];
-                    in.readFully(meshName);
-                    int phase = in.readInt();
-                    int flags = in.readInt();
-                    float[] rgba = { in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat() };
-                    float[] tri = new float[in.readInt() * 9];
-                    for (int k = 0; k < tri.length; k++) tri[k] = in.readFloat();
-                    String track = new String(meshName, StandardCharsets.UTF_8);
-                    out.meshes.put(track, new Mesh(track, phase, flags, rgba, tri));
-                }
             }
             return out;
         }

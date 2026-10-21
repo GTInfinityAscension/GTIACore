@@ -86,8 +86,8 @@ public final class StellarEngineScreen {
             }
         }
         boolean lit = m.inPlace();
-        glow(g, sx, sy, 18, lit ? 0xFFFF9A2E : 0xFF2A2030, 0.8);
-        disc(g, sx, sy, 8, lit ? 0xFFFFF0C0 : 0xFF4A4050);
+        if (lit) com.raishxn.gtia.mega.common.client.MegaArt.star(g, sx, sy, 9, 5800);
+        else disc(g, sx, sy, 8, 0xFF4A4050);
         if (phases >= 2) for (int t = -22; t <= 22; t++) {
             // The Shkadov mirror: an arc ahead of the star (to the left on screen).
             int px = sx - 22 + (int) Math.round(t * t / 60.0);

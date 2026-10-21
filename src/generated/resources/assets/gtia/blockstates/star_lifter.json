@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "gtia:block/machine/star_lifter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "gtia:block/machine/star_lifter"
+    },
+    "facing=south": {
+      "model": "gtia:block/machine/star_lifter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gtia:block/machine/star_lifter",
+      "y": 270
+    }
+  }
+}

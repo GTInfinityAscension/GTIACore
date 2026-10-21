@@ -1,0 +1,75 @@
+{
+ "vertex": "gtia:mega_lens",
+ "fragment": "gtia:mega_lens",
+ "attributes": [
+  "Position",
+  "UV0"
+ ],
+ "samplers": [
+  {
+   "name": "Scene"
+  },
+  {
+   "name": "SceneDepth"
+  }
+ ],
+ "uniforms": [
+  {
+   "name": "Center",
+   "type": "float",
+   "count": 2,
+   "values": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "name": "Einstein",
+   "type": "float",
+   "count": 1,
+   "values": [
+    0.05
+   ]
+  },
+  {
+   "name": "Horizon",
+   "type": "float",
+   "count": 1,
+   "values": [
+    0.02
+   ]
+  },
+  {
+   "name": "Strength",
+   "type": "float",
+   "count": 1,
+   "values": [
+    0.0
+   ]
+  },
+  {
+   "name": "Aspect",
+   "type": "float",
+   "count": 1,
+   "values": [
+    1.0
+   ]
+  },
+  {
+   "name": "FrontDepth",
+   "type": "float",
+   "count": 1,
+   "values": [
+    1.0
+   ]
+  },
+  {
+   "name": "Reach",
+   "type": "float",
+   "count": 1,
+   "values": [
+    0.2
+   ]
+  }
+ ]
+}

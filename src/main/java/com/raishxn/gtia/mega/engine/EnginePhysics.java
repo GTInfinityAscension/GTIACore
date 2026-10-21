@@ -30,9 +30,14 @@ public final class EnginePhysics {
 
     private EnginePhysics() {}
 
-    /** Thrust of the mirror, newtons. */
+    /** Thrust of the mirror, newtons, at the Sun's luminosity. */
     public static double shkadovThrust(boolean mirror) {
-        return mirror ? MIRROR_SHARE * L_SUN / C : 0;
+        return shkadovThrust(mirror, 1);
+    }
+
+    /** Thrust of the mirror, newtons, for a star of {@code lightSun} L☉. */
+    public static double shkadovThrust(boolean mirror, double lightSun) {
+        return mirror ? MIRROR_SHARE * L_SUN * lightSun / C : 0;
     }
 
     /** Thrust of the Caplan engine, newtons: {@code beta * mdot * v_e}. */
@@ -45,9 +50,14 @@ public final class EnginePhysics {
         return betaPct / 100.0 * mdot * V_EXHAUST;
     }
 
-    /** Δv gained in one second of play, km/s. */
+    /** Δv gained in one second of play, km/s, pushing the Sun. */
     public static double dvPerSecond(double thrust) {
-        return thrust / M_SUN * YEARS_PER_SECOND * SECONDS_PER_YEAR / 1000;
+        return dvPerSecond(thrust, 1);
+    }
+
+    /** Δv gained in one second of play, km/s, pushing a star of {@code massSun} M☉ (a = F / M). */
+    public static double dvPerSecond(double thrust, double massSun) {
+        return thrust / (M_SUN * Math.max(0.05, massSun)) * YEARS_PER_SECOND * SECONDS_PER_YEAR / 1000;
     }
 
     /** Tension on the cage, 0..1: zero up to {@link #BETA_SAFE}, full at {@link #BETA_MAX}. */

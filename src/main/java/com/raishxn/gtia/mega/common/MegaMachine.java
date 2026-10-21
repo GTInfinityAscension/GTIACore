@@ -88,9 +88,22 @@ public abstract class MegaMachine extends OriginalMachine implements IMachineLif
         return isCaptured() ? capturedPhases : 0;
     }
 
-    /** Where it works; every megastructure so far lives in the Nexus System. */
+    /** Where it works: the Nexus System unless a megastructure says otherwise. */
     public boolean inPlace() {
         return anyDimensionForTests || getLevel() != null && getLevel().dimension() == NEXUS_SYSTEM;
+    }
+
+    /**
+     * The star of the system this machine stands in (GameTests: the Nexus System's), or null outside the star
+     * systems. Server side only.
+     */
+    @org.jetbrains.annotations.Nullable
+    public com.raishxn.gtia.mega.system.StarSystems.Star star() {
+        if (!(getLevel() instanceof ServerLevel level)) return null;
+        var dim = level.dimension();
+        if (anyDimensionForTests && !com.raishxn.gtia.mega.system.StarSystems.isSystem(dim))
+            dim = com.raishxn.gtia.mega.system.StarSystems.NEXUS;
+        return com.raishxn.gtia.mega.system.StarSystems.get(level.getServer()).star(dim);
     }
 
     // ------------------------------------------------------------------ lifecycle
@@ -171,6 +184,63 @@ public abstract class MegaMachine extends OriginalMachine implements IMachineLif
 
     /** Clears what the screen shows when it stops. */
     protected void stopped() {}
+
+    // ------------------------------------------------------------------ power and hatches
+
+    /** Takes {@code eu} from the owner's Nexus network; false (and nothing taken) if it cannot. */
+    public boolean pay(ServerLevel level, double eu) {
+        return consume(level, eu);
+    }
+
+    /** Gives {@code eu} to the owner's Nexus network. */
+    public void payOut(ServerLevel level, double eu) {
+        deliver(level, eu);
+    }
+
+    /** Puts a fluid into the output hatches; returns what did not fit. */
+    protected long fillFluid(net.minecraftforge.fluids.FluidStack stack) {
+        if (stack == null || stack.isEmpty()) return 0;
+        long left = stack.getAmount();
+        for (var part : getParts()) {
+            for (var handlers : part.getRecipeHandlers()) {
+                if (!handlers.isValid(com.gregtechceu.gtceu.api.capability.recipe.IO.OUT)) continue;
+                for (var handler : handlers.getCapability(
+                        com.gregtechceu.gtceu.api.capability.recipe.FluidRecipeCapability.CAP)) {
+                    if (!(handler instanceof com.gregtechceu.gtceu.api.machine.trait.NotifiableFluidTank tank) ||
+                            left <= 0)
+                        continue;
+                    var put = stack.copy();
+                    put.setAmount((int) Math.min(Integer.MAX_VALUE, left));
+                    left -= tank.fillInternal(put,
+                            net.minecraftforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+                }
+            }
+        }
+        return left;
+    }
+
+    /** Takes up to {@code max} mB of fluids matching {@code filter} from the input hatches. */
+    protected long drainFluid(java.util.function.Predicate<net.minecraft.world.level.material.Fluid> filter,
+                              long max) {
+        return drain(filter, max);
+    }
+
+    // ------------------------------------------------------------------ effects (read by the client renderer)
+
+    /** Strength of a render effect of this machine's {@code fx.json}; 0 hides it. */
+    public float fxLevel(String effect) {
+        return 1;
+    }
+
+    /** Temperature (K) of a star effect, or 0 for the one in {@code fx.json}. */
+    public float fxTemperature(String effect) {
+        return 0;
+    }
+
+    /** Size factor of an effect. */
+    public float fxScale(String effect) {
+        return 1;
+    }
 
     /** Dev aid: makes {@code owner} the owner whose Nexus network and eras this machine uses. */
     @VisibleForTesting

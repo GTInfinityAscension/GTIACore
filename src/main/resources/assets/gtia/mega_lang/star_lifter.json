@@ -1,0 +1,357 @@
+{
+ "block.gtia.star_lifter": [
+  "Star Lifter",
+  "Elevador Estelar",
+  "恒星抽取器"
+ ],
+ "gtia.machine.star_lifter.tooltip.0": [
+  "Lifts matter off the star of the system it stands in, built in five phases.",
+  "Tira matéria da estrela do sistema onde está, construído em cinco fases.",
+  "从所在恒星系的恒星上抽取物质，分五个阶段建造。"
+ ],
+ "gtia.machine.star_lifter.tooltip.1": [
+  "Hydrogen and helium plasma, oxygen, neon, nitrogen and metal dusts; the star gets lighter, dimmer and longer-lived.",
+  "Plasma de hidrogênio e hélio, oxigênio, neônio, nitrogênio e pós metálicos; a estrela fica mais leve, mais fraca e vive mais.",
+  "产出氢与氦等离子体、氧、氖、氮和金属粉；恒星变轻、变暗、寿命延长。"
+ ],
+ "gtia.machine.star_lifter.tooltip.2": [
+  "Power from the owner's Nexus network: the deeper the star's gravity well, the more it costs.",
+  "Energia da rede Nexus do dono: quanto mais fundo o poço gravitacional da estrela, mais caro.",
+  "能量来自所有者的 Nexus 网络：恒星引力井越深，耗能越高。"
+ ],
+ "gtia.star_lifter.needs_star": [
+  "No star here: the Star Lifter works around the star of a star system.",
+  "Sem estrela aqui: o Elevador Estelar funciona em volta da estrela de um sistema estelar.",
+  "此处没有恒星：恒星抽取器只能在恒星系的恒星周围工作。"
+ ],
+ "gtia.star_lifter.mdot": [
+  "Lift rate: %s kg/s",
+  "Vazão: %s kg/s",
+  "抽取速率：%s kg/s"
+ ],
+ "gtia.star_lifter.mass": [
+  "Star mass: %s M☉",
+  "Massa da estrela: %s M☉",
+  "恒星质量：%s M☉"
+ ],
+ "gtna.ui.o.sl_mode": [
+  "Method",
+  "Método",
+  "方式"
+ ],
+ "gtna.ui.o.sl_mode.tip": [
+  "Thermal wind (phase 1), ring current (phase 2) or deep stirring (phase 5).",
+  "Vento térmico (fase 1), corrente em anel (fase 2) ou agitação profunda (fase 5).",
+  "热风（阶段 1）、环形电流（阶段 2）或深层搅拌（阶段 5）。"
+ ],
+ "gtna.ui.o.sl_star": [
+  "Star",
+  "Estrela",
+  "恒星"
+ ],
+ "gtna.ui.o.sl_star.tip": [
+  "Mass, light, temperature and the life the star has left.",
+  "Massa, luz, temperatura e a vida que resta à estrela.",
+  "恒星的质量、光度、温度和剩余寿命。"
+ ],
+ "gtna.ui.o.sl_manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtna.ui.o.sl_manual.tip": [
+  "How star lifting works, with its formulas.",
+  "Como funciona a elevação estelar, com as fórmulas.",
+  "恒星抽取的原理和公式。"
+ ],
+ "gtia.star_lifter.ui.mode.thermal": [
+  "Thermal wind",
+  "Vento térmico",
+  "热风"
+ ],
+ "gtia.star_lifter.ui.mode.ring": [
+  "Ring current",
+  "Corrente em anel",
+  "环形电流"
+ ],
+ "gtia.star_lifter.ui.mode.deep": [
+  "Deep stirring",
+  "Agitação profunda",
+  "深层搅拌"
+ ],
+ "gtia.star_lifter.ui.no_star": [
+  "No star in this system.",
+  "Sem estrela neste sistema.",
+  "本恒星系没有恒星。"
+ ],
+ "gtia.star_lifter.ui.mass": [
+  "Star mass",
+  "Massa da estrela",
+  "恒星质量"
+ ],
+ "gtia.star_lifter.ui.instability": [
+  "Instability",
+  "Instabilidade",
+  "不稳定度"
+ ],
+ "gtia.star_lifter.ui.girdle": [
+  "girdle",
+  "cinta",
+  "环带"
+ ],
+ "gtia.star_lifter.ui.power": [
+  "Power %s EU/t",
+  "Energia %s EU/t",
+  "能耗 %s EU/t"
+ ],
+ "gtia.star_lifter.ui.plasma": [
+  "Plasma H %s · He %s mB/s",
+  "Plasma H %s · He %s mB/s",
+  "等离子体 H %s · He %s mB/s"
+ ],
+ "gtia.star_lifter.ui.girdle_broken": [
+  "The girdle is broken: repair it with its blocks.",
+  "A cinta quebrou: conserte com os blocos dela.",
+  "环带已损坏：用其方块修复。"
+ ],
+ "gtia.star_lifter.ui.no_spires": [
+  "Phase 4 sorts metals and gases out of the plasma.",
+  "A fase 4 separa metais e gases do plasma.",
+  "阶段 4 从等离子体中分离金属和气体。"
+ ],
+ "gtia.star_lifter.ui.s.mass": [
+  "Mass",
+  "Massa",
+  "质量"
+ ],
+ "gtia.star_lifter.ui.s.light": [
+  "Luminosity",
+  "Luminosidade",
+  "光度"
+ ],
+ "gtia.star_lifter.ui.s.temp": [
+  "Surface",
+  "Superfície",
+  "表面温度"
+ ],
+ "gtia.star_lifter.ui.s.fuel": [
+  "Core hydrogen",
+  "Hidrogênio do núcleo",
+  "核心氢"
+ ],
+ "gtia.star_lifter.ui.s.life": [
+  "Life left",
+  "Vida restante",
+  "剩余寿命"
+ ],
+ "gtia.star_lifter.ui.s.brain": [
+  "Matrioshka factor",
+  "Fator do Matrioshka",
+  "套娃脑系数"
+ ],
+ "gtia.star_lifter.ui.years": [
+  "years",
+  "anos",
+  "年"
+ ],
+ "gtia.star_lifter.ui.element.hydrogen": [
+  "Hydrogen",
+  "Hidrogênio",
+  "氢"
+ ],
+ "gtia.star_lifter.ui.element.helium": [
+  "Helium",
+  "Hélio",
+  "氦"
+ ],
+ "gtia.star_lifter.ui.element.oxygen": [
+  "Oxygen",
+  "Oxigênio",
+  "氧"
+ ],
+ "gtia.star_lifter.ui.element.carbon": [
+  "Carbon",
+  "Carbono",
+  "碳"
+ ],
+ "gtia.star_lifter.ui.element.iron": [
+  "Iron",
+  "Ferro",
+  "铁"
+ ],
+ "gtia.star_lifter.ui.element.neon": [
+  "Neon",
+  "Neônio",
+  "氖"
+ ],
+ "gtia.star_lifter.ui.element.nitrogen": [
+  "Nitrogen",
+  "Nitrogênio",
+  "氮"
+ ],
+ "gtia.star_lifter.ui.element.silicon": [
+  "Silicon",
+  "Silício",
+  "硅"
+ ],
+ "gtia.star_lifter.ui.element.magnesium": [
+  "Magnesium",
+  "Magnésio",
+  "镁"
+ ],
+ "gtia.star_lifter.ui.element.nickel": [
+  "Nickel",
+  "Níquel",
+  "镍"
+ ],
+ "gtia.star_lifter.ui.manual.0": [
+  "#Star lifting",
+  "#Elevação estelar",
+  "#恒星抽取"
+ ],
+ "gtia.star_lifter.ui.manual.1": [
+  "Matter on the star's surface is held by gravity. The lifter heats it and pinches the star's field so it leaves through the poles, where the chalices catch it.",
+  "A matéria da superfície da estrela fica presa pela gravidade. O elevador a aquece e aperta o campo da estrela para que saia pelos polos, onde os cálices a recolhem.",
+  "恒星表面的物质被引力束缚。抽取器加热它并挤压恒星磁场，使其从两极流出，由聚集杯收集。"
+ ],
+ "gtia.star_lifter.ui.manual.2": [
+  "=e = G M / R  (1.9e11 J/kg for the Sun)",
+  "=e = G M / R  (1,9e11 J/kg para o Sol)",
+  "=e = G M / R（太阳为 1.9e11 J/kg）"
+ ],
+ "gtia.star_lifter.ui.manual.3": [
+  "=EU/t = 2^34 × (ṁ / 1e12 kg/s) × (e / e☉)",
+  "=EU/t = 2^34 × (ṁ / 1e12 kg/s) × (e / e☉)",
+  "=EU/t = 2^34 × (ṁ / 1e12 kg/s) × (e / e☉)"
+ ],
+ "gtia.star_lifter.ui.manual.4": [
+  "Thermal wind (phase 1) lifts up to 1e11 kg/s; the ring current (phase 2) up to 1e12 kg/s.",
+  "O vento térmico (fase 1) tira até 1e11 kg/s; a corrente em anel (fase 2) até 1e12 kg/s.",
+  "热风（阶段 1）最多 1e11 kg/s；环形电流（阶段 2）最多 1e12 kg/s。"
+ ],
+ "gtia.star_lifter.ui.manual.5": [
+  "#What is caught",
+  "#O que é recolhido",
+  "#收集量"
+ ],
+ "gtia.star_lifter.ui.manual.6": [
+  "The chalices (phase 3) catch 85% of the outflow; without them only 15% is caught.",
+  "Os cálices (fase 3) recolhem 85% do jato; sem eles, só 15%.",
+  "聚集杯（阶段 3）收集 85% 的外流；没有时只收集 15%。"
+ ],
+ "gtia.star_lifter.ui.manual.7": [
+  "=out = ṁ × capture × share  (plasma 3.2e-9 mB/kg, dust 8e-10 /kg)",
+  "=saída = ṁ × captura × fração  (plasma 3,2e-9 mB/kg, pó 8e-10 /kg)",
+  "=产出 = ṁ × 收集率 × 占比（等离子体 3.2e-9 mB/kg，粉 8e-10 /kg）"
+ ],
+ "gtia.star_lifter.ui.manual.8": [
+  "Only hydrogen and helium plasma come out until the spires (phase 4) sort oxygen, neon, nitrogen and metal dusts.",
+  "Só saem plasma de hidrogênio e hélio até as torres (fase 4) separarem oxigênio, neônio, nitrogênio e pós metálicos.",
+  "在分离塔（阶段 4）建成前只产出氢和氦等离子体，之后可分离氧、氖、氮和金属粉。"
+ ],
+ "gtia.star_lifter.ui.manual.9": [
+  "Beyond the Orion arm's edge (Stellar Engine) the star's wind is 25% richer.",
+  "Além da borda do braço de Órion (Motor Estelar), o vento da estrela é 25% mais rico.",
+  "越过猎户臂边缘（恒星引擎）后，恒星风浓度提高 25%。"
+ ],
+ "gtia.star_lifter.ui.manual.10": [
+  "#The star changes",
+  "#A estrela muda",
+  "#恒星的变化"
+ ],
+ "gtia.star_lifter.ui.manual.11": [
+  "One second of play is a million years of lifting, so the star really gets lighter.",
+  "Um segundo de jogo é um milhão de anos de elevação, então a estrela fica mesmo mais leve.",
+  "游戏中一秒相当于一百万年的抽取，因此恒星确实会变轻。"
+ ],
+ "gtia.star_lifter.ui.manual.12": [
+  "=ΔM = ṁ × 3.16e13 s per second;  L = M^4;  T = 5772 (L / R²)^¼",
+  "=ΔM = ṁ × 3,16e13 s por segundo;  L = M^4;  T = 5772 (L / R²)^¼",
+  "=ΔM = 每秒 ṁ × 3.16e13 s；L = M^4；T = 5772 (L / R²)^¼"
+ ],
+ "gtia.star_lifter.ui.manual.13": [
+  "=life = 1e10 yr × M / L × fuel",
+  "=vida = 1e10 anos × M / L × combustível",
+  "=寿命 = 1e10 年 × M / L × 燃料"
+ ],
+ "gtia.star_lifter.ui.manual.14": [
+  "A lighter star is dimmer: the Matrioshka Brain gets (L / L☉)^¾ of its computation, the Stellar Engine pushes a lighter star faster. Below 0.5 M☉ the ring cannot hold the outflow.",
+  "Uma estrela mais leve brilha menos: o Cérebro Matrioshka calcula (L / L☉)^¾ do que calculava, e o Motor Estelar empurra uma estrela mais leve mais rápido. Abaixo de 0,5 M☉ o anel não segura o jato.",
+  "较轻的恒星更暗：套娃脑的算力变为 (L / L☉)^¾，恒星引擎推动较轻的恒星更快。低于 0.5 M☉ 时环无法维持外流。"
+ ],
+ "gtia.star_lifter.ui.manual.15": [
+  "#Deep stirring",
+  "#Agitação profunda",
+  "#深层搅拌"
+ ],
+ "gtia.star_lifter.ui.manual.16": [
+  "The arcs (phase 5) stir the core: helium and metals come up and fresh hydrogen goes down, adding to the fuel.",
+  "Os arcos (fase 5) agitam o núcleo: hélio e metais sobem e hidrogênio novo desce, repondo combustível.",
+  "搅拌弧（阶段 5）搅动核心：氦和金属上浮，新鲜氢下沉，补充燃料。"
+ ],
+ "gtia.star_lifter.ui.manual.17": [
+  "=fuel += 3.5 × ΔM / M",
+  "=combustível += 3,5 × ΔM / M",
+  "=燃料 += 3.5 × ΔM / M"
+ ],
+ "gtia.star_lifter.ui.manual.18": [
+  "Above 60% the star grows restless: at 100% instability a flare costs the girdle 25%.",
+  "Acima de 60% a estrela fica instável: com 100% de instabilidade, uma erupção tira 25% da cinta.",
+  "超过 60% 时恒星变得不稳定：不稳定度达到 100% 时，耀斑会使环带损失 25%。"
+ ],
+ "gtia.star_lifter.ui.manual.19": [
+  "Repair: idle, put girdle and petal blocks in an input bus (+5% each).",
+  "Reparo: parado, ponha blocos da cinta e das pétalas num barramento de entrada (+5% cada).",
+  "修复：停机时将环带和花瓣方块放入输入总线（每个 +5%）。"
+ ],
+ "gtna.ui.o.sl_rate.up": [
+  "Lift 10% more (more matter, more power, the star shrinks faster).",
+  "Tira 10% a mais (mais matéria, mais energia, a estrela encolhe mais rápido).",
+  "抽取量增加 10%（物质更多、耗能更多、恒星缩小更快）。"
+ ],
+ "gtna.ui.o.sl_rate.down": [
+  "Lift 10% less.",
+  "Tira 10% a menos.",
+  "抽取量减少 10%。"
+ ],
+ "gtia.star_lifter.ui.mode.short.thermal": [
+  "Thermal",
+  "Térmico",
+  "热风"
+ ],
+ "gtia.star_lifter.ui.mode.short.ring": [
+  "Ring",
+  "Anel",
+  "环流"
+ ],
+ "gtia.star_lifter.ui.mode.short.deep": [
+  "Deep",
+  "Profundo",
+  "深层"
+ ],
+ "gtia.star_lifter.ui.s.title": [
+  "The star",
+  "A estrela",
+  "恒星"
+ ],
+ "gtia.star_lifter.ui.manual_title": [
+  "Field manual - Star Lifter",
+  "Manual de campo - Elevador Estelar",
+  "现场手册 - 恒星抽取器"
+ ],
+ "gtia.star_lifter.ui.g.mass": [
+  "Mass",
+  "Massa",
+  "质量"
+ ],
+ "gtia.star_lifter.ui.g.instability": [
+  "Unrest",
+  "Instab.",
+  "不稳"
+ ],
+ "gtia.star_lifter.ui.g.girdle": [
+  "Girdle",
+  "Cinta",
+  "环带"
+ ]
+}

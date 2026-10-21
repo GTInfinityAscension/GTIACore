@@ -59,6 +59,25 @@ final class MegaTestRig {
         return (M) ((IMachineBlockEntity) level.getBlockEntity(controller)).getMetaMachine();
     }
 
+    /**
+     * Replaces the {@code index}-th hatch casing of the station (scan order) with a part machine and returns it; call
+     * before checking the pattern.
+     */
+    static com.gregtechceu.gtceu.api.machine.MetaMachine hatch(GameTestHelper helper, MegaMachine m, int index,
+                                                               com.gregtechceu.gtceu.api.machine.MachineDefinition part) {
+        var shape = m.shape();
+        int seen = 0;
+        for (int i = 0; i < shape.nz; i++)
+            for (int j = 0; j < shape.ny; j++)
+                for (int k = 0; k < shape.nx; k++) {
+                    if (shape.letter(k, j, i) != MegaShape.Part.HATCH || seen++ != index) continue;
+                    var pos = shape.world(m.getPos(), FRONT, k, j, i);
+                    helper.getLevel().setBlock(pos, part.getBlock().defaultBlockState(), 3);
+                    return ((IMachineBlockEntity) helper.getLevel().getBlockEntity(pos)).getMetaMachine();
+                }
+        throw new IllegalStateException("no hatch casing " + index);
+    }
+
     static String error(MegaMachine m) {
         var state = m.getMultiblockState();
         var e = state.error;

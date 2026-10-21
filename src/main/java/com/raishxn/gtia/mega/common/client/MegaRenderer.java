@@ -18,7 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.model.data.ModelData;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -41,8 +40,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Draws every megastructure's render-only meshes (stars, coronas, force fields, jets; never blocks) and, while one
- * runs, the moving pieces it took out of the world, each moved by its track.
+ * Draws every megastructure's effects ({@link MegaFx}: stars, jets, fields, black holes; never blocks) and, while
+ * one runs, the moving pieces it took out of the world, each moved by its track.
  */
 public final class MegaRenderer {
 
@@ -57,7 +56,6 @@ public final class MegaRenderer {
         final Vec3 pivot;
         final Matrix3f axes;
         final Map<MegaShape.Part, VertexBuffer> rings = new java.util.LinkedHashMap<>();
-        final Map<String, VertexBuffer> renders = new HashMap<>();
 
         Baked(Vec3 pivot, Matrix3f axes) {
             this.pivot = pivot;
@@ -66,13 +64,16 @@ public final class MegaRenderer {
 
         void close() {
             rings.values().forEach(VertexBuffer::close);
-            renders.values().forEach(VertexBuffer::close);
         }
     }
 
     private MegaRenderer() {}
 
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
+            MegaLens.apply(new Matrix4f(event.getProjectionMatrix()));
+            return;
+        }
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS || QUEUE.isEmpty()) return;
         try {
             Vec3 cam = event.getCamera().getPosition();
@@ -85,9 +86,11 @@ public final class MegaRenderer {
                 if (shape == null || motion == null) continue;
                 var baked = BAKED.computeIfAbsent(
                         new Placement(m.shapeName(), m.getPos().immutable(), m.getFrontFacing()),
-                        p -> bake(shape, motion, p));
+                        p -> bake(shape, p));
                 drawRings(m, baked, motion, event.getPoseStack(), cam, projection, seconds);
-                drawRenders(m, baked, motion, event.getPoseStack(), cam, projection, seconds);
+                var fx = MegaFx.get(m.shapeName());
+                if (fx != null) MegaFxRenderer.draw(m, fx, placement(shape, baked, motion, event.getPoseStack(), cam,
+                        seconds), projection, seconds);
             }
         } finally {
             QUEUE.clear();
@@ -130,43 +133,37 @@ public final class MegaRenderer {
         Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
     }
 
-    private static void drawRenders(MegaMachine m, Baked b, MegaMotion motion, PoseStack pose,
-                                    Vec3 cam, Matrix4f projection, double seconds) {
-        var shader = GameRenderer.getPositionColorShader();
-        if (shader == null) return;
-        try {
-            for (var mesh : motion.meshes.values()) {
-                if (mesh.phase() > Math.max(1, m.phases()) || mesh.active() && !m.isRunning()) continue;
-                var buffer = b.renders.get(mesh.track());
-                var track = motion.tracks.get(mesh.track());
-                if (buffer == null || track == null) continue;
-                boolean glow = !mesh.opaque();
-                if (glow) {
-                    RenderSystem.enableBlend();
-                    RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-                    RenderSystem.depthMask(false);
-                    RenderSystem.disableCull();
-                } else {
-                    RenderSystem.disableBlend();
-                    RenderSystem.depthMask(true);
-                    // The model's triangles are not all wound the same way.
-                    RenderSystem.disableCull();
-                }
-                buffer.bind();
-                buffer.drawWithShader(model(pose, b, track, cam, seconds), projection, shader);
+    /** Effect placement of one machine this frame: tracks as world matrices, grid axes, pivot. */
+    private static MegaFxRenderer.Placement placement(MegaShape shape, Baked b, MegaMotion motion, PoseStack pose,
+                                                      Vec3 cam, double seconds) {
+        var still = new Matrix4f(pose.last().pose()).translate((float) (b.pivot.x - cam.x),
+                (float) (b.pivot.y - cam.y), (float) (b.pivot.z - cam.z));
+        var axes = new Matrix4f().set(b.axes);
+        var pivot = new Vector3f(shape.pivotX, shape.pivotY, shape.pivotZ);
+        var cache = new HashMap<String, Matrix4f>();
+        return new MegaFxRenderer.Placement() {
+
+            @Override
+            public Matrix4f track(String track) {
+                var t = track == null ? null : motion.tracks.get(track);
+                return t == null ? still : cache.computeIfAbsent(track, k -> model(pose, b, t, cam, seconds));
             }
-        } finally {
-            VertexBuffer.unbind();
-            RenderSystem.depthMask(true);
-            RenderSystem.disableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableCull();
-        }
+
+            @Override
+            public Vector3f pivot() {
+                return pivot;
+            }
+
+            @Override
+            public Matrix4f axes() {
+                return axes;
+            }
+        };
     }
 
     // ------------------------------------------------------------------ baking
 
-    private static Baked bake(MegaShape shape, MegaMotion motion, Placement p) {
+    private static Baked bake(MegaShape shape, Placement p) {
         if (BAKED.size() > 4) {
             BAKED.values().forEach(Baked::close);
             BAKED.clear();
@@ -176,33 +173,7 @@ public final class MegaRenderer {
         var rel = new Vector3f(shape.pivotX - shape.ck, shape.pivotY - shape.cj, shape.pivotZ - shape.ci).mul(axes);
         var pivot = new Vec3(p.controller().getX() + 0.5 + rel.x, p.controller().getY() + 0.5 + rel.y,
                 p.controller().getZ() + 0.5 + rel.z);
-        var baked = new Baked(pivot, axes);
-        for (var mesh : motion.meshes.values()) {
-            boolean core = mesh.opaque();
-            float[] t = mesh.triangles();
-            var buf = new BufferBuilder(t.length / 3 * DefaultVertexFormat.POSITION_COLOR.getVertexSize());
-            buf.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
-            var v = new Vector3f[3];
-            for (int i = 0; i < t.length; i += 9) {
-                for (int k = 0; k < 3; k++)
-                    v[k] = new Vector3f(t[i + 3 * k] - shape.pivotX, t[i + 3 * k + 1] - shape.pivotY,
-                            t[i + 3 * k + 2] - shape.pivotZ).mul(axes);
-                // Opaque meshes (stars) burn with granules: a cheap per-face flicker of brightness, no lighting.
-                float grain = 0.85f + 0.15f * (float) Math.abs(Math.sin(i * 12.9898));
-                float[] c = mesh.rgba();
-                for (var x : v) {
-                    if (core) buf.vertex(x.x, x.y, x.z).color(c[0] * grain, c[1] * grain, c[2] * grain, c[3])
-                            .endVertex();
-                    else buf.vertex(x.x, x.y, x.z).color(c[0], c[1], c[2], c[3]).endVertex();
-                }
-            }
-            var vb = new VertexBuffer(VertexBuffer.Usage.STATIC);
-            vb.bind();
-            vb.upload(buf.end());
-            VertexBuffer.unbind();
-            baked.renders.put(mesh.track(), vb);
-        }
-        return baked;
+        return new Baked(pivot, axes);
     }
 
     /** A captured ring from its block models, positioned around the pivot. */

@@ -100,6 +100,16 @@ public class StellarEngineMachine extends MegaMachine {
         view = v;
     }
 
+    /** The jets and siphon streams burn only with the Caplan engine; a longer main jet burns brighter. */
+    @Override
+    public float fxLevel(String effect) {
+        boolean burning = view.length > 6 && view[6] > 0;
+        if (effect.equals("jet_main")) return burning ? 0.55f + betaPct / 100f : 0;
+        if (effect.equals("jet_counter")) return burning ? 0.4f + (100 - betaPct) / 50f : 0;
+        if (effect.startsWith("siphon")) return burning ? 1 : 0;
+        return 1;
+    }
+
     // ------------------------------------------------------------------ work
 
     @Override
@@ -115,10 +125,12 @@ public class StellarEngineMachine extends MegaMachine {
             engine = consume(level, (double) EnginePhysics.CAPLAN_EUT * 20);
         }
         double mdot = engine ? EnginePhysics.MDOT_MAX * EnginePhysics.mdotBonus(farthest) : 0;
-        double shk = EnginePhysics.shkadovThrust(mirror);
+        var star = star();
+        double light = star == null ? 1 : star.luminosity(), mass = star == null ? 1 : star.mass;
+        double shk = EnginePhysics.shkadovThrust(mirror, light);
         double cap = engine ? EnginePhysics.caplanThrust(mdot, betaPct) : 0;
         double thrust = shk + cap;
-        double dv = EnginePhysics.dvPerSecond(thrust);
+        double dv = EnginePhysics.dvPerSecond(thrust, mass);
         if (engine && tension > 0)
             integrity = Math.max(0, integrity - (int) Math.ceil(EnginePhysics.WEAR * tension));
         else repair();
