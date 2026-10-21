@@ -72,6 +72,8 @@ public final class GTIAMod {
                     .addListener(com.raishxn.gtia.data.rocket.AdAstraRocketRecipeFilter::onDatapackSync);
         }
         GTIARulesNetwork.register();
+        com.raishxn.gtia.mega.system.SkyStarNetwork.register();
+        MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.mega.system.SkyStarNetwork::onServerTick);
         if (net.minecraftforge.fml.ModList.get().isLoaded("gtna")) GTIASteamRules.install();
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
             MinecraftForge.EVENT_BUS.addListener(
@@ -83,6 +85,8 @@ public final class GTIAMod {
                 var ignored = com.raishxn.gtia.mega.common.client.MegaRenderer.Render.TYPE;
                 MinecraftForge.EVENT_BUS.addListener(
                         com.raishxn.gtia.mega.common.client.MegaRenderer::onRenderLevelStage);
+                MinecraftForge.EVENT_BUS.addListener(
+                        com.raishxn.gtia.mega.common.client.MegaSkyStar::onRenderLevelStage);
                 MinecraftForge.EVENT_BUS.addListener(
                         com.raishxn.gtia.mega.common.client.MegaDevCommand::register);
             }

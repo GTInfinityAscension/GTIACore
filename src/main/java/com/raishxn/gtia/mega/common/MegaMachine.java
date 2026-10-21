@@ -199,15 +199,25 @@ public abstract class MegaMachine extends OriginalMachine implements IMachineLif
 
     /** Puts a fluid into the output hatches; returns what did not fit. */
     protected long fillFluid(net.minecraftforge.fluids.FluidStack stack) {
+        return fill(stack, com.gregtechceu.gtceu.api.capability.recipe.IO.OUT);
+    }
+
+    /** Dev aid ({@code /gtia_dev_fill}): puts a fluid into the input hatches; returns what did not fit. */
+    @VisibleForTesting
+    public long fillInputForTests(net.minecraftforge.fluids.FluidStack stack) {
+        return fill(stack, com.gregtechceu.gtceu.api.capability.recipe.IO.IN);
+    }
+
+    private long fill(net.minecraftforge.fluids.FluidStack stack, com.gregtechceu.gtceu.api.capability.recipe.IO io) {
         if (stack == null || stack.isEmpty()) return 0;
         long left = stack.getAmount();
         for (var part : getParts()) {
             for (var handlers : part.getRecipeHandlers()) {
-                if (!handlers.isValid(com.gregtechceu.gtceu.api.capability.recipe.IO.OUT)) continue;
+                if (!handlers.isValid(io)) continue;
                 for (var handler : handlers.getCapability(
                         com.gregtechceu.gtceu.api.capability.recipe.FluidRecipeCapability.CAP)) {
                     if (!(handler instanceof com.gregtechceu.gtceu.api.machine.trait.NotifiableFluidTank tank) ||
-                            left <= 0)
+                            tank.getHandlerIO() != io || left <= 0)
                         continue;
                     var put = stack.copy();
                     put.setAmount((int) Math.min(Integer.MAX_VALUE, left));
