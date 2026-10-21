@@ -43,6 +43,8 @@ public final class StarSystems extends SavedData {
         public long seed;
         /** Times the system was made (a disintegrated slot can be made again). */
         public int generation;
+        /** Metal content, × the Sun's: richer systems give more when mined or taken apart. */
+        public double metallicity = 1;
 
         Star(Kind kind, double mass, double fuel, @Nullable UUID owner, long seed) {
             this.kind = kind;
@@ -72,6 +74,7 @@ public final class StarSystems extends SavedData {
             if (owner != null) t.putUUID("owner", owner);
             t.putLong("seed", seed);
             t.putInt("generation", generation);
+            t.putDouble("z", metallicity);
             return t;
         }
 
@@ -79,6 +82,7 @@ public final class StarSystems extends SavedData {
             var s = new Star(Kind.valueOf(t.getString("kind")), t.getDouble("mass"), t.getDouble("fuel"),
                     t.hasUUID("owner") ? t.getUUID("owner") : null, t.getLong("seed"));
             s.generation = t.getInt("generation");
+            s.metallicity = t.contains("z") ? t.getDouble("z") : 1;
             return s;
         }
     }
@@ -137,11 +141,17 @@ public final class StarSystems extends SavedData {
 
     /** Puts a new star in an empty (or emptied) slot. */
     public boolean create(int slot, Kind kind, UUID owner, long seed) {
+        return create(slot, kind, owner, seed, 1);
+    }
+
+    /** Puts a new star of metallicity {@code z} in an empty (or emptied) slot. */
+    public boolean create(int slot, Kind kind, UUID owner, long seed, double z) {
         var key = slot(slot).location();
         var old = stars.get(key);
         if (old != null && old.kind != Kind.NONE) return false;
         var s = new Star(kind, kind.mass, kind.mainSequence() ? 1.0 : 0, owner, seed);
         s.generation = old == null ? 1 : old.generation + 1;
+        s.metallicity = z;
         stars.put(key, s);
         setDirty();
         return true;
@@ -164,6 +174,16 @@ public final class StarSystems extends SavedData {
             if (s != null && owner.equals(s.owner) && s.kind != Kind.NONE) n++;
         }
         return n;
+    }
+
+    /** Empties a slot (the Disintegrator; GameTests clean up with it). */
+    public void clear(int slot) {
+        var s = stars.get(slot(slot).location());
+        if (s != null) {
+            s.kind = Kind.NONE;
+            s.owner = null;
+            setDirty();
+        }
     }
 
     public void changed() {

@@ -1,0 +1,317 @@
+{
+ "block.gtia.system_creator": [
+  "Interstellar System Creator",
+  "Criador de Sistemas Interestelares",
+  "星际系统创造者"
+ ],
+ "gtia.machine.system_creator.tooltip.0": [
+  "A stellar foundry, built in five phases: gathers a hydrogen cloud, collapses it and lights a new star in a new star system.",
+  "Uma fundição estelar, construída em cinco fases: junta uma nuvem de hidrogênio, colapsa e acende uma estrela nova num sistema estelar novo.",
+  "恒星铸造厂，分五个阶段建造：聚集氢云、使其坍缩，并在新的恒星系中点燃新恒星。"
+ ],
+ "gtia.machine.system_creator.tooltip.1": [
+  "Red dwarfs from phase 1; yellow with the rings, white with the Fusion Candle, blue giants with the Artificial Star Creator, neutron stars and black holes with the collapse lens.",
+  "Anãs vermelhas desde a fase 1; amarelas com os anéis, brancas com a Fusion Candle, gigantes azuis com o Artificial Star Creator, estrelas de nêutrons e buracos negros com a lente de colapso.",
+  "第 1 阶段可造红矮星；有压缩环可造黄矮星，有聚变烛台可造白星，有人造恒星创造器可造蓝巨星，有坍缩透镜可造中子星和黑洞。"
+ ],
+ "gtia.machine.system_creator.tooltip.2": [
+  "Costs hydrogen, iron dust and Ψ; every system made raises the Dimensional era. Its screen travels to the systems.",
+  "Custa hidrogênio, pó de ferro e Ψ; cada sistema feito sobe a Era Dimensional. A tela leva aos sistemas.",
+  "消耗氢、铁粉和 Ψ；每创造一个系统都会提升维度纪元。界面可前往各系统。"
+ ],
+ "gtia.system_creator.stage": [
+  "Forge: %s, %s%%",
+  "Fundição: %s, %s%%",
+  "铸造：%s，%s%%"
+ ],
+ "gtia.system_creator.ui.kind.tip": [
+  "Click to pick the next star kind (the chart shows heat to the left, light upwards).",
+  "Clique para escolher o próximo tipo de estrela (o gráfico mostra calor à esquerda e luz para cima).",
+  "点击选择下一种恒星类型（图中左为高温，上为高光度）。"
+ ],
+ "gtia.system_creator.ui.metal.tip": [
+  "Metallicity of the new system: richer systems give more when mined or taken apart, and cost more Ψ and iron.",
+  "Metalicidade do sistema novo: sistemas mais ricos rendem mais quando minerados ou desmontados, e custam mais Ψ e ferro.",
+  "新系统的金属丰度：越丰富的系统开采或拆解时产出越多，但消耗更多 Ψ 和铁。"
+ ],
+ "gtia.system_creator.ui.metal": [
+  "Z × %s",
+  "Z × %s",
+  "Z × %s"
+ ],
+ "gtia.system_creator.ui.forge": [
+  "Forge",
+  "Forjar",
+  "铸造"
+ ],
+ "gtia.system_creator.ui.forge.tip": [
+  "Start a star: takes the Ψ and the iron dust now, then gathers hydrogen from the hatches.",
+  "Começa uma estrela: tira o Ψ e o pó de ferro agora e depois junta hidrogênio das hatches.",
+  "开始铸造恒星：立即消耗 Ψ 和铁粉，然后从仓口收集氢。"
+ ],
+ "gtia.system_creator.ui.cancel": [
+  "Disperse",
+  "Dispersar",
+  "驱散"
+ ],
+ "gtia.system_creator.ui.cancel.tip": [
+  "Let the cloud disperse: what was gathered and the Ψ are lost.",
+  "Deixa a nuvem se dispersar: o que foi juntado e o Ψ se perdem.",
+  "让气体云散去：已收集的气体和 Ψ 都会损失。"
+ ],
+ "gtia.system_creator.ui.travel": [
+  "Travel",
+  "Viajar",
+  "前往"
+ ],
+ "gtia.system_creator.ui.travel.tip": [
+  "Go to the selected system, onto a landing platform.",
+  "Vai para o sistema selecionado, numa plataforma de pouso.",
+  "前往所选恒星系的着陆平台。"
+ ],
+ "gtia.system_creator.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.system_creator.ui.manual.tip": [
+  "How stars are made here, with the formulas.",
+  "Como as estrelas são feitas aqui, com as fórmulas.",
+  "这里如何制造恒星，附公式。"
+ ],
+ "gtia.system_creator.ui.idle": [
+  "The core is empty",
+  "O núcleo está vazio",
+  "核心为空"
+ ],
+ "gtia.system_creator.ui.stage.idle": [
+  "idle",
+  "parada",
+  "待机"
+ ],
+ "gtia.system_creator.ui.stage.gather": [
+  "Gathering",
+  "Juntando",
+  "聚集中"
+ ],
+ "gtia.system_creator.ui.stage.collapse": [
+  "Collapsing",
+  "Colapsando",
+  "坍缩中"
+ ],
+ "gtia.system_creator.ui.stage.ignite": [
+  "Igniting",
+  "Acendendo",
+  "点火中"
+ ],
+ "gtia.system_creator.ui.stage.stabilize": [
+  "Settling",
+  "Estabilizando",
+  "稳定中"
+ ],
+ "gtia.system_creator.ui.msg.made": [
+  "A new system is born",
+  "Nasceu um sistema novo",
+  "新恒星系诞生了"
+ ],
+ "gtia.system_creator.ui.msg.slot_taken": [
+  "The slot was taken",
+  "A vaga foi ocupada",
+  "槽位已被占用"
+ ],
+ "gtia.system_creator.ui.msg.hydrogen": [
+  "Needs hydrogen",
+  "Falta hidrogênio",
+  "需要氢"
+ ],
+ "gtia.system_creator.ui.msg.power": [
+  "No Nexus power",
+  "Sem energia da Nexus",
+  "Nexus 能量不足"
+ ],
+ "gtia.system_creator.ui.msg.phase": [
+  "That star needs a later phase",
+  "Essa estrela pede uma fase posterior",
+  "该恒星需要更高阶段"
+ ],
+ "gtia.system_creator.ui.msg.no_slot": [
+  "No free system: take one apart",
+  "Sem sistema livre: desmonte um",
+  "没有空闲系统：请拆解一个"
+ ],
+ "gtia.system_creator.ui.msg.dust": [
+  "Needs iron dust",
+  "Falta pó de ferro",
+  "需要铁粉"
+ ],
+ "gtia.system_creator.ui.msg.psi": [
+  "Not enough Ψ",
+  "Ψ insuficiente",
+  "Ψ 不足"
+ ],
+ "gtia.system_creator.ui.msg.no_system": [
+  "No such system yet",
+  "Esse sistema ainda não existe",
+  "该系统尚不存在"
+ ],
+ "gtia.system_creator.ui.era": [
+  "Dimensional era",
+  "Era Dimensional",
+  "维度纪元"
+ ],
+ "gtia.system_creator.ui.made": [
+  "%s systems",
+  "%s sistemas",
+  "%s 个系统"
+ ],
+ "gtia.system_creator.ui.empty": [
+  "empty slot",
+  "vaga vazia",
+  "空槽位"
+ ],
+ "gtia.system_creator.ui.kind.red_dwarf": [
+  "Red dwarf",
+  "Anã vermelha",
+  "红矮星"
+ ],
+ "gtia.system_creator.ui.kind.yellow_dwarf": [
+  "Yellow dwarf",
+  "Anã amarela",
+  "黄矮星"
+ ],
+ "gtia.system_creator.ui.kind.white_star": [
+  "White star",
+  "Estrela branca",
+  "白星"
+ ],
+ "gtia.system_creator.ui.kind.blue_giant": [
+  "Blue giant",
+  "Gigante azul",
+  "蓝巨星"
+ ],
+ "gtia.system_creator.ui.kind.neutron_star": [
+  "Neutron star",
+  "Estrela de nêutrons",
+  "中子星"
+ ],
+ "gtia.system_creator.ui.kind.black_hole": [
+  "Black hole",
+  "Buraco negro",
+  "黑洞"
+ ],
+ "gtia.system_creator.ui.kind.white_dwarf": [
+  "White dwarf",
+  "Anã branca",
+  "白矮星"
+ ],
+ "gtia.system_creator.ui.kind.none": [
+  "Nothing",
+  "Nada",
+  "无"
+ ],
+ "gtia.system_creator.ui.manual_title": [
+  "Field manual - System Creator",
+  "Manual de campo - Criador de Sistemas",
+  "现场手册 - 星际系统创造者"
+ ],
+ "gtia.system_creator.ui.manual.0": [
+  "#A star from a cloud",
+  "#Uma estrela a partir de uma nuvem",
+  "#从气体云到恒星"
+ ],
+ "gtia.system_creator.ui.manual.1": [
+  "Stars form when a cold cloud collapses under its own gravity. The Creator gathers the cloud, squeezes it with its rings and lights the core with the Fusion Candle.",
+  "Estrelas se formam quando uma nuvem fria colapsa sob a própria gravidade. O Criador junta a nuvem, aperta com os anéis e acende o núcleo com a Fusion Candle.",
+  "当冷气体云在自身引力下坍缩时恒星就会形成。创造者聚集气体云，用压缩环挤压，并用聚变烛台点燃核心。"
+ ],
+ "gtia.system_creator.ui.manual.2": [
+  "=cloud = M × 10^6 mB of hydrogen (plasma counts × 10)",
+  "=nuvem = M × 10^6 mB de hidrogênio (plasma vale × 10)",
+  "=气体云 = M × 10^6 mB 氢（等离子体按 × 10 计）"
+ ],
+ "gtia.system_creator.ui.manual.3": [
+  "=Ψ = 2^20 × M × Z;  iron dust = 16 × M × Z",
+  "=Ψ = 2^20 × M × Z;  pó de ferro = 16 × M × Z",
+  "=Ψ = 2^20 × M × Z；铁粉 = 16 × M × Z"
+ ],
+ "gtia.system_creator.ui.manual.4": [
+  "Gathering takes up to 50 000 mB a second from the hatches.",
+  "Juntar tira até 50 000 mB por segundo das hatches.",
+  "聚集阶段每秒最多从仓口吸取 50 000 mB。"
+ ],
+ "gtia.system_creator.ui.manual.5": [
+  "#Collapse",
+  "#Colapso",
+  "#坍缩"
+ ],
+ "gtia.system_creator.ui.manual.6": [
+  "The cloud falls in on itself in its free-fall time; a disk forms round the protostar and two jets leave its poles.",
+  "A nuvem cai sobre si mesma no tempo de queda livre; forma-se um disco em volta da protoestrela e dois jatos saem dos polos.",
+  "气体云在自由落体时间内向内坍缩；原恒星周围形成吸积盘，两极喷出双极喷流。"
+ ],
+ "gtia.system_creator.ui.manual.7": [
+  "=t_ff = √(3π / 32 G ρ) ∝ √(R³/M):  60 s for a Sun, 20 to 300 s",
+  "=t_ff = √(3π / 32 G ρ) ∝ √(R³/M):  60 s para um Sol, de 20 a 300 s",
+  "=t_ff = √(3π / 32 G ρ) ∝ √(R³/M)：太阳为 60 秒，范围 20–300 秒"
+ ],
+ "gtia.system_creator.ui.manual.8": [
+  "#Ignition",
+  "#Ignição",
+  "#点火"
+ ],
+ "gtia.system_creator.ui.manual.9": [
+  "The Fusion Candle (phase 3) pays the cloud's binding energy over 20 s; without it only a red dwarf lights, slowly and without EU.",
+  "A Fusion Candle (fase 3) paga a energia de ligação da nuvem em 20 s; sem ela só uma anã vermelha acende, devagar e sem EU.",
+  "聚变烛台（阶段 3）在 20 秒内支付气体云的结合能；没有它只能缓慢点燃红矮星，不耗 EU。"
+ ],
+ "gtia.system_creator.ui.manual.10": [
+  "=E = 2^41 EU × M² / R  (binding energy ∝ (3/5) G M²/R)",
+  "=E = 2^41 EU × M² / R  (energia de ligação ∝ (3/5) G M²/R)",
+  "=E = 2^41 EU × M² / R（结合能 ∝ (3/5) G M²/R）"
+ ],
+ "gtia.system_creator.ui.manual.11": [
+  "#Kinds of star",
+  "#Tipos de estrela",
+  "#恒星类型"
+ ],
+ "gtia.system_creator.ui.manual.12": [
+  "Phase 1 red dwarf (0.3 M☉), 2 yellow dwarf (1), 3 white star (2), 4 blue giant (15), 5 neutron star (from 15 M☉ of gas) and black hole (from 25).",
+  "Fase 1 anã vermelha (0,3 M☉), 2 anã amarela (1), 3 estrela branca (2), 4 gigante azul (15), 5 estrela de nêutrons (de 15 M☉ de gás) e buraco negro (de 25).",
+  "阶段 1 红矮星（0.3 M☉），2 黄矮星（1），3 白星（2），4 蓝巨星（15），5 中子星（由 15 M☉ 气体）和黑洞（由 25 M☉）。"
+ ],
+ "gtia.system_creator.ui.manual.13": [
+  "Remnants need four times the Ψ: the collapse is computed through the lens.",
+  "Remanescentes pedem quatro vezes o Ψ: o colapso é calculado pela lente.",
+  "致密残骸需要四倍 Ψ：坍缩需通过透镜计算。"
+ ],
+ "gtia.system_creator.ui.manual.14": [
+  "Metallicity Z (½, 1, 2, 3 × the Sun) sets how rich the new system is when mined or taken apart.",
+  "A metalicidade Z (½, 1, 2, 3 × a do Sol) diz quão rico o sistema novo é quando minerado ou desmontado.",
+  "金属丰度 Z（太阳的 ½、1、2、3 倍）决定新系统被开采或拆解时的富裕程度。"
+ ],
+ "gtia.system_creator.ui.manual.15": [
+  "#Systems and the era",
+  "#Sistemas e a era",
+  "#恒星系与纪元"
+ ],
+ "gtia.system_creator.ui.manual.16": [
+  "Each new star becomes a system of its own (six slots). The orrery picks one; Travel takes you to its landing platform.",
+  "Cada estrela nova vira um sistema próprio (seis vagas). O planetário escolhe um; Viajar leva à plataforma de pouso.",
+  "每颗新恒星都会成为独立的恒星系（共六个槽位）。在星系仪中选择一个，点击“前往”即可到达其着陆平台。"
+ ],
+ "gtia.system_creator.ui.manual.17": [
+  "=Dimensional era: I at 1 system, II at 3, III at 6",
+  "=Era Dimensional: I com 1 sistema, II com 3, III com 6",
+  "=维度纪元：1 个系统为 I，3 个为 II，6 个为 III"
+ ],
+ "gtia.system_creator.ui.manual.18": [
+  "Stars that are burnt, suppressed or taken apart (Harvester, Fusion Suppressor, Disintegrator) are meant for these systems.",
+  "Estrelas que vão ser queimadas, suprimidas ou desmontadas (Harvester, Fusion Suppressor, Disintegrator) são para esses sistemas.",
+  "将被燃尽、抑制或拆解的恒星（收割者、聚变抑制器、解体器）应放在这些系统中。"
+ ],
+ "gtia.system_creator.ui.manual.19": [
+  "Dispersing a cloud loses what was gathered and the Ψ spent.",
+  "Dispersar uma nuvem perde o que foi juntado e o Ψ gasto.",
+  "驱散气体云会损失已收集的气体和已消耗的 Ψ。"
+ ]
+}

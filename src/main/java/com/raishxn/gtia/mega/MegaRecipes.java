@@ -18,6 +18,20 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-319): a forge of stars from fusion reactors, field generators and gravity stars. */
+    private static void systemCreator(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("system_creator"))
+                .inputItems(com.gregtechceu.gtceu.common.data.machines.GTMultiMachines.FUSION_REACTOR[GTValues.UV]
+                        .asStack(16))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(32))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(18432))
+                .outputItems(GTIAMegastructures.SYSTEM_CREATOR_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-318): fusion reactors for the crucibles, shielding for the hoop. */
     private static void stellarHoop(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("stellar_hoop"))
@@ -55,6 +69,7 @@ public final class MegaRecipes {
                 .save(provider);
         if (GTIAMegastructures.STAR_LIFTER_DEF != null) starLifter(provider);
         if (GTIAMegastructures.STELLAR_HOOP_DEF != null) stellarHoop(provider);
+        if (GTIAMegastructures.SYSTEM_CREATOR_DEF != null) systemCreator(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))

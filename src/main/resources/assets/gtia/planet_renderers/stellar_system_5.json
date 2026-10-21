@@ -6,7 +6,26 @@
   "has_fog": false,
   "has_thick_fog": false,
   "render_in_rain": true,
-  "sky_renderables": [],
+  "sky_renderables": [
+    {
+      "back_light_color": -9472,
+      "back_light_scale": 220.0,
+      "blend": false,
+      "global_rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "local_rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "movement_type": "STATIC",
+      "scale": 60.0,
+      "texture": "ad_astra:textures/environment/sun.png"
+    }
+  ],
   "star_brightness": 1.0,
   "star_colors": [
     {

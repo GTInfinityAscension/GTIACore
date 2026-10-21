@@ -13,14 +13,15 @@ import org.jetbrains.annotations.Nullable;
 public final class GTIAMegastructures {
 
     public static final String MATRIOSHKA = "matrioshka_brain", STELLAR_ENGINE = "stellar_engine",
-            STAR_LIFTER = "star_lifter", STELLAR_HOOP = "stellar_hoop";
+            STAR_LIFTER = "star_lifter", STELLAR_HOOP = "stellar_hoop",
+            SYSTEM_CREATOR = "system_creator";
 
     /** Every megastructure, for the client renderer check. */
-    static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP };
+    static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR };
 
     @Nullable
     public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF,
-            STELLAR_HOOP_DEF;
+            STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF;
 
     private GTIAMegastructures() {}
 
@@ -46,5 +47,7 @@ public final class GTIAMegastructures {
         if (available(STAR_LIFTER)) STAR_LIFTER_DEF = com.raishxn.gtia.mega.lifter.StarLifterDefinition.register();
         if (available(STELLAR_HOOP))
             STELLAR_HOOP_DEF = com.raishxn.gtia.mega.hoop.StellarHoopDefinition.register();
+        if (available(SYSTEM_CREATOR))
+            SYSTEM_CREATOR_DEF = com.raishxn.gtia.mega.creator.SystemCreatorDefinition.register();
     }
 }
