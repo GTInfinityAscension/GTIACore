@@ -15,11 +15,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-import com.raishxn.gtia.data.GTIARecipeTypes;
 import com.raishxn.gtia.mega.common.MegaMachine;
 import com.raishxn.gtia.mega.common.MegaRecipeEngine;
 import com.raishxn.gtia.mega.system.StarPhysics;
 import com.raishxn.gtia.mega.system.StarSystems;
+import com.raishxn.gtna.common.data.GTNARecipeType;
 
 import java.util.List;
 
@@ -103,7 +103,7 @@ public class YggdrasilMachine extends MegaMachine {
     }
 
     static List<GTRecipeType> types() {
-        return List.of(GTIARecipeTypes.GREENHOUSE);
+        return List.of(GTNARecipeType.GREENHOUSE_RECIPES);
     }
 
     @Override
@@ -140,7 +140,7 @@ public class YggdrasilMachine extends MegaMachine {
         if (devShow > 0) {
             devShow--;
             working = true;
-            result = new MegaRecipeEngine.Result(parallel, 2.4e9, "gtia:greenhouse/wheat", "");
+            result = new MegaRecipeEngine.Result(parallel, 2.4e9, "gtna:greenhouse/wheat", "");
             recipe = result.recipe();
             blocked = "";
         }

@@ -15,10 +15,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.raishxn.gtia.data.GTIAAlloys;
 import com.raishxn.gtia.data.GTIABeeMachines;
-import com.raishxn.gtia.data.GTIAGreenhouse;
 import com.raishxn.gtia.data.GTIAItems;
 import com.raishxn.gtia.data.GTIALang;
-import com.raishxn.gtia.data.GTIAMachines;
 import com.raishxn.gtia.data.GTIARecipeTypes;
 import com.raishxn.gtia.rules.GTIARulesNetwork;
 import com.raishxn.gtia.rules.GTIASteamRules;
@@ -37,7 +35,6 @@ public final class GTIAMod {
 
     public GTIAMod() {
         GTIALang.init();
-        com.raishxn.gtia.chem.ChemLang.init();
         com.raishxn.gtia.mega.GTIAMegaLang.init();
         com.raishxn.gtia.mega.common.MegaLang.init();
         com.raishxn.gtia.rules.GTIARuleEffects.applyStartupRules();
@@ -140,15 +137,11 @@ public final class GTIAMod {
 
     private void registerRecipeTypes(GTCEuAPI.RegisterEvent<ResourceLocation, GTRecipeType> event) {
         GTIARecipeTypes.init();
-        com.raishxn.gtia.chem.ChemRecipeTypes.init();
     }
 
     private void registerMachines(GTCEuAPI.RegisterEvent<ResourceLocation, MachineDefinition> event) {
-        GTIAMachines.init();
         GTIABeeMachines.init();
         com.raishxn.gtia.miner.GTIAMiners.init();
-        GTIAGreenhouse.init();
-        com.raishxn.gtia.chem.ChemPlants.init();
         com.raishxn.gtia.data.rocket.GTIARocketAssembler.init();
         com.raishxn.gtia.mega.GTIAMegastructures.init();
     }

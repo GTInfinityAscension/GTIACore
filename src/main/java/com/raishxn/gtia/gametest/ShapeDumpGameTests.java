@@ -28,10 +28,8 @@ public final class ShapeDumpGameTests {
 
     private static final List<String> MACHINES = List.of("gtceu:large_chemical_reactor",
             "gtceu:electric_blast_furnace", "gtceu:vacuum_freezer", "gtceu:distillation_tower", "gtceu:cracker",
-            "gtceu:steel_large_boiler", "gtceu:large_steam_turbine", "gtia:rocket_assembler", "gtia:bayer_digester",
-            "gtia:hall_heroult_cell", "gtia:contact_converter", "gtia:ammonia_converter", "gtia:solvay_tower",
-            "gtia:ostwald_converter", "gtia:claus_unit", "gtia:kroll_reactor", "gtia:siemens_reactor",
-            "gtia:greenhouse", "gtia:diaphragm_cell", "gtia:wood_retort", "gtia:lime_kiln");
+            "gtceu:steel_large_boiler", "gtceu:large_steam_turbine", "gtia:rocket_assembler", "gtceu:coke_oven",
+            "gtna:greenhouse");
 
     private ShapeDumpGameTests() {}
 

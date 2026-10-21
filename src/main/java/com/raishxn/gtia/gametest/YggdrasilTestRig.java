@@ -11,7 +11,6 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import com.raishxn.gtia.data.GTIARecipeTypes;
 import com.raishxn.gtia.mega.GTIAMegastructures;
 import com.raishxn.gtia.mega.common.MegaMachine;
 import com.raishxn.gtia.mega.common.MegaShape;
@@ -19,6 +18,7 @@ import com.raishxn.gtia.mega.system.StarPhysics.Kind;
 import com.raishxn.gtia.mega.system.StarSystems;
 import com.raishxn.gtia.mega.yggdrasil.YggdrasilMachine;
 import com.raishxn.gtia.mega.yggdrasil.YggdrasilPhysics;
+import com.raishxn.gtna.common.data.GTNARecipeType;
 
 import java.util.UUID;
 
@@ -42,15 +42,16 @@ final class YggdrasilTestRig {
 
     /** A Greenhouse recipe with item outputs; null when none is loaded (the crops come from Agronomica). */
     private static GTRecipe someGreenhouse(GameTestHelper helper) {
-        for (var r : helper.getLevel().getRecipeManager().getAllRecipesFor(GTIARecipeTypes.GREENHOUSE))
+        for (var r : helper.getLevel().getRecipeManager().getAllRecipesFor(GTNARecipeType.GREENHOUSE_RECIPES))
             if (!RecipeHelper.getOutputItems(r).isEmpty() && RecipeHelper.getInputItems(r).size() <= 2) return r;
         return null;
     }
 
     static void harvestsWithBiomass(GameTestHelper helper) {
         if (someGreenhouse(helper) == null) {
-            com.raishxn.gtia.GTIAMod.LOGGER.warn("No Greenhouse recipe (run with -PagronomicaDevJar): Yggdrasil harvest " +
-                    "test skipped");
+            com.raishxn.gtia.GTIAMod.LOGGER
+                    .warn("No Greenhouse recipe (run with -PagronomicaDevJar): Yggdrasil harvest " +
+                            "test skipped");
             helper.succeed();
             return;
         }

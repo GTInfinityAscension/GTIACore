@@ -27,8 +27,6 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import com.raishxn.gtia.GTIAMod;
 import com.raishxn.gtia.data.GTIAAlloys;
 import com.raishxn.gtia.data.GTIAExtraForms;
-import com.raishxn.gtia.data.GTIAItems;
-import com.raishxn.gtia.data.GTIAMachines;
 
 /** Checks the pack's own alloy forms and their Steam-era entry point in a real game world. */
 @PrefixGameTestTemplate(false)
@@ -41,7 +39,7 @@ public final class AlloyGameTests {
     private AlloyGameTests() {}
 
     @GameTest(template = TEMPLATE, batch = "alloy", timeoutTicks = 20)
-    public static void nativeFormsAndCouplerCrafting(GameTestHelper helper) {
+    public static void nativeAlloyForms(GameTestHelper helper) {
         helper.assertTrue(!ModList.get().isLoaded("enderio"), "QA must run without EnderIO");
 
         var pulsating = ChemicalHelper.get(TagPrefix.ingot, GTIAAlloys.PULSATING_ALLOY);
@@ -53,52 +51,6 @@ public final class AlloyGameTests {
         assertAlloyForms(helper, GTIAAlloys.PULSATING_ALLOY, "pulsating_alloy");
         assertAlloyForms(helper, GTIAAlloys.CONDUCTIVE_ALLOY, "conductive_alloy");
 
-        var recipe = helper.getLevel().getRecipeManager().byKey(GTIAMod.id("shaped/phase_coupler"))
-                .orElseThrow(() -> new AssertionError("Phase Coupler crafting recipe is absent"));
-        helper.assertTrue(recipe instanceof CraftingRecipe, "Phase Coupler must have a crafting recipe");
-        var crafting = (CraftingRecipe) recipe;
-        helper.assertTrue(ItemStack.isSameItem(crafting.getResultItem(helper.getLevel().registryAccess()),
-                GTIAItems.PHASE_COUPLER.asStack()), "Crafting must output the Phase Coupler");
-        var ingredients = crafting.getIngredients();
-        helper.assertTrue(ingredients.size() == 9, "Phase Coupler recipe must occupy a 3x3 grid");
-        helper.assertTrue(ingredients.get(3).test(pulsating), "Recipe must accept GTIA Pulsating Alloy");
-        helper.assertTrue(ingredients.get(1).test(ChemicalHelper.get(TagPrefix.wireGtSingle, GTMaterials.RedAlloy)),
-                "Recipe must accept Red Alloy wire");
-        helper.assertTrue(ingredients.get(7).test(ChemicalHelper.get(TagPrefix.wireGtSingle, GTMaterials.RedAlloy)),
-                "Recipe must require a second Red Alloy wire");
-        helper.assertTrue(ingredients.get(5).test(ChemicalHelper.get(TagPrefix.plate, GTMaterials.WroughtIron)),
-                "Recipe must accept Wrought Iron plate");
-        var grid = new TransientCraftingContainer(new AbstractContainerMenu(null, -1) {
-
-            @Override
-            public ItemStack quickMoveStack(Player player, int slot) {
-                return ItemStack.EMPTY;
-            }
-
-            @Override
-            public boolean stillValid(Player player) {
-                return true;
-            }
-        }, 3, 3);
-        grid.setItem(1, ChemicalHelper.get(TagPrefix.wireGtSingle, GTMaterials.RedAlloy));
-        grid.setItem(3, pulsating.copy());
-        grid.setItem(4, com.gregtechceu.gtceu.common.data.GTItems.VACUUM_TUBE.asStack());
-        grid.setItem(5, ChemicalHelper.get(TagPrefix.plate, GTMaterials.WroughtIron));
-        grid.setItem(7, ChemicalHelper.get(TagPrefix.wireGtSingle, GTMaterials.RedAlloy));
-        helper.assertTrue(crafting.matches(grid, helper.getLevel()), "Phase Coupler must match a real crafting grid");
-        helper.assertTrue(ItemStack.isSameItem(crafting.assemble(grid, helper.getLevel().registryAccess()),
-                GTIAItems.PHASE_COUPLER.asStack()), "Crafting grid must assemble the Phase Coupler");
-
-        var dehydratorRecipe = helper.getLevel().getRecipeManager()
-                .byKey(GTIAMod.id("shaped/lv_catalytic_dehydrator"))
-                .orElseThrow(() -> new AssertionError("Dehydrator construction recipe is absent"));
-        helper.assertTrue(dehydratorRecipe instanceof CraftingRecipe,
-                "Dehydrator construction must be a crafting recipe");
-        helper.assertTrue(dehydratorRecipe.getIngredients().get(3).test(GTIAItems.PHASE_COUPLER.asStack()),
-                "Dehydrator construction must consume a Phase Coupler");
-        helper.assertTrue(ItemStack.isSameItem(dehydratorRecipe.getResultItem(helper.getLevel().registryAccess()),
-                GTIAMachines.CATALYTIC_DEHYDRATOR.asStack()),
-                "Construction recipe must output the GTIA Dehydrator");
         helper.succeed();
     }
 

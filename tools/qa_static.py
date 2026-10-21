@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "src/main/resources/assets/gtia"
-OVERLAYS = ASSETS / "textures/block/machines/catalytic_dehydrator"
+MACHINE_TEXTURES = ASSETS / "textures/block/machines"
 REQUIRED_MATERIALS = {
     "material.gtia.pulsating_alloy",
     "material.gtia.conductive_alloy",
@@ -36,15 +36,8 @@ def check_languages() -> None:
 
 
 def check_overlays() -> None:
-    expected = {
-        f"overlay_{face}{suffix}.png"
-        for face in ("front", "side", "top")
-        for suffix in ("", "_active", "_active_emissive")
-    }
-    found = {path.name for path in OVERLAYS.glob("*.png")}
-    if found != expected:
-        raise ValueError(f"Overlay set differs: missing={sorted(expected - found)}, extra={sorted(found - expected)}")
-    for path in OVERLAYS.glob("*.png"):
+    """Every machine overlay is a 16x16 RGBA PNG (the Catalytic Dehydrator set this rule; it left in GTIA-D-336)."""
+    for path in MACHINE_TEXTURES.glob("*/overlay_*.png"):
         data = path.read_bytes()
         if data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
             raise ValueError(f"Invalid PNG header: {path}")
@@ -69,8 +62,8 @@ def check_built_jar() -> None:
                                  .read_text(encoding="utf-8"))
         if packed_lang != source_lang:
             raise ValueError("Built jar has stale English translations; run build again after runData")
-        jar.read("assets/gtia/models/block/machine/lv_catalytic_dehydrator.json")
-        jar.read("assets/gtia/blockstates/lv_catalytic_dehydrator.json")
+        jar.read("assets/gtia/models/block/machine/lv_entangled_miner.json")
+        jar.read("assets/gtia/blockstates/lv_entangled_miner.json")
         if 'modId="enderio"' in jar.read("META-INF/mods.toml").decode("utf-8"):
             raise ValueError("Distribution jar still declares an EnderIO dependency")
         if 'modId = "draconicevolution"' in jar.read("META-INF/mods.toml").decode("utf-8"):
@@ -93,7 +86,7 @@ def main() -> int:
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
         print(f"QA failed: {exc}", file=sys.stderr)
         return 1
-    print("QA static passed: translations, Dehydrator overlays, phase assets, and built jar")
+    print("QA static passed: translations, machine overlays, phase assets, and built jar")
     return 0
 
 

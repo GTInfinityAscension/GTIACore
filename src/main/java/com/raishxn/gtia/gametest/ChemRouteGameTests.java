@@ -17,16 +17,17 @@ import java.util.List;
 public final class ChemRouteGameTests {
 
     private static final List<String> KEPT = List.of(
-            "gtia:contact_converter/sulfuric_acid", "gtia:ammonia_converter/ammonia",
-            "gtia:ostwald_converter/ostwald/absorption", "gtia:diaphragm_cell/chlor_alkali",
-            "gtia:centrifuge/cell_liquor_separation", "gtia:lime_kiln/quicklime_coal", "gtia:lime_kiln/soda_ash_coal",
-            "gtia:kroll_reactor/kroll/magnesium_reduction", "gtia:siemens_reactor/siemens/deposition",
-            "gtia:electric_blast_furnace/czochralski/silicon_boule", "gtia:hall_heroult/aluminium",
-            "gtia:catalytic_dehydrator/ethanol_to_ethylene", "gtia:wood_retort/logs",
+            "gtia:chemical_reactor/contact_sulfuric_acid", "gtia:chemical_reactor/haber_bosch_ammonia",
+            "gtia:chemical_reactor/ostwald_absorption", "gtia:electrolyzer/chlor_alkali",
+            "gtia:centrifuge/cell_liquor_separation", "gtia:coke_oven/quicklime", "gtia:coke_oven/soda_ash",
+            "gtia:chemical_reactor/kroll_magnesium_reduction", "gtia:chemical_reactor/siemens_deposition",
+            "gtia:electric_blast_furnace/czochralski/silicon_boule",
+            "gtia:electric_blast_furnace/hall_heroult_aluminium",
+            "gtia:chemical_reactor/ethanol_to_ethylene", "gtia:coke_oven/wood_retort_logs",
             // by-products and the cracking route stay
             "gtceu:electrolyzer/decomposition_electrolyzing_hydrochloric_acid",
             "gtceu:electrolyzer/decomposition_electrolyzing_silicon_dioxide",
-            "gtceu:pyrolyse_oven/coal_to_coke_creosote");
+            "gtceu:pyrolyse_oven/coal_to_coke_creosote", "gtceu:pyrolyse_oven/log_to_charcoal_byproducts");
 
     private ChemRouteGameTests() {}
 

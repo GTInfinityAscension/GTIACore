@@ -23,7 +23,11 @@ public final class IntegrityGameTests {
 
     @GameTest(template = TEMPLATE, timeoutTicks = 400)
     public static void everyMultiblockFormsFromItsPreview(GameTestHelper h) {
-        Sweeps.multiblocksFormFromPreview(h, GTIAMod.MOD_ID, 16).assertClean(h, 8);
+        // EN: Since GTIA-D-335 the Rocket Assembler (15 x 15 x 20) is the only GTIA multiblock below megastructure
+        // size.
+        // PT: Desde a GTIA-D-335 a Montadora de Foguetes (15 x 15 x 20) é o único multibloco menor que uma mega.
+        // ZH: 自 GTIA-D-335 起，火箭组装机（15 x 15 x 20）是 GTIA 唯一小于巨构尺寸的多方块。
+        Sweeps.multiblocksFormFromPreview(h, GTIAMod.MOD_ID, 24).assertClean(h, 1);
         h.succeed();
     }
 

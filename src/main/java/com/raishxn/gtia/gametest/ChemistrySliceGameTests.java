@@ -1,25 +1,31 @@
 package com.raishxn.gtia.gametest;
 
+import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.blockentity.MetaMachineBlockEntity;
+import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
+import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
+import com.gregtechceu.gtceu.api.machine.MachineDefinition;
 import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
+import com.gregtechceu.gtceu.common.data.GTMachines;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.item.IntCircuitBehaviour;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 import com.raishxn.gtia.GTIAMod;
+import com.raishxn.gtia.data.GTIAAlloys;
 import com.raishxn.gtia.data.GTIAItems;
-import com.raishxn.gtia.data.GTIAMachines;
 
 /**
- * Chemistry slice 01 (wood chemistry and lime in Steam, chlor-alkali in LV): the Still runs its cuts for real, and
- * the recipes keep the ratios the proposal promises the player (3 Retorts per Still, 1 Cell per Centrifuge).
+ * The Steam to HV chemistry lines run in GTCEu machines (GTIA-D-335): each test puts the inputs in a real GTCEu
+ * machine and checks that the GTIA recipe, not a GTCEu one with the same inputs, is the one that runs.
  */
 @PrefixGameTestTemplate(false)
 @GameTestHolder("gtia")
@@ -31,70 +37,96 @@ public final class ChemistrySliceGameTests {
     private ChemistrySliceGameTests() {}
 
     @GameTest(template = TEMPLATE, batch = "chemistry", timeoutTicks = 20)
-    public static void stillSplitsTheWoodCondensate(GameTestHelper h) {
-        SimpleTieredMachine still = placeStill(h, 1);
+    public static void lvDistilleryCutsTheWoodCondensate(GameTestHelper h) {
+        var still = place(h, GTMachines.DISTILLERY, GTValues.LV, 11);
         still.importFluids.setFluidInTank(0, GTMaterials.CharcoalByproducts.getFluid(1000));
         still.recipeLogic.findAndHandleRecipe();
-        h.assertTrue(still.recipeLogic.getDuration() == 200, "circuit 1 separates the condensate in 10 s");
+        h.assertTrue(still.recipeLogic.getDuration() == 200, "circuit 11 cuts the condensate at LV in 10 s");
         still.recipeLogic.onRecipeFinish();
-        h.assertTrue(outputAmount(still, GTMaterials.WoodVinegar) == 400 &&
-                outputAmount(still, GTMaterials.WoodTar) == 250, "1000 mB give 400 mB vinegar and 250 mB tar");
+        h.assertTrue(outputAmount(still, GTMaterials.WoodTar) == 250, "1000 mB give 250 mB of wood tar");
         h.succeed();
     }
 
     @GameTest(template = TEMPLATE, batch = "chemistry", timeoutTicks = 20)
-    public static void stillDistilsWoodVinegar(GameTestHelper h) {
-        SimpleTieredMachine still = placeStill(h, 2);
-        still.importFluids.setFluidInTank(0, GTMaterials.WoodVinegar.getFluid(1000));
-        still.recipeLogic.findAndHandleRecipe();
-        h.assertTrue(still.recipeLogic.getDuration() == 400, "circuit 2 distils wood vinegar in 20 s");
-        still.recipeLogic.onRecipeFinish();
-        h.assertTrue(outputAmount(still, GTMaterials.AceticAcid) == 100 &&
-                outputAmount(still, GTMaterials.Methanol) == 40 && outputAmount(still, GTMaterials.Water) == 700,
-                "wood vinegar is mostly water: 100 acetic acid, 40 methanol, 700 water");
+    public static void lvChemicalReactorDehydratesEthanol(GameTestHelper h) {
+        var reactor = place(h, GTMachines.CHEMICAL_REACTOR, GTValues.LV, 2);
+        reactor.importFluids.setFluidInTank(0, GTMaterials.Ethanol.getFluid(225));
+        reactor.importFluids.setFluidInTank(1, GTMaterials.Steam.getFluid(100));
+        reactor.recipeLogic.findAndHandleRecipe();
+        h.assertTrue(reactor.recipeLogic.getDuration() == 200, "steam (circuit 2) halves the time to 10 s");
+        reactor.recipeLogic.onRecipeFinish();
+        h.assertTrue(outputAmount(reactor, GTMaterials.Ethylene) == 225, "225 mB of ethanol give 225 mB of ethylene");
         h.succeed();
     }
 
     @GameTest(template = TEMPLATE, batch = "chemistry", timeoutTicks = 20)
-    public static void sliceRecipesKeepTheProposalRatios(GameTestHelper h) {
-        h.assertTrue(GTIAMachines.WOOD_RETORT != null && GTIAMachines.LIME_KILN != null &&
-                GTIAMachines.STILL != null && GTIAMachines.DIAPHRAGM_CELL != null &&
-                GTIAItems.ASBESTOS_DIAPHRAGM.isPresent(), "the slice machines and the diaphragm are registered");
-        int retort = duration(h, "wood_retort/logs");
-        int separate = duration(h, "still/charcoal_byproducts");
-        int vinegar = duration(h, "still/wood_vinegar");
-        duration(h, "still/wood_tar");
-        for (String fuel : new String[] { "charcoal", "coal", "coke" }) duration(h, "lime_kiln/quicklime_" + fuel);
+    public static void lvElectrolyzerRunsTheChlorAlkaliCell(GameTestHelper h) {
+        var cell = place(h, GTMachines.ELECTROLYZER, GTValues.LV, 0);
+        cell.importFluids.setFluidInTank(0, GTMaterials.SaltWater.getFluid(4000));
+        cell.importItems.setStackInSlot(0, GTIAItems.ASBESTOS_DIAPHRAGM.asStack());
+        cell.recipeLogic.findAndHandleRecipe();
+        h.assertTrue(cell.recipeLogic.getDuration() == 300, "the cell runs 15 s");
+        cell.recipeLogic.onRecipeFinish();
+        h.assertTrue(outputAmount(cell, GTMaterials.Chlorine) == 2000 &&
+                outputAmount(cell, GTIAAlloys.CELL_LIQUOR) == 4000, "2000 mB of chlorine and 4000 mB of cell liquor");
+        h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE, batch = "chemistry", timeoutTicks = 20)
+    public static void mvChemicalReactorRunsTheOstwaldBurner(GameTestHelper h) {
+        var reactor = place(h, GTMachines.CHEMICAL_REACTOR, GTValues.MV, 1);
+        reactor.importItems.setStackInSlot(0, ChemicalHelper.get(TagPrefix.dust, GTMaterials.CobaltOxide, 64));
+        reactor.importFluids.setFluidInTank(0, GTMaterials.Ammonia.getFluid(2000));
+        reactor.importFluids.setFluidInTank(1, GTMaterials.Oxygen.getFluid(5000));
+        reactor.recipeLogic.findAndHandleRecipe();
+        reactor.recipeLogic.onRecipeFinish();
+        // GTCEu's catalyst-free ammonia burner (2000 mB NH3 -> 2000 mB NO) is removed; ours gives 1000 mB per run.
+        h.assertTrue(outputAmount(reactor, GTMaterials.NitricOxide) == 1000, "the GTIA Ostwald burner runs");
+        h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE, batch = "chemistry", timeoutTicks = 20)
+    public static void linesKeepTheProposalRatios(GameTestHelper h) {
+        int retort = duration(h, "coke_oven/wood_retort_logs");
+        int cut = duration(h, "distillery/charcoal_byproducts_tar");
+        duration(h, "distillery/charcoal_byproducts_vinegar");
+        duration(h, "distillery/wood_vinegar_acetic_acid");
+        duration(h, "distillery/wood_tar_creosote");
+        duration(h, "coke_oven/quicklime");
         duration(h, "primitive_blast_furnace/steel_fluxed_charcoal");
         duration(h, "primitive_blast_furnace/steel_fluxed_coal");
-        int cell = duration(h, "diaphragm_cell/chlor_alkali");
+        duration(h, "fermenter/ethanol_from_sugar");
+        int cell = duration(h, "electrolyzer/chlor_alkali");
         int centrifuge = duration(h, "centrifuge/cell_liquor_separation");
-
-        // Three retorts make exactly what one Still on circuit 1 separates (1000 mB each).
-        h.assertTrue(3 * separate == retort, "3 Retorts : 1 Still (circuit 1), got " + retort + "/" + separate);
-        // One Still on circuit 2 keeps up with the 400 mB of vinegar per separation of three retorts.
-        h.assertTrue(vinegar * 3 * 400 <= retort * 1000, "1 Still on circuit 2 handles 3 Retorts' vinegar");
+        // Three Coke Ovens on logs make exactly what one LV Distillery cuts (1000 mB each).
+        h.assertTrue(3 * cut == retort, "3 Coke Ovens : 1 Distillery, got " + retort + "/" + cut);
         // One cell (4000 mB of liquor) feeds one centrifuge (2000 mB per run) exactly.
-        h.assertTrue(cell == 2 * centrifuge, "1 Diaphragm Cell : 1 Centrifuge, got " + cell + "/" + centrifuge);
+        h.assertTrue(cell == 2 * centrifuge, "1 Electrolyzer : 1 Centrifuge, got " + cell + "/" + centrifuge);
         h.succeed();
     }
 
     @GameTest(template = TEMPLATE, batch = "chemistry", timeoutTicks = 20)
-    public static void mvPlantsExistAndCloseTheirLoops(GameTestHelper h) {
-        h.assertTrue(GTIAMachines.BAYER_DIGESTER != null && GTIAMachines.HALL_HEROULT_CELL != null &&
-                GTIAMachines.CONTACT_CONVERTER != null && GTIAMachines.AMMONIA_CONVERTER != null &&
-                GTIAMachines.SOLVAY_TOWER != null && GTIAItems.CARBON_ANODE.isPresent(),
-                "the MV plants are registered");
-        for (String path : new String[] { "bayer_digester/digestion", "bayer_digester/precipitation",
-                "chemical_reactor/aluminium_hydroxide_seed",
-                "lime_kiln/alumina_charcoal", "lime_kiln/soda_ash_coke", "chemical_reactor/cryolite",
-                "mixer/carbon_anode", "hall_heroult/aluminium", "chemical_reactor/vanadium_pentoxide",
-                "contact_converter/sulfuric_acid", "ammonia_converter/ammonia", "solvay_tower/sodium_bicarbonate" }) {
+    public static void mvAndHvLinesExist(GameTestHelper h) {
+        h.assertTrue(GTIAItems.CARBON_ANODE.isPresent() && GTIAItems.ASBESTOS_DIAPHRAGM.isPresent(),
+                "the anode and the diaphragm are registered");
+        for (String path : new String[] { "chemical_reactor/bayer_digestion", "chemical_reactor/bayer_precipitation",
+                "chemical_reactor/aluminium_hydroxide_seed", "coke_oven/alumina", "coke_oven/soda_ash",
+                "chemical_reactor/cryolite", "mixer/carbon_anode", "electric_blast_furnace/hall_heroult_aluminium",
+                "chemical_reactor/vanadium_pentoxide", "chemical_reactor/contact_sulfuric_acid",
+                "chemical_reactor/haber_bosch_ammonia", "chemical_reactor/solvay_sodium_bicarbonate",
+                "chemical_reactor/ostwald_ammonia_oxidation",
+                "large_chemical_reactor/ostwald_ammonia_oxidation_platinum",
+                "chemical_reactor/ostwald_nitric_oxide_oxidation", "chemical_reactor/ostwald_absorption",
+                "chemical_reactor/claus_sulfur_recovery", "chemical_reactor/claus_sulfur_dioxide",
+                "large_chemical_reactor/kroll_ilmenite_chlorination",
+                "large_chemical_reactor/kroll_rutile_chlorination",
+                "chemical_reactor/kroll_magnesium_reduction", "chemical_reactor/siemens_hydrochlorination",
+                "chemical_reactor/siemens_deposition" }) {
             duration(h, path);
         }
         // Bauxite to aluminium keeps its atoms: 1 Al2O3 -> 2 Al(OH)3 -> 1 Al2O3 -> 2 Al (4 Al per 2 alumina).
         var hallHeroult = (GTRecipe) h.getLevel().getServer().getRecipeManager()
-                .byKey(GTIAMod.id("hall_heroult/aluminium")).orElseThrow();
+                .byKey(GTIAMod.id("electric_blast_furnace/hall_heroult_aluminium")).orElseThrow();
         h.assertTrue(hallHeroult.getOutputContents(com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability.CAP)
                 .size() == 1, "Hall-Heroult gives only aluminium (and CO2)");
         h.succeed();
@@ -106,19 +138,20 @@ public final class ChemistrySliceGameTests {
         return ((GTRecipe) recipe.get()).duration;
     }
 
-    private static SimpleTieredMachine placeStill(GameTestHelper h, int circuit) {
-        h.setBlock(MACHINE_POS, GTIAMachines.STILL.getBlock());
+    private static SimpleTieredMachine place(GameTestHelper h, MachineDefinition[] machines, int tier, int circuit) {
+        h.setBlock(MACHINE_POS, machines[tier].getBlock());
         var machine = (SimpleTieredMachine) ((MetaMachineBlockEntity) h.getBlockEntity(MACHINE_POS)).getMetaMachine();
         machine.energyContainer.setEnergyStored(machine.energyContainer.getEnergyCapacity());
-        machine.getCircuitInventory().setStackInSlot(0, IntCircuitBehaviour.stack(circuit));
+        if (circuit > 0) machine.getCircuitInventory().setStackInSlot(0, IntCircuitBehaviour.stack(circuit));
         return machine;
     }
 
     private static int outputAmount(SimpleTieredMachine machine, Material material) {
+        FluidStack wanted = material.getFluid(1);
         int amount = 0;
         for (int tank = 0; tank < machine.exportFluids.getTanks(); tank++) {
             var fluid = machine.exportFluids.getFluidInTank(tank);
-            if (fluid.isFluidEqual(material.getFluid(1))) amount += fluid.getAmount();
+            if (fluid.isFluidEqual(wanted)) amount += fluid.getAmount();
         }
         return amount;
     }

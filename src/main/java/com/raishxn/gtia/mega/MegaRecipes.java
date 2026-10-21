@@ -27,7 +27,8 @@ public final class MegaRecipes {
                 .inputItems(CustomTags.UIV_CIRCUITS, 64)
                 .inputFluids(GTMaterials.Neutronium.getFluid(294912));
         if (GTIAMegastructures.BIRCH_WORLD_DEF != null) b.inputItems(GTIAMegastructures.BIRCH_WORLD_DEF.asStack(1));
-        b.outputItems(GTIAMegastructures.QSO_DEF.asStack()).EUt(GTValues.VA[GTValues.UIV]).duration(48000).save(provider);
+        b.outputItems(GTIAMegastructures.QSO_DEF.asStack()).EUt(GTValues.VA[GTValues.UIV]).duration(48000)
+                .save(provider);
     }
 
     /** Provisional (GTIA-D-331): a Suprashell's worth of shells many times over. */
@@ -85,7 +86,7 @@ public final class MegaRecipes {
     /** Provisional (GTIA-D-327): greenhouses by the dozen and the field generators that hold the gardens aloft. */
     private static void yggdrasil(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("yggdrasil"))
-                .inputItems(com.raishxn.gtia.data.GTIAGreenhouse.GREENHOUSE.asStack(64))
+                .inputItems(com.raishxn.gtna.common.data.GTNAMachines3.LARGE_GREENHOUSE.asStack(64))
                 .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(32))
                 .inputItems(GTItems.EMITTER_UV.asStack(32))
                 .inputItems(CustomTags.UIV_CIRCUITS, 16)

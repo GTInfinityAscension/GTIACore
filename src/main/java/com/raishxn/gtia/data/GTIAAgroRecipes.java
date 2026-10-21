@@ -5,9 +5,6 @@ import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
-import com.gregtechceu.gtceu.data.recipe.CustomTags;
-import com.gregtechceu.gtceu.data.recipe.GTCraftingComponents;
-import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -18,28 +15,19 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.raishxn.gtia.GTIAMod;
+import com.raishxn.gtna.common.data.GTNARecipeType;
 
 import java.util.function.Consumer;
 
 /**
  * Agronomica products into the GT lines (GTIA-D-271): oily seed → seed oil (then GTCEu's biodiesel), latex →
- * vulcanised rubber in Steam, biomass bundles → wood pulp and Fermentation Vat biomass, seed oil as boiler fuel.
+ * vulcanised rubber in Steam, biomass bundles → wood pulp and Brewery biomass, seed oil as boiler fuel.
  */
 public final class GTIAAgroRecipes {
 
     private GTIAAgroRecipes() {}
 
     public static void addRecipes(Consumer<FinishedRecipe> provider) {
-        // EN: MV controller: a hull between pumps (water) and sensors (the climate), glass for the roof.
-        // PT: Controlador MV: carcaça entre bombas (água) e sensores (o clima), vidro para o teto.
-        // ZH: MV 控制器：机壳两侧是泵（供水）和传感器（气候），玻璃作屋顶。
-        VanillaRecipeHelper.addShapedRecipe(provider, true, GTIAMod.id("greenhouse"),
-                GTIAGreenhouse.GREENHOUSE.asStack(), "GSG", "CHC", "PSP",
-                'G', Items.GLASS,
-                'S', GTCraftingComponents.SENSOR.get(GTValues.MV),
-                'C', CustomTags.MV_CIRCUITS,
-                'H', GTCraftingComponents.HULL.get(GTValues.MV),
-                'P', GTCraftingComponents.PUMP.get(GTValues.MV));
         if (!ModList.get().isLoaded("agronomica")) return;
         Item oilySeed = item("oily_seed"), latex = item("latex"), biomass = item("biomass_bundle");
         if (oilySeed == null || latex == null || biomass == null) return;
@@ -67,7 +55,7 @@ public final class GTIAAgroRecipes {
                 .chancedOutput(GTItems.PLANT_BALL.asStack(), 2500, 0)
                 .duration(80).EUt(4).save(provider);
 
-        GTIARecipeTypes.FERMENTATION_VAT.recipeBuilder(GTIAMod.id("agro/biomass_bundle_biomass"))
+        GTRecipeTypes.BREWING_RECIPES.recipeBuilder(GTIAMod.id("agro/biomass_bundle_biomass"))
                 .inputItems(new ItemStack(biomass, 4))
                 .inputFluids(GTMaterials.Water.getFluid(1000))
                 .outputFluids(GTMaterials.Biomass.getFluid(500))
@@ -85,9 +73,11 @@ public final class GTIAAgroRecipes {
     }
 
     /**
-     * EN: Greenhouse: 8 products per 30 s with NPK, 6 with compost (2 per run); the seed stays in the bus.
-     * PT: Estufa: 8 produtos a cada 30 s com NPK, 6 com composto (2 por ciclo); a semente fica no barramento.
-     * ZH: 温室：使用 NPK 每 30 秒产出 8 个，使用堆肥（每次 2 个）产出 6 个；种子留在总线中。
+     * EN: GTNA Greenhouse (GTIA-D-337): 8 products per 30 s with NPK, 6 with compost (2 per run); the seed stays in the
+     * bus.
+     * PT: Estufa do GTNA (GTIA-D-337): 8 produtos a cada 30 s com NPK, 6 com composto (2 por ciclo); a semente fica no
+     * barramento.
+     * ZH: GTNA 温室（GTIA-D-337）：使用 NPK 每 30 秒产出 8 个，使用堆肥（每次 2 个）产出 6 个；种子留在总线中。
      */
     private static void greenhouse(Consumer<FinishedRecipe> provider) {
         Item seeds = item("seeds"), npk = item("fertilizer_npk"), compost = item("compost");
@@ -100,7 +90,7 @@ public final class GTIAAgroRecipes {
             var tag = new net.minecraft.nbt.CompoundTag();
             tag.putString("species", crop[0]);
             for (boolean rich : new boolean[] { true, false }) {
-                GTIARecipeTypes.GREENHOUSE
+                GTNARecipeType.GREENHOUSE_RECIPES
                         .recipeBuilder(GTIAMod.id("agro/greenhouse_" + crop[0] + (rich ? "_npk" : "_compost")))
                         .notConsumable(net.minecraftforge.common.crafting.PartialNBTIngredient.of(seeds, tag))
                         .inputItems(new ItemStack(rich ? npk : compost, rich ? 1 : 2))

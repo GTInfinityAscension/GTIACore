@@ -33,8 +33,7 @@ public final class GTIAAddon implements IGTAddon {
     public void addRecipes(Consumer<FinishedRecipe> provider) {
         GTIAMod.LOGGER.info("Registering GTIA recipes");
         GTIARecipes.addRecipes(provider);
-        GTIARecipes.addChemistrySlice01(provider);
-        GTIARecipes.addChemistrySlice02(provider);
+        com.raishxn.gtia.chem.ChemLineRecipes.addRecipes(provider);
         GTIAExtraFormRecipes.addRecipes(provider);
         GTIABeeRecipes.addRecipes(provider);
         GTIAAgroRecipes.addRecipes(provider);
