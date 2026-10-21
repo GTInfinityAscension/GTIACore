@@ -1041,5 +1041,7 @@
   "gtia.qso.ui.manual.8": "#O fim",
   "gtia.qso.ui.manual.9": "Energia ordenada disparada contra o céu de 2,7 K é negentropia; o mundo só tem um tanto (regra do mundo), dividido por todos.",
   "gtia.qso.ui.manual.10": "Quando acaba e a regra do mundo permite, o próximo tiro é o último: a Era Final se fecha e o jogo acaba.",
-  "gtia.qso.ui.manual.11": "Os modpacks definem o estoque e podem desligar o final; a negentropia fica guardada para as receitas finais deles."
+  "gtia.qso.ui.manual.11": "Os modpacks definem o estoque e podem desligar o final; a negentropia fica guardada para as receitas finais deles.",
+  "gtia.rule.steam.wireless_steam": "Vapor sem fio",
+  "gtia.rule.steam.wireless_steam.desc": "Os hatches de vapor sem fio do GTNA podem ser fabricados. Desligado: o vapor vai por canos."
 }

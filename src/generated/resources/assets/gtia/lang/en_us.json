@@ -548,6 +548,8 @@
   "gtia.rule.steam.large_boiler_steam.desc": "Multiplies the steam the large boilers make from each unit of water.",
   "gtia.rule.steam.parallel_multiplier": "Steam multiblock parallels",
   "gtia.rule.steam.parallel_multiplier.desc": "Multiplies how many recipes the GTNA steam multiblocks run at once.",
+  "gtia.rule.steam.wireless_steam": "Wireless steam",
+  "gtia.rule.steam.wireless_steam.desc": "The GTNA wireless steam hatches can be crafted. Off: steam goes through pipes.",
   "gtia.rule.survival.extra_regen_food": "Extra regeneration food level",
   "gtia.rule.survival.extra_regen_food.desc": "Food level from which you heal faster. 21 turns it off.",
   "gtia.rule.survival.extra_regen_strength": "Extra regeneration strength",

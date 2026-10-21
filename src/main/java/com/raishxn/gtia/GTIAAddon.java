@@ -42,6 +42,8 @@ public final class GTIAAddon implements IGTAddon {
         com.raishxn.gtia.organ.OrganRecipes.addRecipes(provider);
         com.raishxn.gtia.chem.ChemRecipes.addRecipes(provider);
         com.raishxn.gtia.route.RouteRecipes.addRecipes(provider);
+        com.raishxn.gtia.route.ProgressionGates.addRecipes(provider);
+        com.raishxn.gtia.route.AE2Gates.addRecipes(provider);
         com.raishxn.gtia.miner.GTIAMiners.addRecipes(provider);
         com.raishxn.gtia.mega.MegaRecipes.addRecipes(provider);
     }
@@ -50,6 +52,16 @@ public final class GTIAAddon implements IGTAddon {
     public void removeRecipes(Consumer<ResourceLocation> consumer) {
         com.raishxn.gtia.chem.ChemRouteRemovals.removeRecipes(consumer);
         com.raishxn.gtia.route.RouteRemovals.removeRecipes(consumer);
+        com.raishxn.gtia.route.ProgressionGates.removeRecipes(consumer);
+        // EN: Normal worlds move steam through pipes; only Journey crafts the GTNA wireless steam hatches (GTIA-D-340).
+        // PT: No Normal o vapor vai por canos; só o Journey fabrica os hatches de vapor sem fio do GTNA (GTIA-D-340).
+        // ZH: 普通模式下蒸汽走管道；只有旅程模式能合成 GTNA 无线蒸汽仓（GTIA-D-340）。
+        if (com.raishxn.gtia.rules.WorldRules.get(com.raishxn.gtia.rules.GTIARules.WIRELESS_STEAM) == 0) {
+            for (String id : new String[] { "gtna:wireless_steam_input_hatch", "gtna:wireless_steam_output_hatch",
+                    "gtceu:hydraulic_manufacturing/wireless_steam_input_hatch_steel",
+                    "gtceu:hydraulic_manufacturing/wireless_steam_output_hatch_steel" })
+                consumer.accept(new ResourceLocation(id));
+        }
     }
 
     @Override

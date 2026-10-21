@@ -46,6 +46,7 @@ public final class GTIAMod {
         com.raishxn.gtia.data.rocket.GTIARocketBlocks.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         com.raishxn.gtia.miner.GTIAMiners.registerSerializers(modBus);
+        com.raishxn.gtia.loot.GTOreFortune.register(modBus);
         modBus.addListener(this::registerMaterialRegistry);
         modBus.addListener(this::sendCraftingSources);
         modBus.addListener(this::registerMaterials);
@@ -61,6 +62,10 @@ public final class GTIAMod {
         if (net.minecraftforge.fml.ModList.get().isLoaded("productivebees")) {
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onServerStarted);
             MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.data.ProductiveBeesRecipeFilter::onDatapackSync);
+        }
+        if (net.minecraftforge.fml.ModList.get().isLoaded("ae2")) {
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.route.AE2Gates::onServerStarted);
+            MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.route.AE2Gates::onDatapackSync);
         }
         if (net.minecraftforge.fml.ModList.get().isLoaded("ad_astra")) {
             MinecraftForge.EVENT_BUS

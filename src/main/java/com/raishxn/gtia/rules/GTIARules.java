@@ -65,6 +65,9 @@ public final class GTIARules {
     /** Steam made by the large boilers per unit of water. */
     public static final GTIARule LARGE_BOILER_STEAM = register(
             GTIARule.multiplier("large_boiler_steam", "steam", 1.25, 1.0, 0.25, 4.0));
+    /** GTNA wireless steam hatches can be crafted (GTIA-D-340: Journey only; Normal moves steam through pipes). */
+    public static final GTIARule WIRELESS_STEAM = register(
+            GTIARule.toggle("wireless_steam", "steam", true, false));
 
     // Power.
 
@@ -79,7 +82,9 @@ public final class GTIARules {
     public static final GTIARule CLEANROOM = register(GTIARule.toggle("cleanroom", "machines", true, true));
     public static final GTIARule CLEAN_MULTIBLOCKS = register(
             GTIARule.toggle("clean_multiblocks", "machines", true, false));
-    /** Final era (GTIA-D-312/D-332): the world's finite negentropy, in units, and whether the last shot ends the game. */
+    /**
+     * Final era (GTIA-D-312/D-332): the world's finite negentropy, in units, and whether the last shot ends the game.
+     */
     public static final GTIARule NEGENTROPY_STOCK = register(
             GTIARule.number("negentropy_stock", "machines", 50_000, 100_000, 1_000, 10_000_000));
     public static final GTIARule FINAL_ENDING = register(GTIARule.toggle("final_ending", "machines", true, true));
@@ -154,9 +159,9 @@ public final class GTIARules {
 
     // Organs (GTIA-D-279).
 
-    /** Planets hurt players whose organ set tier is too low (GTO organ system). */
+    /** Planets hurt players whose organ set tier is too low (GTO organ system); off on both presets (GTIA-D-338). */
     public static final GTIARule ORGAN_PLANET_REQUIREMENT = register(
-            GTIARule.toggle("planet_requirement", "organs", false, true));
+            GTIARule.toggle("planet_requirement", "organs", false, false));
     /** Multiplies the parts of every organ recipe (GTO: ×1 on Easy, ×2 on Normal). */
     public static final GTIARule ORGAN_COST = register(GTIARule.number("organ_cost", "organs", 1, 2, 1, 16));
 

@@ -1041,5 +1041,7 @@
   "gtia.qso.ui.manual.8": "#终结",
   "gtia.qso.ui.manual.9": "向 2.7 K 天空发射的有序能量即为负熵；世界总量有限（世界规则），所有人共享。",
   "gtia.qso.ui.manual.10": "耗尽且世界规则允许时，下一发即最后一发：终末纪元关闭，游戏结束。",
-  "gtia.qso.ui.manual.11": "整合包可设定储量并关闭结局；负熵会保留供其终局配方使用。"
+  "gtia.qso.ui.manual.11": "整合包可设定储量并关闭结局；负熵会保留供其终局配方使用。",
+  "gtia.rule.steam.wireless_steam": "无线蒸汽",
+  "gtia.rule.steam.wireless_steam.desc": "可以合成 GTNA 的无线蒸汽仓。关闭时：蒸汽通过管道输送。"
 }

@@ -68,10 +68,13 @@ public final class RuleParityGameTests {
     /** The new rules have the GTO-like values on each preset. */
     @GameTest(template = "qa_empty_5x5", batch = "rules", timeoutTicks = 20)
     public static void parityRuleValues(GameTestHelper helper) {
-        helper.assertTrue(GTIARules.all().size() == 56, "56 rules, got " + GTIARules.all().size());
+        helper.assertTrue(GTIARules.all().size() == 57, "57 rules, got " + GTIARules.all().size());
         helper.assertTrue(GTIARules.REQUIRE_GT_TOOLS.restart(), "GT tools rule is read at startup");
         helper.assertTrue(GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.JOURNEY) == 0 &&
-                GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.NORMAL) == 1, "planets need organs on Normal");
+                GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.NORMAL) == 0,
+                "organs never gate planets (D-338)");
+        helper.assertTrue(GTIARules.WIRELESS_STEAM.valueFor(RulePreset.JOURNEY) == 1 &&
+                GTIARules.WIRELESS_STEAM.valueFor(RulePreset.NORMAL) == 0, "wireless steam only on Journey (D-340)");
         helper.assertTrue(GTIARules.ORGAN_COST.valueFor(RulePreset.JOURNEY) == 1 &&
                 GTIARules.ORGAN_COST.valueFor(RulePreset.NORMAL) == 2, "organ cost 1/2");
         helper.succeed();

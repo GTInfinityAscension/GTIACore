@@ -196,6 +196,10 @@ public final class GTIALang {
                 "Large boiler steam per water");
         GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.large_boiler_steam.desc",
                 "Multiplies the steam the large boilers make from each unit of water.");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.wireless_steam",
+                "Wireless steam");
+        GTIAMod.REGISTRATE.addRawLang("gtia.rule.steam.wireless_steam.desc",
+                "The GTNA wireless steam hatches can be crafted. Off: steam goes through pipes.");
         GTIAMod.REGISTRATE.addRawLang("gtia.rule.power.fuel_efficiency",
                 "Fuel efficiency");
         GTIAMod.REGISTRATE.addRawLang("gtia.rule.power.fuel_efficiency.desc",
