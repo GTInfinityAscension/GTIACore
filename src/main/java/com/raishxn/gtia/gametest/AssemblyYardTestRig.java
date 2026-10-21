@@ -94,6 +94,7 @@ final class AssemblyYardTestRig {
             m.setRush(true);
             m.testSecond(owner);
             helper.assertTrue(Math.abs(m.view()[1] - 2) < 1e-9, "rush doubles the rate");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

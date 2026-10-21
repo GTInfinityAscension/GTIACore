@@ -75,6 +75,7 @@ final class DisintegratorTestRig {
             systems.create(slot, Kind.RED_DWARF, owner, 7);
             helper.assertTrue(!com.raishxn.gtia.mega.system.SystemWipe.pending(server(helper), slot),
                     "making a new star in the slot first cancels the wipe");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

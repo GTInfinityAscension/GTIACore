@@ -92,6 +92,7 @@ final class SuprashellTestRig {
             helper.assertTrue(any, "the outputs reach the output bus");
             star.kind = Kind.YELLOW_DWARF;
             helper.assertTrue(!m.inPlace(), "round a shining star there is no shell");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

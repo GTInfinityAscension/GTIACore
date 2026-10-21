@@ -72,6 +72,7 @@ final class FusionSuppressorTestRig {
             m.testSecond(owner);
             helper.assertTrue(m.end(helper.getLevel(), false) && star.kind == Kind.BLACK_HOLE &&
                     Math.abs(star.mass - 12) < 1e-9, "a direct collapse leaves a 12 M☉ black hole");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

@@ -70,6 +70,7 @@ final class HraeTestRig {
             m.testSecond(owner);
             helper.assertTrue(m.view()[5] > 0 && star.spin < before, "Penrose takes power and spin");
             helper.assertTrue(m.research() > 0, "the antennas give research");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

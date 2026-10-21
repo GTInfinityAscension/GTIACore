@@ -66,6 +66,7 @@ final class StellarHarvesterTestRig {
             m.setHeat(1.5);
             m.testSecond(owner);
             helper.assertTrue(star.kind == Kind.NEUTRON_STAR && star.mass == 1.4, "a spent 15 M☉ star: neutron star");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

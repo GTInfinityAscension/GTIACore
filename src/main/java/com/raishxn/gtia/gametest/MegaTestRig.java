@@ -86,6 +86,27 @@ final class MegaTestRig {
         return e == null ? "none" : e.getErrorInfo().getString() + " found " + state.getBlockState();
     }
 
+    /**
+     * A running machine holds its moving pieces (their blocks are air and the renderer turns them); switching it off
+     * puts them back as blocks, and switching it on again leaves it ready to take them on its next second.
+     */
+    static void capturesAndReleases(GameTestHelper helper, MegaMachine m) {
+        MegaShape.Part moving = null;
+        for (var part : m.shape().parts.values())
+            if (part.moving() && part.phase() <= m.phases()) {
+                moving = part;
+                break;
+            }
+        helper.assertTrue(moving != null, "the shape has a moving piece in its built phases");
+        long piece = MegaCapture.positions(m.shapeName(), m.getPos(), FRONT).get(moving)[0];
+        helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(piece)).isAir(),
+                "the moving pieces are in the controller while it runs (" + moving.ring() + ")");
+        m.setWorkingEnabled(false);
+        helper.assertTrue(!helper.getLevel().getBlockState(BlockPos.of(piece)).isAir(),
+                "switching off puts the moving pieces back as blocks");
+        m.setWorkingEnabled(true);
+    }
+
     static MegaShape.Part part(MegaShape shape, String ring, String kind) {
         for (var p : shape.parts.values()) if (p.ring().equals(ring) && p.kind().equals(kind)) return p;
         throw new IllegalStateException("no " + kind + " of " + ring);

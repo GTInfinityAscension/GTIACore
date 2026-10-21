@@ -88,6 +88,7 @@ final class NidavellirTestRig {
             star.kind = Kind.NEUTRON_STAR;
             m.testSecond(owner);
             helper.assertTrue(m.view()[1] == NidavellirPhysics.SPEED_NEUTRON_STAR, "a neutron star presses ×4");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;

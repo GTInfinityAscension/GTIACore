@@ -52,6 +52,7 @@ final class KugelblitzTestRig {
             helper.assertTrue(m.view()[1] > 0 && m.mass() < 1e5, "Hawking radiation caught as EU, the hole loses mass");
             var after = WirelessEnergyManager.getEnergy(helper.getLevel(), owner);
             helper.assertTrue(after.compareTo(before) > 0, "the owner's network gains EU");
+            MegaTestRig.capturesAndReleases(helper, m);
 
             // Under the critical mass it flashes out.
             m.setMass(KugelblitzPhysics.critical(5) * 1.01, true);

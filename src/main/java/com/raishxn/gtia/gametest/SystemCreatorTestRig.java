@@ -80,6 +80,8 @@ final class SystemCreatorTestRig {
             m.start(helper.getLevel());
             helper.assertTrue(m.stage() == Stage.GATHER, "it starts gathering: " + m.message());
             made = m.targetSlot();
+            m.testSecond(owner);
+            MegaTestRig.capturesAndReleases(helper, m);
             for (int i = 0; i < 200 && m.stage() != Stage.IDLE; i++) m.testSecond(owner);
             var star = store.star(StarSystems.slot(made));
             helper.assertTrue(star != null && star.kind == Kind.RED_DWARF && owner.equals(star.owner),

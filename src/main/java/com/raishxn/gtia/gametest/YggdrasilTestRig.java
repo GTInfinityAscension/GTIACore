@@ -98,6 +98,7 @@ final class YggdrasilTestRig {
             m.setDepth(YggdrasilPhysics.DEPTH_MAX);
             m.testSecond(owner);
             helper.assertTrue(m.view()[2] < atBest, "too deep: slower growth");
+            MegaTestRig.capturesAndReleases(helper, m);
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;
