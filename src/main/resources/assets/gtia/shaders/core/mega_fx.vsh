@@ -3,7 +3,8 @@
 // Megastructure effects (GTIA-D-316). Object space per mode:
 //   sphere modes (star, field, horizon, planet): unit sphere; torus fields: major radius 1 (Shape.x = 1);
 //   tube modes (jet, beam): unit cylinder, y 0..1 along the axis, radius Shape.x..Shape.y with exponent Shape.z;
-//   disk: square in the XZ plane, UV 0..1; billboard and particles: see below.
+//   disk: square in the XZ plane, UV 0..1; billboard and particles: see below;
+//   streams, dipole arcs and gravity wells (13, 15, 16): meshes built in place, UV = (around, along).
 in vec3 Position;
 in vec2 UV0;
 
@@ -22,6 +23,8 @@ out vec3 viewVel;
 out vec2 uv;
 out float fade;
 
+#moj_import <gtia:mega_noise.glsl>
+
 float h1(float n) {
     return fract(sin(n) * 43758.5453);
 }
@@ -31,7 +34,7 @@ void main() {
     uv = UV0;
     fade = 1.0;
     viewVel = vec3(0.0);
-    if (mode == 7) {
+    if (mode == 7 || mode == 12) {
         // Billboard of radius Shape.x blocks at the object origin, pulled Shape.y blocks towards the camera so a glow
         // drawn at a star's centre lies over its near surface.
         // Near the star the pull shrinks, so the glow stays behind its surface instead of covering the camera.
@@ -49,6 +52,27 @@ void main() {
         objNormal = vec3(0.0, 0.0, 1.0);
         viewNormal = objNormal;
         viewPos = c.xyz + vec3(Position.xy * Shape.x, 0.0);
+        gl_Position = ProjMat * vec4(viewPos, 1.0);
+        return;
+    }
+    if (mode == 17) {
+        // EN: Matter orbiting between Shape.x and Shape.y blocks in the XZ plane at Keplerian speed (Shape.z rad/s at
+        // the inner edge, falling as r^-3/2), Params.y blocks thick; Shape.w = sprite size.
+        // PT: Matéria orbitando entre Shape.x e Shape.y blocos no plano XZ em velocidade kepleriana (Shape.z rad/s na
+        // borda interna, caindo com r^-3/2), Params.y blocos de espessura; Shape.w = tamanho do sprite.
+        // ZH: 物质在 XZ 平面内 Shape.x 到 Shape.y 格之间以开普勒速度绕行（内缘 Shape.z 弧度/秒，按 r^-3/2 递减），厚度 Params.y 格；Shape.w 为精灵大小。
+        float seed = Position.x;
+        float h = h1(seed * 5.13);
+        float r = mix(Shape.x, Shape.y, h);
+        float a = 6.2831853 * h1(seed * 9.37) + Time * Shape.z * pow(Shape.x / max(r, 1e-3), 1.5);
+        vec3 p = vec3(cos(a) * r, (h1(seed * 3.3) - 0.5) * Params.y * 2.0, sin(a) * r);
+        vec4 c = ModelViewMat * vec4(p, 1.0);
+        float size = Shape.w * (0.5 + h1(seed * 2.31));
+        objPos = vec3(Position.yz, 0.0);
+        objNormal = vec3(0.0, 0.0, 1.0);
+        viewNormal = objNormal;
+        uv = vec2(h, h1(seed * 7.7));
+        viewPos = c.xyz + vec3(Position.yz * size, 0.0);
         gl_Position = ProjMat * vec4(viewPos, 1.0);
         return;
     }
@@ -73,6 +97,14 @@ void main() {
     }
     vec3 p = Position;
     vec3 n = Position;
+    if ((mode == 0 || mode == 14) && Shape.w > 0.0) {
+        // EN: Boiling surface: the sphere swells and sinks along its normal by Shape.w radii (coronal heaving on a
+        // star, magnetic pulsation on a neutron star).
+        // PT: Superfície fervendo: a esfera incha e afunda ao longo da normal em Shape.w raios (ondulação coronal numa
+        // estrela, pulsação magnética numa estrela de nêutrons).
+        // ZH: 沸腾表面：球体沿法线以 Shape.w 个半径起伏（恒星的日冕起伏，中子星的磁脉动）。
+        p = Position * (1.0 + Shape.w * (fbm(Position * 2.5 + vec3(Time * 0.25)) - 0.5));
+    }
     if (mode == 3 || mode == 9) {
         float r = mix(Shape.x, Shape.y, pow(clamp(Position.y, 0.0, 1.0), max(Shape.z, 0.05)));
         p = vec3(Position.x * r, Position.y, Position.z * r);

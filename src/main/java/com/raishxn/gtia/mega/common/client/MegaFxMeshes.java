@@ -161,17 +161,17 @@ final class MegaFxMeshes {
 
     // ------------------------------------------------------------------ building
 
-    private static BufferBuilder begin(int vertices) {
+    static BufferBuilder begin(int vertices) {
         var b = new BufferBuilder(vertices * DefaultVertexFormat.POSITION_TEX.getVertexSize() + 64);
         b.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_TEX);
         return b;
     }
 
-    private static void quad(BufferBuilder b, float[][] q) {
+    static void quad(BufferBuilder b, float[][] q) {
         for (int k : new int[] { 0, 1, 2, 0, 2, 3 }) b.vertex(q[k][0], q[k][1], q[k][2]).uv(q[k][3], q[k][4]).endVertex();
     }
 
-    private static VertexBuffer upload(BufferBuilder b) {
+    static VertexBuffer upload(BufferBuilder b) {
         var vb = new VertexBuffer(VertexBuffer.Usage.STATIC);
         vb.bind();
         vb.upload(b.end());

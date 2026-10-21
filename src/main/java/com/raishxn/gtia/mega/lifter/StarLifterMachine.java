@@ -122,6 +122,7 @@ public class StarLifterMachine extends MegaMachine {
     public float fxLevel(String effect) {
         boolean on = view[8] > 0;
         if (effect.startsWith("heater")) return on ? 0.6f + ratePct / 100f : 0;
+        if (effect.startsWith("lift")) return on && phases >= 3 ? 0.5f + ratePct / 100f : 0;
         if (effect.startsWith("polar_jet")) return on && mode() != Mode.THERMAL ? 0.5f + ratePct / 100f : 0;
         if (effect.startsWith("separator")) return on && phases >= 4 ? 1 : 0;
         if (effect.startsWith("pinch")) return on && mode() == Mode.DEEP ? 0.6f + instability / 1000f : 0;

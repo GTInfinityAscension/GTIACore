@@ -37,9 +37,9 @@ final class MegaFxRenderer {
 
     /**
      * Debug mask bits: 1 photosphere, 2 corona, 4 wide bloom, 8 prominences, 16 jets, 32 beams, 64 fields, 128 disks,
-     * 256 holes, 512 planets, 1024 glows.
+     * 256 holes, 512 planets, 1024 glows, 2048 streams, arcs, orbits and wells.
      */
-    private static boolean hidden(int bit) {
+    static boolean hidden(int bit) {
         return (debugMask & bit) != 0;
     }
 
@@ -76,7 +76,7 @@ final class MegaFxRenderer {
     // ------------------------------------------------------------------ placement
 
     /** Model matrix of an effect point in grid cells, turned so +Y follows {@code axis}, scaled by (sx, sy, sz). */
-    private static Matrix4f at(Placement p, Effect e, float[] point, float[] axis, float sx, float sy, float sz) {
+    static Matrix4f at(Placement p, Effect e, float[] point, float[] axis, float sx, float sy, float sz) {
         var pv = p.pivot();
         var mat = new Matrix4f(p.track(e.track())).mul(p.axes())
                 .translate(point[0] - pv.x, point[1] - pv.y, point[2] - pv.z);
@@ -85,11 +85,11 @@ final class MegaFxRenderer {
         return mat.scale(sx, sy, sz);
     }
 
-    private static float[] sub(float[] b, float[] a) {
+    static float[] sub(float[] b, float[] a) {
         return new float[] { b[0] - a[0], b[1] - a[1], b[2] - a[2] };
     }
 
-    private static float len(float[] v) {
+    static float len(float[] v) {
         return (float) Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
     }
 
@@ -100,10 +100,19 @@ final class MegaFxRenderer {
         switch (e.type()) {
             case STAR -> {
                 if (hidden(1)) return;
+                // params[1]: surface heave in radii (0: a still sphere).
+                float[] heave = { 0, 0, 0, e.params()[1] };
+                if ("neutron".equals(e.shape())) {
+                    set(sh, 14, e.colourA(), e.colourB(), new float[] { 1.2f * Math.min(level, 1.4f), 7, 0, 0 }, null,
+                            heave);
+                    draw(MegaFxMeshes.sphere(), at(p, e, e.a(), e.axis(), e.r0() * scale, e.r0() * scale,
+                            e.r0() * scale), proj, sh);
+                    return;
+                }
                 float t = temperature(m, e);
                 float[] hot = vivid(MegaFx.blackbody(t)), limb = vivid(MegaFx.blackbody(t * 0.62));
                 set(sh, 0, hot, limb, new float[] { 1.3f * Math.min(level, 1.4f), 30, e.params()[2], e.params()[3] },
-                        null, null);
+                        null, heave);
                 draw(MegaFxMeshes.sphere(), at(p, e, e.a(), e.axis(), e.r0() * scale, e.r0() * scale,
                         e.r0() * scale), proj, sh);
             }
@@ -194,7 +203,7 @@ final class MegaFxRenderer {
             case DISK -> {
                 float r = e.r1() * scale;
                 set(sh, 5, e.colourA(), e.colourB(), new float[] { e.r0() / Math.max(1e-3f, e.r1()),
-                        pr[0] * level, pr[1], pr[2] }, null, null);
+                        pr[0] * level, pr[1], pr[2] }, e.colourC(), null);
                 draw(MegaFxMeshes.square(), at(p, e, e.a(), e.axis(), r, r, r), proj, sh);
             }
             case HOLE -> {
@@ -203,6 +212,10 @@ final class MegaFxRenderer {
                 set(sh, 7, e.colourA(), e.colourB(), new float[] { 0.8f * level, 1 / 3f, 9, 0 },
                         new float[] { 0, 0.36f, 0.025f, 0 }, new float[] { r * 3, r * 1.05f, 0, 0 });
                 draw(MegaFxMeshes.quad(), at(p, e, e.a(), new float[3], 1, 1, 1), proj, sh);
+                if (!hidden(256)) MegaFxCosmic.horizonLight(e, p, proj, sh, level, r);
+            }
+            case STREAM, ARCS, ORBIT, WELL -> {
+                if (!hidden(2048)) MegaFxCosmic.effect(m, e, p, proj, sh, level, scale);
             }
             case PLANET -> {
                 // Atmosphere rim.
@@ -271,11 +284,11 @@ final class MegaFxRenderer {
     }
 
     /** Colour mixed towards white by {@code f}. */
-    private static float[] mix(float[] c, float f) {
+    static float[] mix(float[] c, float f) {
         return new float[] { c[0] + (1 - c[0]) * f, c[1] + (1 - c[1]) * f, c[2] + (1 - c[2]) * f, 1 };
     }
 
-    private static void set(ShaderInstance sh, int mode, float[] a, float[] b, float[] params, float[] params2,
+    static void set(ShaderInstance sh, int mode, float[] a, float[] b, float[] params, float[] params2,
                             float[] shape) {
         sh.safeGetUniform("Mode").set((float) mode);
         if (a != null) sh.safeGetUniform("ColorA").set(a[0], a[1], a[2], a.length > 3 ? a[3] : 1);
@@ -287,7 +300,7 @@ final class MegaFxRenderer {
         sh.safeGetUniform("Shape").set(s[0], s[1], s[2], s[3]);
     }
 
-    private static void draw(VertexBuffer mesh, Matrix4f model, Matrix4f proj, ShaderInstance sh) {
+    static void draw(VertexBuffer mesh, Matrix4f model, Matrix4f proj, ShaderInstance sh) {
         mesh.bind();
         mesh.drawWithShader(model, proj, sh);
     }

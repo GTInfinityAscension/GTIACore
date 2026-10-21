@@ -3,6 +3,8 @@
 // Megastructure effects (GTIA-D-316). Modes:
 //   0 star photosphere   1 (unused)   2 prominence ribbon   3 jet   4 force field / shell   5 accretion disk
 //   6 event horizon   7 glow billboard (corona, bloom, photon ring)   8 particle   9 beam   10 planet
+//   11 photon sphere   12 lensed halo billboard   13 spaghettification stream   14 neutron star crust
+//   15 dipole field arc   16 gravity well grid   17 orbiting particle
 // Additive modes write premultiplied colour with alpha 1 (blend: src alpha, one).
 uniform float Time;
 uniform float Mode;
@@ -22,70 +24,24 @@ in float fade;
 
 out vec4 fragColor;
 
-// ------------------------------------------------------------------ noise
-
-float hash(vec3 p) {
-    p = fract(p * 0.3183099 + vec3(0.71, 0.113, 0.419));
-    p *= 17.0;
-    return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
-}
-
-vec3 hash3(vec3 p) {
-    p = vec3(dot(p, vec3(127.1, 311.7, 74.7)), dot(p, vec3(269.5, 183.3, 246.1)), dot(p, vec3(113.5, 271.9, 124.6)));
-    return fract(sin(p) * 43758.5453);
-}
-
-float noise(vec3 x) {
-    vec3 i = floor(x), f = fract(x);
-    f = f * f * (3.0 - 2.0 * f);
-    return mix(mix(mix(hash(i), hash(i + vec3(1, 0, 0)), f.x), mix(hash(i + vec3(0, 1, 0)), hash(i + vec3(1, 1, 0)), f.x), f.y),
-               mix(mix(hash(i + vec3(0, 0, 1)), hash(i + vec3(1, 0, 1)), f.x), mix(hash(i + vec3(0, 1, 1)), hash(i + vec3(1, 1, 1)), f.x), f.y), f.z);
-}
-
-float fbm(vec3 p) {
-    float s = 0.0, a = 0.5;
-    for (int i = 0; i < 5; i++) {
-        s += a * noise(p);
-        p = p * 2.03 + vec3(1.7, 9.2, 3.1);
-        a *= 0.5;
-    }
-    return s;
-}
-
-// Animated Worley noise: x = distance to the nearest feature point, y = to the second (convective cells).
-vec2 worley(vec3 p, float t) {
-    vec3 i = floor(p), f = fract(p);
-    float d1 = 8.0, d2 = 8.0;
-    for (int z = -1; z <= 1; z++)
-        for (int y = -1; y <= 1; y++)
-            for (int x = -1; x <= 1; x++) {
-                vec3 g = vec3(x, y, z);
-                vec3 h = hash3(i + g);
-                vec3 o = 0.5 + 0.42 * sin(t * (0.6 + h) + 6.2831853 * h);
-                float d = length(g + o - f);
-                if (d < d1) {
-                    d2 = d1;
-                    d1 = d;
-                } else if (d < d2) d2 = d;
-            }
-    return vec2(d1, d2);
-}
+#moj_import <gtia:mega_noise.glsl>
 
 float facing() {
     return clamp(abs(dot(normalize(viewNormal), normalize(-viewPos))), 0.0, 1.0);
 }
 
-// Hexagonal tiling: xy = position in the cell, zw = cell id.
-vec4 hexCell(vec2 p) {
-    const vec2 s = vec2(1.0, 1.7320508);
-    vec4 c = floor(vec4(p, p - vec2(0.5, 1.0)) / s.xyxy) + 0.5;
-    vec4 h = vec4(p - c.xy * s, p - (c.zw + 0.5) * s);
-    return dot(h.xy, h.xy) < dot(h.zw, h.zw) ? vec4(h.xy, c.xy) : vec4(h.zw, c.zw + 0.5);
+// Facing from screen derivatives, for meshes built in place (tubes along a curve carry no normal).
+float facingD() {
+    vec3 n = normalize(cross(dFdx(viewPos), dFdy(viewPos)));
+    return clamp(abs(dot(n, normalize(-viewPos))), 0.0, 1.0);
 }
 
-float hexEdge(vec2 h) {
-    h = abs(h);
-    return max(dot(h, vec2(0.5, 0.8660254)), h.x);
+// Disk colour by share of the way out: white-hot, ColorA, the middle colour, ColorB at the rim.
+vec3 diskColour(float t, vec3 mid) {
+    vec3 white = vec3(1.0, 0.98, 0.94);
+    if (t < 0.12) return mix(white, ColorA.rgb, t / 0.12);
+    if (t < 0.45) return mix(ColorA.rgb, mid, (t - 0.12) / 0.33);
+    return mix(mid, ColorB.rgb, (t - 0.45) / 0.55);
 }
 
 // ------------------------------------------------------------------ modes
@@ -197,26 +153,120 @@ vec4 prominence() {
 }
 
 vec4 disk() {
-    // EN: Thin disk, T ~ r^(-3/4); Keplerian shear (angular speed ~ r^(-3/2)); relativistic beaming makes the side
-    // that comes towards the camera brighter, by about D^3 with D = 1 + beta cos(angle).
-    // PT: Disco fino, T ~ r^(-3/4); cisalhamento kepleriano (velocidade angular ~ r^(-3/2)); o feixe relativístico
-    // deixa mais claro o lado que vem para a câmera, por cerca de D^3 com D = 1 + beta cos(ângulo).
-    // ZH: 薄盘，T ~ r^(-3/4)；开普勒剪切（角速度 ~ r^(-3/2)）；相对论集束使朝向相机的一侧更亮，约为 D^3，D = 1 + beta cos(角度)。
-    // Params = (inner radius / outer, brightness, spin, beaming); ColorA inner (hot), ColorB outer.
+    // EN: Thin disk, T ~ r^(-3/4); Keplerian shear (angular speed ~ r^(-3/2)) winds simplex noise into spiral arms;
+    // relativistic beaming makes the side that comes towards the camera brighter, by about D^3 with
+    // D = 1 + beta cos(angle).
+    // PT: Disco fino, T ~ r^(-3/4); o cisalhamento kepleriano (velocidade angular ~ r^(-3/2)) enrola o ruído simplex
+    // em braços espirais; o feixe relativístico deixa mais claro o lado que vem para a câmera, por cerca de D^3 com
+    // D = 1 + beta cos(ângulo).
+    // ZH: 薄盘，T ~ r^(-3/4)；开普勒剪切（角速度 ~ r^(-3/2)）把单纯形噪声卷成旋臂；相对论集束使朝向相机的一侧更亮，约为 D^3，D = 1 + beta cos(角度)。
+    // Params = (inner radius / outer, brightness, spin, beaming); ColorA inner, Params2.rgb middle (if .a > 0),
+    // ColorB rim.
     vec2 c = (uv - 0.5) * 2.0;
     float r = length(c);
     float rin = Params.x;
     if (r < rin || r > 1.0) discard;
+    float t = clamp((r - rin) / max(1.0 - rin, 1e-3), 0.0, 1.0);
     float ang = atan(c.y, c.x) - Time * Params.z * pow(max(r, 0.05), -1.5);
-    float n = fbm(vec3(cos(ang) * r * 5.0, sin(ang) * r * 5.0, r * 14.0));
-    float lanes = 0.6 + 0.4 * sin(r * 70.0 + n * 6.0);
-    float temp = pow(rin / r, 0.75);
-    vec3 col = mix(ColorB.rgb, ColorA.rgb, temp) + vec3(1.0) * pow(temp, 5.0) * 0.6;
+    float sp = ang + log(r / max(rin, 1e-3)) * 2.6;
+    float n1 = sfbm(vec3(cos(sp) * 2.2, sin(sp) * 2.2, r * 3.0 - Time * 0.35));
+    float n2 = snoise(vec3(cos(sp) * 6.0, sin(sp) * 6.0, r * 9.0 + Time * 0.6));
+    float n = clamp(0.55 + 0.55 * n1 + 0.25 * n2, 0.0, 1.5);
+    float lanes = 0.7 + 0.3 * sin(r * 60.0 + n1 * 4.0);
+    vec3 mid = Params2.a > 0.0 ? Params2.rgb : mix(ColorA.rgb, ColorB.rgb, 0.5);
+    vec3 col = diskColour(t, mid);
     float beta = dot(normalize(viewVel + vec3(1e-5)), normalize(-viewPos)) * Params.w * inversesqrt(max(r, 0.05)) * 0.5;
     float boost = pow(max(0.05, 1.0 + beta), 3.0);
-    float edge = smoothstep(rin, rin * 1.12, r) * smoothstep(1.0, 0.7, r);
-    float i = edge * (0.35 + 0.9 * n) * lanes * boost * sqrt(temp) * Params.y;
-    return vec4(col * i, 1.0);
+    float edge = smoothstep(0.0, 0.06, t) * (1.0 - smoothstep(0.62, 1.0, t));
+    float hot = mix(2.2, 0.4, pow(t, 0.7));
+    return vec4(col * n * lanes * boost * hot * edge * Params.y, 1.0);
+}
+
+vec4 photonSphere() {
+    // EN: Light orbiting at 1.5 Schwarzschild radii; seen edge-on it piles up into a thin rim (inverted Fresnel).
+    // PT: Luz orbitando a 1,5 raios de Schwarzschild; vista de lado ela se acumula numa borda fina (Fresnel invertido).
+    // ZH: 光在 1.5 倍史瓦西半径处绕行；侧视时堆积成细亮边（反菲涅耳）。
+    float rim = pow(1.0 - facing(), 5.0);
+    float flick = 0.85 + 0.15 * snoise(objPos * 3.0 + vec3(Time * 0.4));
+    return vec4(mix(ColorA.rgb, ColorB.rgb, rim) * rim * 2.2 * flick * Params.x, 1.0);
+}
+
+vec4 halo() {
+    // EN: The far side of the disk, bent over the top and under the bottom of the shadow, plus the photon ring.
+    // Params = (brightness, inner radius share); Params2 = (disk normal on screen x, y, face-on share).
+    // PT: O lado de trás do disco, dobrado por cima e por baixo da sombra, mais o anel de fótons.
+    // ZH: 吸积盘背面被弯折到阴影上方和下方，外加光子环。
+    vec2 p = objPos.xy;
+    float r = length(p);
+    if (r > 1.0 || r < Params.y) discard;
+    float d = (r - Params.y) / max(1.0 - Params.y, 1e-3);
+    vec2 dir = p / max(r, 1e-4);
+    float w = length(Params2.xy) > 1e-3 ? pow(abs(dot(dir, normalize(Params2.xy))), 1.6) : 1.0;
+    w = mix(w, 1.0, Params2.z);
+    float ang = atan(p.y, p.x);
+    float n = 0.6 + 0.4 * snoise(vec3(cos(ang) * 3.0, sin(ang) * 3.0, d * 4.0 - Time * 0.8));
+    float ring = exp(-d * 38.0) * 1.6;
+    float arc = exp(-d * 5.0) * w * n * 1.3;
+    vec3 col = diskColour(clamp(d * 0.9, 0.0, 1.0), mix(ColorA.rgb, ColorB.rgb, 0.45));
+    return vec4((col * arc + vec3(1.0, 0.95, 0.9) * ring) * smoothstep(1.0, 0.75, d) * Params.x, 1.0);
+}
+
+vec4 stream() {
+    // EN: Matter drawn into a hole: along the tube (0 nozzle, 1 horizon) the pattern scrolls ever faster,
+    // V' = V - t (1 + 15 V^3), stretching the containment grid; it runs white-hot at the end. Params = (brightness,
+    // grid cells around, speed, reverse: 1 flows from the far end, as plasma lifted off a star).
+    // PT: Matéria puxada para um buraco: ao longo do tubo (0 bocal, 1 horizonte) o padrão corre cada vez mais rápido,
+    // V' = V - t (1 + 15 V^3), esticando a grade de contenção; no fim fica branca de quente.
+    // ZH: 被吸入黑洞的物质：沿管道（0 为喷口，1 为视界）图案越来越快地滚动，V' = V - t (1 + 15 V^3)，拉伸约束网格；末端白炽。
+    float t = Params.w > 0.5 ? 1.0 - uv.y : uv.y;
+    float flow = Params.w > 0.5 ? -1.0 : 1.0;
+    float vs = t - flow * Time * Params.z * (1.0 + t * t * t * 15.0);
+    vec4 hx = hexCell(vec2(uv.x * Params.y, vs * Params.y * 4.0));
+    float line = smoothstep(0.40, 0.49, hexEdge(hx.xy));
+    float plasma = 0.6 + 0.5 * sfbm(vec3(uv.x * 8.0, vs * 12.0, t * 3.0));
+    float mu = facingD();
+    vec3 col = mix(mix(ColorA.rgb, ColorB.rgb, t), vec3(1.0), pow(t, 3.0));
+    float a = (pow(mu, 1.5) * plasma + line * 0.8 * (1.0 - 0.5 * t)) * smoothstep(0.0, 0.05, uv.y)
+              * smoothstep(1.0, 0.97, uv.y);
+    return vec4(col * a * Params.x, 1.0);
+}
+
+vec3 neutronCrust() {
+    // EN: A neutron star's crust is a lattice of nuclei under 10^11 T: it cracks into plates; the cracks glow.
+    // Params = (brightness, plates per radius); ColorA crack colour (electric cyan).
+    // PT: A crosta de uma estrela de nêutrons é uma rede de núcleos sob 10^11 T: ela racha em placas; as rachaduras
+    // brilham.
+    // ZH: 中子星外壳是 10^11 T 磁场下的原子核晶格：它碎裂成板块，裂缝发光。
+    vec3 n = normalize(objPos);
+    vec2 w = worley(n * Params.y, Time * 0.2);
+    float crack = 1.0 - smoothstep(0.0, 0.07, w.y - w.x);
+    float plate = 0.75 + 0.25 * hash(floor(n * Params.y * 2.0));
+    float mu = facing();
+    vec3 col = mix(vec3(0.85, 0.95, 1.0) * plate, ColorA.rgb * 1.6, crack);
+    col += ColorA.rgb * pow(1.0 - mu, 2.0) * 0.8;
+    return col * Params.x;
+}
+
+vec4 arc() {
+    // Dipole field line: pulses run from pole to pole. Params = (brightness, pulses along, speed).
+    float t = uv.y;
+    float pulse = pow(0.5 + 0.5 * sin((t * Params.y - Time * Params.z) * 6.2831853), 4.0);
+    float mu = facingD();
+    float core = pow(mu, 2.0);
+    vec3 col = mix(ColorA.rgb, vec3(1.0), core * 0.6 + pulse * 0.4);
+    float a = (core * 0.9 + pulse * 0.8 * mu) * smoothstep(0.0, 0.04, t) * smoothstep(1.0, 0.96, t);
+    return vec4(col * a * Params.x, 1.0);
+}
+
+vec4 well() {
+    // Space-time grid sinking into the hole's well. Params = (brightness, lines across, depth colour scale).
+    vec2 f = fract(uv * Params.y);
+    vec2 dl = min(f, 1.0 - f);
+    float line = 1.0 - smoothstep(0.0, 0.05, min(dl.x, dl.y));
+    float r = length(uv - 0.5) * 2.0;
+    float a = line * smoothstep(1.0, 0.6, r) * (0.4 + 0.6 * (1.0 - r));
+    vec3 col = mix(ColorB.rgb, ColorA.rgb, clamp(-objPos.y * Params.z, 0.0, 1.0));
+    return vec4(col * a * Params.x, 1.0);
 }
 
 vec4 glow() {
@@ -274,5 +324,12 @@ void main() {
     else if (mode == 8) fragColor = particle();
     else if (mode == 9) fragColor = beam();
     else if (mode == 10) fragColor = vec4(planet(), 1.0);
+    else if (mode == 11) fragColor = photonSphere();
+    else if (mode == 12) fragColor = halo();
+    else if (mode == 13) fragColor = stream();
+    else if (mode == 14) fragColor = vec4(neutronCrust(), 1.0);
+    else if (mode == 15) fragColor = arc();
+    else if (mode == 16) fragColor = well();
+    else if (mode == 17) fragColor = particle();
     else fragColor = vec4(ColorA.rgb, 1.0);
 }

@@ -20,18 +20,27 @@ import java.util.Map;
 public final class MegaFx {
 
     public enum Type {
-        STAR, JET, BEAM, FIELD, DISK, HOLE, PLANET, GLOW
+        STAR, JET, BEAM, FIELD, DISK, HOLE, PLANET, GLOW,
+        /** A tube along a Catmull-Rom curve through {@code points}: matter fed into a hole or lifted off a star. */
+        STREAM,
+        /** {@code count} dipole field lines round a star, about {@code axis}, out to {@code r1}. */
+        ARCS,
+        /** {@code count} particles orbiting between {@code r0} and {@code r1} about {@code axis}. */
+        ORBIT,
+        /** A space-time grid of half-size {@code r1} sinking {@code r0} deep at the centre. */
+        WELL
     }
 
     /**
      * One effect. {@code a} and {@code b} are the centre and, for jets and beams, the far end; {@code axis} is the
      * normal of disks and torus fields; {@code r0}/{@code r1} the radii (jets: start and end, disks: inner and outer,
      * torus fields: major and minor); {@code temp} the star temperature (K); {@code colours} and {@code params} as the
-     * shader mode takes them.
+     * shader mode takes them; {@code colourC} the middle colour of a disk (alpha 0: none); {@code points} the control
+     * points of a stream (grid cells).
      */
     public record Effect(String name, Type type, int phase, boolean active, @Nullable String track, float[] a,
                          float[] b, float[] axis, float r0, float r1, float temp, int count, String shape,
-                         float[] colourA, float[] colourB, float[] params) {
+                         float[] colourA, float[] colourB, float[] params, float[] colourC, float[][] points) {
 
         public float radius() {
             return r0;
@@ -67,7 +76,19 @@ public final class MegaFx {
                 vec(o, "a", 0, 0, 0), vec(o, "b", 0, 0, 0), vec(o, "axis", 0, 1, 0), num(o, "r0", 1f),
                 num(o, "r1", 0f), num(o, "temp", 5800f), num(o, "count", 0),
                 o.has("shape") ? o.get("shape").getAsString() : "sphere",
-                vec(o, "colourA", 1, 1, 1, 1), vec(o, "colourB", 1, 1, 1, 1), vec(o, "params", 1, 0, 0, 0));
+                vec(o, "colourA", 1, 1, 1, 1), vec(o, "colourB", 1, 1, 1, 1), vec(o, "params", 1, 0, 0, 0),
+                vec(o, "colourC", 0, 0, 0, 0), points(o));
+    }
+
+    private static float[][] points(JsonObject o) {
+        if (!o.has("points")) return new float[0][];
+        JsonArray a = o.getAsJsonArray("points");
+        float[][] p = new float[a.size()][3];
+        for (int i = 0; i < a.size(); i++) {
+            JsonArray q = a.get(i).getAsJsonArray();
+            for (int k = 0; k < 3; k++) p[i][k] = q.get(k).getAsFloat();
+        }
+        return p;
     }
 
     private static float num(JsonObject o, String key, float def) {
