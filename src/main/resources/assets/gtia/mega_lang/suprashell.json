@@ -1,0 +1,172 @@
+{
+ "block.gtia.suprashell": [
+  "Black Hole Suprashell",
+  "Supracasca do Buraco Negro",
+  "黑洞超壳"
+ ],
+ "gtia.machine.suprashell.tooltip.0": [
+  "A shell world round the black hole of its system, built in five phases: only where the centre is a hole.",
+  "Um mundo-casca em volta do buraco negro do sistema, construído em cinco fases: só onde o centro é um buraco.",
+  "围绕所在恒星系黑洞的壳层世界，分五个阶段建造：仅限中心为黑洞的系统。"
+ ],
+ "gtia.machine.suprashell.tooltip.1": [
+  "Hosts GTCEu multiblock controllers put in its buses as modules and runs their recipes, 64 parallels each.",
+  "Hospeda controladores de multiblocos do GTCEu postos nos barramentos como módulos e roda as receitas deles, 64 paralelos cada.",
+  "将放入总线的 GTCEu 多方块控制器作为模块托管并运行其配方，每个 64 并行。"
+ ],
+ "gtia.machine.suprashell.tooltip.2": [
+  "Close to the hole the shell's clocks run slow, but lowering matter pays the EU: pick its radius.",
+  "Perto do buraco os relógios da casca andam devagar, mas baixar matéria paga o EU: escolha o raio.",
+  "靠近黑洞时壳上时钟变慢，但下放物质可支付 EU：请选择半径。"
+ ],
+ "gtia.suprashell.state": [
+  "Modules %s/%s, radius %s rs, tau %s",
+  "Módulos %s/%s, raio %s rs, tau %s",
+  "模块 %s/%s，半径 %s rs，tau %s"
+ ],
+ "gtia.suprashell.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.suprashell.ui.manual.tip": [
+  "How the shell works, with its formulas.",
+  "Como a casca funciona, com as fórmulas.",
+  "超壳的原理和公式。"
+ ],
+ "gtia.suprashell.ui.closer": [
+  "Closer",
+  "Mais perto",
+  "靠近"
+ ],
+ "gtia.suprashell.ui.farther": [
+  "Farther",
+  "Mais longe",
+  "远离"
+ ],
+ "gtia.suprashell.ui.radius": [
+  "r = %s rs",
+  "r = %s rs",
+  "r = %s rs"
+ ],
+ "gtia.suprashell.ui.tau": [
+  "tau %s",
+  "tau %s",
+  "tau %s"
+ ],
+ "gtia.suprashell.ui.lowering": [
+  "lowering pays %s",
+  "descida paga %s",
+  "下放支付 %s"
+ ],
+ "gtia.suprashell.ui.hosted": [
+  "Hosted modules",
+  "Módulos hospedados",
+  "托管模块"
+ ],
+ "gtia.suprashell.ui.none": [
+  "Put multiblock",
+  "Ponha controladores",
+  "将多方块控制器"
+ ],
+ "gtia.suprashell.ui.room": [
+  "%s / %s modules",
+  "%s / %s módulos",
+  "%s / %s 模块"
+ ],
+ "gtia.suprashell.ui.crafts": [
+  "%s made, %s EU this second",
+  "%s feitos, %s EU neste segundo",
+  "本秒完成 %s，%s EU"
+ ],
+ "gtia.suprashell.ui.idle.no_recipe": [
+  "Waiting: no hosted recipe matches the buses",
+  "Esperando: nenhuma receita hospedada bate com os barramentos",
+  "等待中：总线无匹配的托管配方"
+ ],
+ "gtia.suprashell.ui.idle.inputs": [
+  "Waiting: inputs ran short",
+  "Esperando: faltaram insumos",
+  "等待中：原料不足"
+ ],
+ "gtia.suprashell.ui.idle.power": [
+  "Waiting: not enough EU in the Nexus network",
+  "Esperando: falta EU na rede Nexus",
+  "等待中：Nexus 网络 EU 不足"
+ ],
+ "gtia.suprashell.ui.idle.modules": [
+  "Waiting: no module hosted",
+  "Esperando: nenhum módulo hospedado",
+  "等待中：没有托管模块"
+ ],
+ "gtia.suprashell.ui.manual_title": [
+  "Field manual - Black Hole Suprashell",
+  "Manual de campo - Supracasca",
+  "现场手册 - 黑洞超壳"
+ ],
+ "gtia.suprashell.ui.manual.0": [
+  "#Modules",
+  "#Módulos",
+  "#模块"
+ ],
+ "gtia.suprashell.ui.manual.1": [
+  "Put GTCEu multiblock controllers in the input buses: each is a module; the shell runs the recipes of all their kinds.",
+  "Ponha controladores de multiblocos do GTCEu nos barramentos de entrada: cada um é um módulo; a casca roda as receitas de todos os tipos deles.",
+  "将 GTCEu 多方块控制器放入输入总线：每个即一个模块；超壳运行它们所有类型的配方。"
+ ],
+ "gtia.suprashell.ui.manual.2": [
+  "=parallel = 64 x modules hosted  (up to the room)",
+  "=paralelo = 64 x módulos hospedados  (até o espaço)",
+  "=并行 = 64 x 托管模块数（不超过容量）"
+ ],
+ "gtia.suprashell.ui.manual.3": [
+  "=room = r^2 modules (r in rs), at most 64 x phases",
+  "=espaço = r^2 módulos (r em rs), no máximo 64 x fases",
+  "=容量 = r^2 个模块（r 以 rs 计），最多 64 x 阶段数"
+ ],
+ "gtia.suprashell.ui.manual.4": [
+  "#Time on the shell",
+  "#O tempo na casca",
+  "#壳上的时间"
+ ],
+ "gtia.suprashell.ui.manual.5": [
+  "A static shell near a black hole sits deep in its well: its clocks run slow, seen from outside.",
+  "Uma casca parada perto de um buraco negro fica no fundo do poço: os relógios dela andam devagar, vistos de fora.",
+  "靠近黑洞的静止壳层深处引力井中：从外部看其时钟变慢。"
+ ],
+ "gtia.suprashell.ui.manual.6": [
+  "=tau = sqrt(1 - rs / r);  rate = tau",
+  "=tau = sqrt(1 - rs / r);  velocidade = tau",
+  "=tau = sqrt(1 - rs / r)；速度 = tau"
+ ],
+ "gtia.suprashell.ui.manual.7": [
+  "At 1.5 rs the shell works at 58%; at 20 rs, at 97%.",
+  "A 1,5 rs a casca trabalha a 58%; a 20 rs, a 97%.",
+  "在 1.5 rs 处超壳以 58% 工作；在 20 rs 处为 97%。"
+ ],
+ "gtia.suprashell.ui.manual.8": [
+  "#Lowering",
+  "#A descida",
+  "#下放"
+ ],
+ "gtia.suprashell.ui.manual.9": [
+  "Matter lowered on a rope from far away down to the shell gives up 1 - tau of its rest energy (Geroch's process).",
+  "Matéria baixada numa corda de longe até a casca entrega 1 - tau da energia de repouso (processo de Geroch).",
+  "用绳索从远处下放到壳层的物质释放 1 - tau 的静止能量（杰罗赫过程）。"
+ ],
+ "gtia.suprashell.ui.manual.10": [
+  "=EU per recipe = base x tau",
+  "=EU por receita = base x tau",
+  "=每个配方 EU = 基础 x tau"
+ ],
+ "gtia.suprashell.ui.manual.11": [
+  "Close: cheap and slow, few modules. Far: full price, fast, room for hundreds.",
+  "Perto: barato e lento, poucos módulos. Longe: preço cheio, rápido, espaço para centenas.",
+  "近：便宜但慢，模块少。远：全价、快速，可容纳数百模块。"
+ ],
+ "gtia.suprashell.ui.none2": [
+  "controllers in a bus",
+  "de multibloco no bus",
+  "放入输入总线"
+ ]
+}

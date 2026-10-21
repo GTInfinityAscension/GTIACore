@@ -17,18 +17,20 @@ public final class GTIAMegastructures {
             SYSTEM_CREATOR = "system_creator", FUSION_SUPPRESSOR = "fusion_suppressor",
             KUGELBLITZ = "kugelblitz", HRAEMC = "hraemc",
             NIDAVELLIR = "nidavellir", ASSEMBLY_YARD = "assembly_yard",
-            YGGDRASIL = "yggdrasil", STELLAR_HARVESTER = "stellar_harvester";
+            YGGDRASIL = "yggdrasil", STELLAR_HARVESTER = "stellar_harvester",
+            SUPRASHELL = "suprashell";
 
     /** Every megastructure, for the client renderer check. */
     static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
             FUSION_SUPPRESSOR, KUGELBLITZ, HRAEMC,
-            NIDAVELLIR, ASSEMBLY_YARD, YGGDRASIL, STELLAR_HARVESTER };
+            NIDAVELLIR, ASSEMBLY_YARD, YGGDRASIL, STELLAR_HARVESTER,
+            SUPRASHELL };
 
     @Nullable
     public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF,
             STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF, FUSION_SUPPRESSOR_DEF,
             KUGELBLITZ_DEF, HRAEMC_DEF, NIDAVELLIR_DEF,
-            ASSEMBLY_YARD_DEF, YGGDRASIL_DEF, STELLAR_HARVESTER_DEF;
+            ASSEMBLY_YARD_DEF, YGGDRASIL_DEF, STELLAR_HARVESTER_DEF, SUPRASHELL_DEF;
 
     private GTIAMegastructures() {}
 
@@ -67,5 +69,6 @@ public final class GTIAMegastructures {
         if (available(YGGDRASIL)) YGGDRASIL_DEF = com.raishxn.gtia.mega.yggdrasil.YggdrasilDefinition.register();
         if (available(STELLAR_HARVESTER))
             STELLAR_HARVESTER_DEF = com.raishxn.gtia.mega.harvester.StellarHarvesterDefinition.register();
+        if (available(SUPRASHELL)) SUPRASHELL_DEF = com.raishxn.gtia.mega.suprashell.SuprashellDefinition.register();
     }
 }

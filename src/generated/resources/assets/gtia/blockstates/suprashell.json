@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "gtia:block/machine/suprashell",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "gtia:block/machine/suprashell"
+    },
+    "facing=south": {
+      "model": "gtia:block/machine/suprashell",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gtia:block/machine/suprashell",
+      "y": 270
+    }
+  }
+}
