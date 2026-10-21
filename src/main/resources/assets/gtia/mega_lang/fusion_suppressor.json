@@ -15,9 +15,9 @@
   "质量 8 M☉ 及以上的恒星在核心崩溃时，可选择结局：超新星（r 过程粉末）或黑洞。"
  ],
  "gtia.machine.fusion_suppressor.tooltip.2": [
-  "Lighter stars only flare: a helium flash hits the pylons.",
-  "Estrelas mais leves só têm uma erupção: um flash de hélio atinge os pilares.",
-  "较轻的恒星只会爆发：氦闪会冲击塔柱。"
+  "Lighter stars only flare: a helium flash hits the suppressor rings.",
+  "Estrelas mais leves só têm uma erupção: um flash de hélio atinge os anéis supressores.",
+  "较轻的恒星只会爆发：氦闪会冲击抑制环。"
  ],
  "gtia.fusion_suppressor.state": [
   "Suppression %s%%, core deficit %s%%",
@@ -35,9 +35,9 @@
   "超新星"
  ],
  "gtia.fusion_suppressor.ui.supernova.tip": [
-  "The core collapses and rebounds: r-process dust (a tenth without the corolla), a neutron star is left.",
-  "O núcleo colapsa e ricocheteia: pós de processo r (um décimo sem a corola), sobra uma estrela de nêutrons.",
-  "核心坍缩并反弹：产出 r 过程粉末（无花冠时只有十分之一），留下一颗中子星。"
+  "The core collapses and rebounds: r-process dust (a tenth without the containment rings), a neutron star is left.",
+  "O núcleo colapsa e ricocheteia: pós de processo r (um décimo sem os anéis de contenção), sobra uma estrela de nêutrons.",
+  "核心坍缩并反弹：产出 r 过程粉末（无收容环时只有十分之一），留下一颗中子星。"
  ],
  "gtia.fusion_suppressor.ui.collapse": [
   "Black hole",
@@ -80,9 +80,9 @@
   "核心坍缩成了黑洞"
  ],
  "gtia.fusion_suppressor.ui.event.3": [
-  "Helium flash: the pylons took it",
-  "Flash de hélio: os pilares sentiram",
-  "氦闪：塔柱受到冲击"
+  "Helium flash: the suppressor rings took it",
+  "Flash de hélio: os anéis supressores sentiram",
+  "氦闪：抑制环受到冲击"
  ],
  "gtia.fusion_suppressor.ui.deficit": [
   "Core deficit",
@@ -120,9 +120,9 @@
   "#抑制恒星"
  ],
  "gtia.fusion_suppressor.ui.manual.1": [
-  "The pylons damp the core's fusion. Less fusion means fewer neutrinos and less pressure: the core contracts and heats (virial theorem).",
-  "Os pilares abafam a fusão do núcleo. Menos fusão quer dizer menos neutrinos e menos pressão: o núcleo contrai e esquenta (teorema do virial).",
-  "塔柱抑制核心聚变。聚变减少意味着中微子减少、压力下降：核心收缩并升温（位力定理）。"
+  "The suppressor rings damp the core's fusion. Less fusion means fewer neutrinos and less pressure: the core contracts and heats (virial theorem).",
+  "Os anéis supressores abafam a fusão do núcleo. Menos fusão quer dizer menos neutrinos e menos pressão: o núcleo contrai e esquenta (teorema do virial).",
+  "抑制环抑制核心聚变。聚变减少意味着中微子减少、压力下降：核心收缩并升温（位力定理）。"
  ],
  "gtia.fusion_suppressor.ui.manual.2": [
   "=research/s = 4 × S × √(L/L☉)  (from phase 2, the detectors)",
@@ -155,9 +155,9 @@
   "亏损满时，质量 8 M☉ 及以上（核心坍缩极限）的恒星即可终结；需建成探针（阶段 4）。"
  ],
  "gtia.fusion_suppressor.ui.manual.8": [
-  "A lighter star only flares: a helium flash takes 25% of the pylons and half the deficit.",
-  "Uma estrela mais leve só tem uma erupção: um flash de hélio tira 25% dos pilares e metade do déficit.",
-  "较轻的恒星只会爆发：氦闪使塔柱损失 25%，亏损减半。"
+  "A lighter star only flares: a helium flash takes 25% of the suppressor rings and half the deficit.",
+  "Uma estrela mais leve só tem uma erupção: um flash de hélio tira 25% dos anéis supressores e metade do déficit.",
+  "较轻的恒星只会爆发：氦闪使抑制环损失 25%，亏损减半。"
  ],
  "gtia.fusion_suppressor.ui.manual.9": [
   "#Endings",
@@ -170,9 +170,9 @@
   "超新星：核心反弹，冲击波散播 r 过程元素（金、铂、锇、铱、铀、钍、铕）；留下 1.4 M☉ 的中子星。"
  ],
  "gtia.fusion_suppressor.ui.manual.11": [
-  "=dust of each = 64 × M × Z  (a tenth without the corolla, phase 5)",
-  "=pó de cada = 64 × M × Z  (um décimo sem a corola, fase 5)",
-  "=每种粉末 = 64 × M × Z（无阶段 5 花冠时为十分之一）"
+  "=dust of each = 64 × M × Z  (a tenth without the containment rings, phase 5)",
+  "=pó de cada = 64 × M × Z  (um décimo sem os anéis de contenção, fase 5)",
+  "=每种粉末 = 64 × M × Z（无阶段 5 收容环时为十分之一）"
  ],
  "gtia.fusion_suppressor.ui.manual.12": [
   "Black hole: the core falls in without a rebound; 60% of the star stays as a black hole for the Kugelblitz, the HRAE-MC and the Suprashell.",
@@ -185,8 +185,8 @@
   "两种结局都会给予大量研究点数（2000 或 5000）。请在专门创建的系统中进行：恒星无法恢复。"
  ],
  "gtia.fusion_suppressor.ui.manual.14": [
-  "Repair: idle, put pylon blocks in an input bus (+5% each).",
-  "Reparo: parado, ponha blocos dos pilares num barramento de entrada (+5% cada).",
-  "修复：停机时将塔柱方块放入输入总线（每个 +5%）。"
+  "Repair: idle, put suppressor-ring blocks in an input bus (+5% each).",
+  "Reparo: parado, ponha blocos dos anéis supressores num barramento de entrada (+5% cada).",
+  "修复：停机时将抑制环方块放入输入总线（每个 +5%）。"
  ]
 }

@@ -5,9 +5,9 @@
   "Kugelblitz 收容仓"
  ],
  "gtia.machine.kugelblitz.tooltip.0": [
-  "A black hole made of light, held in a silo, built in five phases; works in any star system.",
-  "Um buraco negro feito de luz, preso num silo, construído em cinco fases; funciona em qualquer sistema estelar.",
-  "由光构成的黑洞，收容于仓中，分五个阶段建造；可在任何恒星系中工作。"
+  "A black hole made of light, held between two claws, built in five phases; works in any star system.",
+  "Um buraco negro feito de luz, preso entre duas garras, construído em cinco fases; funciona em qualquer sistema estelar.",
+  "由光构成的黑洞，夹于双爪之间，分五个阶段建造；可在任何恒星系中工作。"
  ],
  "gtia.machine.kugelblitz.tooltip.1": [
   "Lasers and the vault give it mass (E = mc²); it gives energy back as Hawking radiation (P ∝ 1/M²).",
@@ -100,9 +100,9 @@
   "+%s EU/t"
  ],
  "gtia.kugelblitz.ui.lost": [
-  "%s EU/t lost (no petals)",
-  "%s EU/t perdidos (sem pétalas)",
-  "损失 %s EU/t（无花瓣）"
+  "%s EU/t lost (no outer blades)",
+  "%s EU/t perdidos (sem lâminas de fora)",
+  "损失 %s EU/t（无外层叶片）"
  ],
  "gtia.kugelblitz.ui.manual_title": [
   "Field manual - Kugelblitz Silo",
@@ -150,9 +150,9 @@
   "小黑洞炽热明亮、寿命短；大黑洞寒冷暗淡、几乎永恒。"
  ],
  "gtia.kugelblitz.ui.manual.8": [
-  "The petals (phase 5) catch 90% of it as EU for the Nexus network; before them it is lost as heat.",
-  "As pétalas (fase 5) pegam 90% dela como EU para a rede Nexus; antes delas, se perde como calor.",
-  "花瓣（阶段 5）将其 90% 转为 EU 送入 Nexus 网络；在此之前它以热量形式损失。"
+  "The outer blades (phase 5) catch 90% of it as EU for the Nexus network; before them it is lost as heat.",
+  "As lâminas de fora (fase 5) pegam 90% dela como EU para a rede Nexus; antes delas, se perde como calor.",
+  "外层叶片（阶段 5）将其 90% 转为 EU 送入 Nexus 网络；在此之前它以热量形式损失。"
  ],
  "gtia.kugelblitz.ui.manual.9": [
   "#Holding it",

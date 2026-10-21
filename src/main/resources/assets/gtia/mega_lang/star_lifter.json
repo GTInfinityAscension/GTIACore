@@ -95,9 +95,9 @@
   "不稳定度"
  ],
  "gtia.star_lifter.ui.girdle": [
-  "girdle",
-  "cinta",
-  "环带"
+  "sphere",
+  "esfera",
+  "球壳"
  ],
  "gtia.star_lifter.ui.power": [
   "Power %s EU/t",
@@ -110,9 +110,9 @@
   "等离子体 H %s · He %s mB/s"
  ],
  "gtia.star_lifter.ui.girdle_broken": [
-  "The girdle is broken: repair it with its blocks.",
-  "A cinta quebrou: conserte com os blocos dela.",
-  "环带已损坏：用其方块修复。"
+  "The sphere is broken: repair it with its blocks.",
+  "A esfera quebrou: conserte com os blocos dela.",
+  "球壳已损坏：用其方块修复。"
  ],
  "gtia.star_lifter.ui.no_spires": [
   "Phase 4 sorts metals and gases out of the plasma.",
@@ -210,9 +210,9 @@
   "#恒星抽取"
  ],
  "gtia.star_lifter.ui.manual.1": [
-  "Matter on the star's surface is held by gravity. The lifter heats it and pinches the star's field so it leaves through the poles, where the chalices catch it.",
-  "A matéria da superfície da estrela fica presa pela gravidade. O elevador a aquece e aperta o campo da estrela para que saia pelos polos, onde os cálices a recolhem.",
-  "恒星表面的物质被引力束缚。抽取器加热它并挤压恒星磁场，使其从两极流出，由聚集杯收集。"
+  "Matter on the star's surface is held by gravity. The lifter heats it and pinches the star's field so it leaves through the poles, where the collector rings catch it.",
+  "A matéria da superfície da estrela fica presa pela gravidade. O elevador a aquece e aperta o campo da estrela para que saia pelos polos, onde os anéis coletores a recolhem.",
+  "恒星表面的物质被引力束缚。抽取器加热它并挤压恒星磁场，使其从两极流出，由收集环收集。"
  ],
  "gtia.star_lifter.ui.manual.2": [
   "=e = G M / R  (1.9e11 J/kg for the Sun)",
@@ -235,9 +235,9 @@
   "#收集量"
  ],
  "gtia.star_lifter.ui.manual.6": [
-  "The chalices (phase 3) catch 85% of the outflow; without them only 15% is caught.",
-  "Os cálices (fase 3) recolhem 85% do jato; sem eles, só 15%.",
-  "聚集杯（阶段 3）收集 85% 的外流；没有时只收集 15%。"
+  "The collector rings (phase 3) catch 85% of the outflow; without them only 15% is caught.",
+  "Os anéis coletores (fase 3) recolhem 85% do jato; sem eles, só 15%.",
+  "收集环（阶段 3）收集 85% 的外流；没有时只收集 15%。"
  ],
  "gtia.star_lifter.ui.manual.7": [
   "=out = ṁ × capture × share  (plasma 3.2e-9 mB/kg, dust 8e-10 /kg)",
@@ -285,9 +285,9 @@
   "#深层搅拌"
  ],
  "gtia.star_lifter.ui.manual.16": [
-  "The arcs (phase 5) stir the core: helium and metals come up and fresh hydrogen goes down, adding to the fuel.",
-  "Os arcos (fase 5) agitam o núcleo: hélio e metais sobem e hidrogênio novo desce, repondo combustível.",
-  "搅拌弧（阶段 5）搅动核心：氦和金属上浮，新鲜氢下沉，补充燃料。"
+  "The stirring rings (phase 5) stir the core: helium and metals come up and fresh hydrogen goes down, adding to the fuel.",
+  "Os anéis de agitação (fase 5) agitam o núcleo: hélio e metais sobem e hidrogênio novo desce, repondo combustível.",
+  "搅拌环（阶段 5）搅动核心：氦和金属上浮，新鲜氢下沉，补充燃料。"
  ],
  "gtia.star_lifter.ui.manual.17": [
   "=fuel += 3.5 × ΔM / M",
@@ -295,14 +295,14 @@
   "=燃料 += 3.5 × ΔM / M"
  ],
  "gtia.star_lifter.ui.manual.18": [
-  "Above 60% the star grows restless: at 100% instability a flare costs the girdle 25%.",
-  "Acima de 60% a estrela fica instável: com 100% de instabilidade, uma erupção tira 25% da cinta.",
-  "超过 60% 时恒星变得不稳定：不稳定度达到 100% 时，耀斑会使环带损失 25%。"
+  "Above 60% the star grows restless: at 100% instability a flare costs the sphere 25%.",
+  "Acima de 60% a estrela fica instável: com 100% de instabilidade, uma erupção tira 25% da esfera.",
+  "超过 60% 时恒星变得不稳定：不稳定度达到 100% 时，耀斑会使球壳损失 25%。"
  ],
  "gtia.star_lifter.ui.manual.19": [
-  "Repair: idle, put girdle and petal blocks in an input bus (+5% each).",
-  "Reparo: parado, ponha blocos da cinta e das pétalas num barramento de entrada (+5% cada).",
-  "修复：停机时将环带和花瓣方块放入输入总线（每个 +5%）。"
+  "Repair: idle, put sphere and spoke blocks in an input bus (+5% each).",
+  "Reparo: parado, ponha blocos da esfera e das hastes num barramento de entrada (+5% cada).",
+  "修复：停机时将球壳和辐条方块放入输入总线（每个 +5%）。"
  ],
  "gtna.ui.o.sl_rate.up": [
   "Lift 10% more (more matter, more power, the star shrinks faster).",
@@ -350,8 +350,8 @@
   "不稳"
  ],
  "gtia.star_lifter.ui.g.girdle": [
-  "Girdle",
-  "Cinta",
-  "环带"
+  "Sphere",
+  "Esfera",
+  "球壳"
  ]
 }
