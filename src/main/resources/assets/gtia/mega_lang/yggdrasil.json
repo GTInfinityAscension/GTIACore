@@ -1,0 +1,167 @@
+{
+ "block.gtia.yggdrasil": [
+  "Yggdrasil Orchid",
+  "Orquídea Yggdrasil",
+  "尤克特拉希尔兰花"
+ ],
+ "gtia.machine.yggdrasil.tooltip.0": [
+  "A gas giant seeded with floating gardens inside a shell of hexagonal glass, built in five phases.",
+  "Um gigante gasoso semeado com jardins flutuantes numa casca de vidro hexagonal, construído em cinco fases.",
+  "在六边形玻璃外壳中播种漂浮花园的气态巨行星，分五个阶段建造。"
+ ],
+ "gtia.machine.yggdrasil.tooltip.1": [
+  "Runs Greenhouse recipes, 256 parallels per phase; every harvest also gives 100 mB of biomass.",
+  "Roda receitas da Greenhouse, 256 paralelos por fase; cada colheita também dá 100 mB de biomassa.",
+  "运行温室配方，每阶段 256 并行；每次收获另产 100 mB 生物质。"
+ ],
+ "gtia.machine.yggdrasil.tooltip.2": [
+  "Pick the gardens' depth: light fades as they sink, carbon dioxide rises. The best depth depends on the star.",
+  "Escolha a profundidade dos jardins: a luz cai ao descer, o gás carbônico sobe. A melhor profundidade depende da estrela.",
+  "选择花园深度：越深光越弱、二氧化碳越多。最佳深度取决于恒星。"
+ ],
+ "gtia.yggdrasil.state": [
+  "Gardens at depth %s, growth %s",
+  "Jardins na profundidade %s, crescimento %s",
+  "花园深度 %s，生长 %s"
+ ],
+ "gtia.yggdrasil.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.yggdrasil.ui.manual.tip": [
+  "How the gardens grow, with the formulas.",
+  "Como os jardins crescem, com as fórmulas.",
+  "花园的生长原理和公式。"
+ ],
+ "gtia.yggdrasil.ui.higher": [
+  "Higher",
+  "Subir",
+  "上浮"
+ ],
+ "gtia.yggdrasil.ui.deeper": [
+  "Deeper",
+  "Descer",
+  "下沉"
+ ],
+ "gtia.yggdrasil.ui.growth": [
+  "Growth over depth",
+  "Crescimento por profundidade",
+  "生长与深度"
+ ],
+ "gtia.yggdrasil.ui.depth": [
+  "depth %s",
+  "prof. %s",
+  "深度 %s"
+ ],
+ "gtia.yggdrasil.ui.deep": [
+  "8 H",
+  "8 H",
+  "8 H"
+ ],
+ "gtia.yggdrasil.ui.best": [
+  "best %s",
+  "melhor %s",
+  "最佳 %s"
+ ],
+ "gtia.yggdrasil.ui.speed": [
+  "x%s · growth %s",
+  "x%s · crescimento %s",
+  "x%s · 生长 %s"
+ ],
+ "gtia.yggdrasil.ui.harvest": [
+  "Harvested %s",
+  "Colhido %s",
+  "已收获 %s"
+ ],
+ "gtia.yggdrasil.ui.crafts": [
+  "%s harvested, %s EU this second",
+  "%s colhidos, %s EU neste segundo",
+  "本秒收获 %s，%s EU"
+ ],
+ "gtia.yggdrasil.ui.idle.no_recipe": [
+  "Waiting: no greenhouse recipe matches the buses",
+  "Esperando: nenhuma receita de estufa bate com os barramentos",
+  "等待中：输入总线无匹配的温室配方"
+ ],
+ "gtia.yggdrasil.ui.idle.inputs": [
+  "Waiting: inputs ran short",
+  "Esperando: faltaram insumos",
+  "等待中：原料不足"
+ ],
+ "gtia.yggdrasil.ui.idle.power": [
+  "Waiting: not enough EU in the Nexus network",
+  "Esperando: falta EU na rede Nexus",
+  "等待中：Nexus 网络 EU 不足"
+ ],
+ "gtia.yggdrasil.ui.manual_title": [
+  "Field manual - Yggdrasil Orchid",
+  "Manual de campo - Orquídea Yggdrasil",
+  "现场手册 - 尤克特拉希尔兰花"
+ ],
+ "gtia.yggdrasil.ui.manual.0": [
+  "#Floating gardens",
+  "#Jardins flutuantes",
+  "#漂浮花园"
+ ],
+ "gtia.yggdrasil.ui.manual.1": [
+  "Plants buoyed in the gas giant's atmosphere grow from seeds kept in the input bus, like a Greenhouse, by the hundred.",
+  "Plantas sustentadas na atmosfera do gigante gasoso crescem das sementes guardadas no barramento, como numa Greenhouse, às centenas.",
+  "漂浮在气态巨行星大气中的植物由输入总线中的种子生长，如同温室，但以百计。"
+ ],
+ "gtia.yggdrasil.ui.manual.2": [
+  "=parallel = 256 x phases;  biomass = 100 mB per harvest",
+  "=paralelo = 256 x fases;  biomassa = 100 mB por colheita",
+  "=并行 = 256 x 阶段数；生物质 = 每次收获 100 mB"
+ ],
+ "gtia.yggdrasil.ui.manual.3": [
+  "Recipes: the Greenhouse. EU comes from the Nexus network, as in the base recipe.",
+  "Receitas: a Greenhouse. O EU sai da rede Nexus, como na receita base.",
+  "配方：温室。EU 按原配方从 Nexus 网络支付。"
+ ],
+ "gtia.yggdrasil.ui.manual.4": [
+  "#Light and carbon",
+  "#Luz e carbono",
+  "#光与碳"
+ ],
+ "gtia.yggdrasil.ui.manual.5": [
+  "Sunlight fades as the gardens sink (Beer-Lambert), while the pressure and the carbon dioxide grow (barometric).",
+  "A luz cai conforme os jardins descem (Beer-Lambert), enquanto a pressão e o gás carbônico sobem (barométrica).",
+  "花园下沉时光照衰减（比尔-朗伯定律），压强和二氧化碳增加（气压公式）。"
+ ],
+ "gtia.yggdrasil.ui.manual.6": [
+  "=I = L e^-z;  c = 0.05 e^z;  growth = I/(I + 0.3) x c/(c + 1)",
+  "=I = L e^-z;  c = 0,05 e^z;  crescimento = I/(I + 0,3) x c/(c + 1)",
+  "=I = L e^-z；c = 0.05 e^z；生长 = I/(I + 0.3) x c/(c + 1)"
+ ],
+ "gtia.yggdrasil.ui.manual.7": [
+  "Depth z is in scale heights, 0 to 8; L is the star's luminosity in suns. Rate = 10 x growth, from x0.05 to x6.",
+  "A profundidade z é em alturas de escala, de 0 a 8; L é a luminosidade da estrela em sóis. Velocidade = 10 x crescimento, de x0,05 a x6.",
+  "深度 z 以标高计，0 至 8；L 为恒星光度（太阳单位）。速度 = 10 x 生长，范围 x0.05 至 x6。"
+ ],
+ "gtia.yggdrasil.ui.manual.8": [
+  "#The best depth",
+  "#A melhor profundidade",
+  "#最佳深度"
+ ],
+ "gtia.yggdrasil.ui.manual.9": [
+  "Growth peaks where light and carbon limit it equally: deeper round a bright star, near the top round a dim one.",
+  "O crescimento é máximo onde luz e carbono limitam igualmente: mais fundo numa estrela clara, perto do topo numa fraca.",
+  "光与碳的限制相等时生长最快：亮星周围更深，暗星周围靠近顶层。"
+ ],
+ "gtia.yggdrasil.ui.manual.10": [
+  "=z* = 0.5 ln(L / 0.015)  (Sun: 2.1; blue giant: the bottom; red dwarf: the top)",
+  "=z* = 0,5 ln(L / 0,015)  (Sol: 2,1; gigante azul: o fundo; anã vermelha: o topo)",
+  "=z* = 0.5 ln(L / 0.015)（太阳：2.1；蓝巨星：底部；红矮星：顶部）"
+ ],
+ "gtia.yggdrasil.ui.manual.11": [
+  "The chart shows the curve for this star: the gold line is your depth, the dashed one the best.",
+  "O gráfico mostra a curva desta estrela: a linha dourada é a sua profundidade, a tracejada a melhor.",
+  "图表显示此恒星的曲线：金线为当前深度，虚线为最佳深度。"
+ ],
+ "gtia.yggdrasil.ui.biomass": [
+  "Biomass %s mB",
+  "Biomassa %s mB",
+  "生物质 %s mB"
+ ]
+}

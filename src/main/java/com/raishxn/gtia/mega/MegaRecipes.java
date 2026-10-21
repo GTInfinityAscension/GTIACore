@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-327): greenhouses by the dozen and the field generators that hold the gardens aloft. */
+    private static void yggdrasil(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("yggdrasil"))
+                .inputItems(com.raishxn.gtia.data.GTIAGreenhouse.GREENHOUSE.asStack(64))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(32))
+                .inputItems(GTItems.EMITTER_UV.asStack(32))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(9216))
+                .outputItems(GTIAMegastructures.YGGDRASIL_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-326): the yard is assembled from assembly lines and the robot arms that run them. */
     private static void assemblyYard(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("assembly_yard"))
@@ -140,6 +153,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.HRAEMC_DEF != null) hraemc(provider);
         if (GTIAMegastructures.NIDAVELLIR_DEF != null) nidavellir(provider);
         if (GTIAMegastructures.ASSEMBLY_YARD_DEF != null) assemblyYard(provider);
+        if (GTIAMegastructures.YGGDRASIL_DEF != null) yggdrasil(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))

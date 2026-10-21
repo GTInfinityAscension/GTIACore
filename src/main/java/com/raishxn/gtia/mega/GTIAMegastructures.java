@@ -16,18 +16,19 @@ public final class GTIAMegastructures {
             STAR_LIFTER = "star_lifter", STELLAR_HOOP = "stellar_hoop",
             SYSTEM_CREATOR = "system_creator", FUSION_SUPPRESSOR = "fusion_suppressor",
             KUGELBLITZ = "kugelblitz", HRAEMC = "hraemc",
-            NIDAVELLIR = "nidavellir", ASSEMBLY_YARD = "assembly_yard";
+            NIDAVELLIR = "nidavellir", ASSEMBLY_YARD = "assembly_yard",
+            YGGDRASIL = "yggdrasil";
 
     /** Every megastructure, for the client renderer check. */
     static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
             FUSION_SUPPRESSOR, KUGELBLITZ, HRAEMC,
-            NIDAVELLIR, ASSEMBLY_YARD };
+            NIDAVELLIR, ASSEMBLY_YARD, YGGDRASIL };
 
     @Nullable
     public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF,
             STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF, FUSION_SUPPRESSOR_DEF,
             KUGELBLITZ_DEF, HRAEMC_DEF, NIDAVELLIR_DEF,
-            ASSEMBLY_YARD_DEF;
+            ASSEMBLY_YARD_DEF, YGGDRASIL_DEF;
 
     private GTIAMegastructures() {}
 
@@ -63,5 +64,6 @@ public final class GTIAMegastructures {
             NIDAVELLIR_DEF = com.raishxn.gtia.mega.nidavellir.NidavellirDefinition.register();
         if (available(ASSEMBLY_YARD))
             ASSEMBLY_YARD_DEF = com.raishxn.gtia.mega.yard.AssemblyYardDefinition.register();
+        if (available(YGGDRASIL)) YGGDRASIL_DEF = com.raishxn.gtia.mega.yggdrasil.YggdrasilDefinition.register();
     }
 }
