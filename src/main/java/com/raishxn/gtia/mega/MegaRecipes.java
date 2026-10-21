@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-321): emitters to pour light in, gravity stars to hold the hole. */
+    private static void kugelblitz(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("kugelblitz"))
+                .inputItems(GTItems.EMITTER_UV.asStack(64))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(32))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(18432))
+                .outputItems(GTIAMegastructures.KUGELBLITZ_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-320): field generators to damp the core, sensors to read its neutrinos. */
     private static void fusionSuppressor(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("fusion_suppressor"))
@@ -84,6 +97,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.STELLAR_HOOP_DEF != null) stellarHoop(provider);
         if (GTIAMegastructures.SYSTEM_CREATOR_DEF != null) systemCreator(provider);
         if (GTIAMegastructures.FUSION_SUPPRESSOR_DEF != null) fusionSuppressor(provider);
+        if (GTIAMegastructures.KUGELBLITZ_DEF != null) kugelblitz(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))

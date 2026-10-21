@@ -30,7 +30,9 @@ final class MegaTestRig {
                                            int phases, int slot) {
         var shape = MegaShape.get(name);
         var level = helper.getLevel();
-        BlockPos controller = helper.absolutePos(new BlockPos(2 + 400 * slot, 250, 3000));
+        // 250 blocks up, lower for tall shapes so the top stays under the build limit.
+        int up = Math.min(250, 314 - (shape.ny - shape.cj) - helper.absolutePos(BlockPos.ZERO).getY());
+        BlockPos controller = helper.absolutePos(new BlockPos(2 + 400 * slot, up, 3000));
         // GTCEu's walk refuses unloaded chunks: keep the whole footprint loaded for the test.
         int reach = Math.max(shape.nx, shape.nz) + 2;
         for (int cx = (controller.getX() - reach) >> 4; cx <= (controller.getX() + reach) >> 4; cx++)

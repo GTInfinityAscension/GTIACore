@@ -1,0 +1,187 @@
+{
+ "block.gtia.kugelblitz": [
+  "Kugelblitz Containment Silo",
+  "Silo de Contenção Kugelblitz",
+  "Kugelblitz 收容仓"
+ ],
+ "gtia.machine.kugelblitz.tooltip.0": [
+  "A black hole made of light, held in a silo, built in five phases; works in any star system.",
+  "Um buraco negro feito de luz, preso num silo, construído em cinco fases; funciona em qualquer sistema estelar.",
+  "由光构成的黑洞，收容于仓中，分五个阶段建造；可在任何恒星系中工作。"
+ ],
+ "gtia.machine.kugelblitz.tooltip.1": [
+  "Lasers and the vault give it mass (E = mc²); it gives energy back as Hawking radiation (P ∝ 1/M²).",
+  "Lasers e o cofre dão massa a ele (E = mc²); ele devolve energia como radiação Hawking (P ∝ 1/M²).",
+  "激光与保险库为其提供质量（E = mc²）；它以霍金辐射返还能量（P ∝ 1/M²）。"
+ ],
+ "gtia.machine.kugelblitz.tooltip.2": [
+  "A small hole is a strong generator but close to running away: below the critical mass it flashes out.",
+  "Um buraco pequeno é um gerador forte, mas perto de disparar: abaixo da massa crítica ele estoura.",
+  "小黑洞是强力发电机，但接近失控：低于临界质量时会爆闪消失。"
+ ],
+ "gtia.kugelblitz.mass": [
+  "Hole mass: %s kg",
+  "Massa do buraco: %s kg",
+  "黑洞质量：%s kg"
+ ],
+ "gtia.kugelblitz.ui.rate.tip": [
+  "Charge rate of the lasers: left click up, right click down (phase 1 up to 2^40 EU/t).",
+  "Vazão de carga dos lasers: clique esquerdo sobe, direito desce (fase 1 até 2^40 EU/t).",
+  "激光充能速率：左键增加，右键减少（阶段 1 最高 2^40 EU/t）。"
+ ],
+ "gtia.kugelblitz.ui.target.tip": [
+  "Mass the charge stops at: left click up, right click down.",
+  "Massa em que a carga para: clique esquerdo sobe, direito desce.",
+  "充能停止的质量：左键增加，右键减少。"
+ ],
+ "gtia.kugelblitz.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.kugelblitz.ui.manual.tip": [
+  "How the silo works, with Hawking's formulas.",
+  "Como o silo funciona, com as fórmulas de Hawking.",
+  "收容仓的原理与霍金公式。"
+ ],
+ "gtia.kugelblitz.ui.breached": [
+  "Containment breached: repair the chamber with its blocks",
+  "Contenção rompida: conserte a câmara com os blocos dela",
+  "收容破裂：用其方块修复收容室"
+ ],
+ "gtia.kugelblitz.ui.gathering": [
+  "Gathering light: %s of %s kg",
+  "Juntando luz: %s de %s kg",
+  "聚集光：%s / %s kg"
+ ],
+ "gtia.kugelblitz.ui.life": [
+  "Unfed it lasts %s",
+  "Sem alimentar dura %s",
+  "无补给可维持 %s"
+ ],
+ "gtia.kugelblitz.ui.temp": [
+  "T %s K",
+  "T %s K",
+  "温度 %s K"
+ ],
+ "gtia.kugelblitz.ui.flash": [
+  "THE HOLE FLASHED OUT",
+  "O BURACO ESTOUROU",
+  "黑洞爆闪消失"
+ ],
+ "gtia.kugelblitz.ui.no_hole": [
+  "No hole yet",
+  "Ainda sem buraco",
+  "尚无黑洞"
+ ],
+ "gtia.kugelblitz.ui.rate": [
+  "Charge %s EU/t",
+  "Carga %s EU/t",
+  "充能 %s EU/t"
+ ],
+ "gtia.kugelblitz.ui.target": [
+  "Target %s kg",
+  "Alvo %s kg",
+  "目标 %s kg"
+ ],
+ "gtia.kugelblitz.ui.mass": [
+  "Mass",
+  "Massa",
+  "质量"
+ ],
+ "gtia.kugelblitz.ui.held": [
+  "Holds %s EU",
+  "Guarda %s EU",
+  "储存 %s EU"
+ ],
+ "gtia.kugelblitz.ui.caught": [
+  "+%s EU/t",
+  "+%s EU/t",
+  "+%s EU/t"
+ ],
+ "gtia.kugelblitz.ui.lost": [
+  "%s EU/t lost (no petals)",
+  "%s EU/t perdidos (sem pétalas)",
+  "损失 %s EU/t（无花瓣）"
+ ],
+ "gtia.kugelblitz.ui.manual_title": [
+  "Field manual - Kugelblitz Silo",
+  "Manual de campo - Silo Kugelblitz",
+  "现场手册 - Kugelblitz 收容仓"
+ ],
+ "gtia.kugelblitz.ui.manual.0": [
+  "#A black hole of light",
+  "#Um buraco negro de luz",
+  "#光之黑洞"
+ ],
+ "gtia.kugelblitz.ui.manual.1": [
+  "Pour enough energy into a small enough volume and it falls in on itself: a kugelblitz. Its mass is the energy that made it.",
+  "Ponha energia suficiente num volume pequeno o bastante e ela cai sobre si mesma: um kugelblitz. A massa dele é a energia que o fez.",
+  "在足够小的体积中注入足够的能量，它就会自行坍缩：这就是 kugelblitz。它的质量就是形成它的能量。"
+ ],
+ "gtia.kugelblitz.ui.manual.2": [
+  "=M = E / c²;  in play 1 kg = 2^40 EU",
+  "=M = E / c²;  no jogo 1 kg = 2^40 EU",
+  "=M = E / c²；游戏中 1 kg = 2^40 EU"
+ ],
+ "gtia.kugelblitz.ui.manual.3": [
+  "It forms once the light holds 10^5 kg: lighter, it would evaporate faster than any laser feeds it. The lasers pour up to 2^40 EU/t, 2^48 with the battery of phase 2.",
+  "Ele se forma quando a luz guarda 10^5 kg: mais leve, evaporaria mais rápido do que qualquer laser alimenta. Os lasers despejam até 2^40 EU/t, 2^48 com a bateria da fase 2.",
+  "当光聚集到 10^5 kg 时黑洞形成：更轻的话，蒸发会快于任何激光的补给。激光最高 2^40 EU/t，有阶段 2 激光阵列时为 2^48。"
+ ],
+ "gtia.kugelblitz.ui.manual.4": [
+  "#Hawking radiation",
+  "#Radiação Hawking",
+  "#霍金辐射"
+ ],
+ "gtia.kugelblitz.ui.manual.5": [
+  "=T = 1.227×10^23 K / M;  P = 3.56×10^32 W / M²;  t = 8.41×10^-17 s × M³",
+  "=T = 1,227×10^23 K / M;  P = 3,56×10^32 W / M²;  t = 8,41×10^-17 s × M³",
+  "=T = 1.227×10^23 K / M；P = 3.56×10^32 W / M²；t = 8.41×10^-17 s × M³"
+ ],
+ "gtia.kugelblitz.ui.manual.6": [
+  "=in play: P = 2^30 EU/t at 10^6 kg, × 100 for each tenth of the mass",
+  "=no jogo: P = 2^30 EU/t com 10^6 kg, × 100 a cada décimo da massa",
+  "=游戏中：10^6 kg 时 P = 2^30 EU/t，质量每缩小十倍功率 × 100"
+ ],
+ "gtia.kugelblitz.ui.manual.7": [
+  "A small hole is hot and bright and lasts little; a big one is cold, dim and almost forever.",
+  "Um buraco pequeno é quente, brilha muito e dura pouco; um grande é frio, apagado e quase eterno.",
+  "小黑洞炽热明亮、寿命短；大黑洞寒冷暗淡、几乎永恒。"
+ ],
+ "gtia.kugelblitz.ui.manual.8": [
+  "The petals (phase 5) catch 90% of it as EU for the Nexus network; before them it is lost as heat.",
+  "As pétalas (fase 5) pegam 90% dela como EU para a rede Nexus; antes delas, se perde como calor.",
+  "花瓣（阶段 5）将其 90% 转为 EU 送入 Nexus 网络；在此之前它以热量形式损失。"
+ ],
+ "gtia.kugelblitz.ui.manual.9": [
+  "#Holding it",
+  "#Segurando",
+  "#维持"
+ ],
+ "gtia.kugelblitz.ui.manual.10": [
+  "Below the critical mass (10 000 kg; 1000 kg with the stabilisers of phase 3) it runs away and flashes out: all it held is gone and the chamber breaks.",
+  "Abaixo da massa crítica (10 000 kg; 1000 kg com os estabilizadores da fase 3) ele dispara e estoura: tudo o que guardava some e a câmara quebra.",
+  "低于临界质量（10 000 kg；有阶段 3 稳定环时为 1000 kg）就会失控爆闪：所储存的一切消失，收容室损坏。"
+ ],
+ "gtia.kugelblitz.ui.manual.11": [
+  "The charge stops at the target mass. A target near the critical mass makes a strong generator that must be fed all the time.",
+  "A carga para na massa-alvo. Um alvo perto da massa crítica faz um gerador forte que precisa ser alimentado o tempo todo.",
+  "充能在目标质量处停止。目标接近临界质量时就是强力发电机，但必须持续补给。"
+ ],
+ "gtia.kugelblitz.ui.manual.12": [
+  "#The vault",
+  "#O cofre",
+  "#保险库"
+ ],
+ "gtia.kugelblitz.ui.manual.13": [
+  "From phase 4 the funnels take any item and fluid from the hatches as mass: a gram each item and each 1000 mB (the chamber's own blocks are kept for repairs).",
+  "Da fase 4 em diante os funis pegam qualquer item e fluido das hatches como massa: um grama cada item e cada 1000 mB (os blocos da própria câmara ficam para reparo).",
+  "从阶段 4 起，漏斗将仓口中的任何物品和流体作为质量吸入：每件物品或每 1000 mB 计一克（收容室自身方块保留用于修复）。"
+ ],
+ "gtia.kugelblitz.ui.manual.14": [
+  "What falls in never comes back as itself: only as Hawking light.",
+  "O que cai lá dentro nunca volta como era: só como luz de Hawking.",
+  "落入其中的东西再也不会以原样返回：只会化为霍金辐射。"
+ ]
+}
