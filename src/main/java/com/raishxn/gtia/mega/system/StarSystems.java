@@ -45,6 +45,8 @@ public final class StarSystems extends SavedData {
         public int generation;
         /** Metal content, × the Sun's: richer systems give more when mined or taken apart. */
         public double metallicity = 1;
+        /** Spin of a black hole, a = Jc / GM² (0 to 0.998). */
+        public double spin = 0.6;
 
         Star(Kind kind, double mass, double fuel, @Nullable UUID owner, long seed) {
             this.kind = kind;
@@ -75,6 +77,7 @@ public final class StarSystems extends SavedData {
             t.putLong("seed", seed);
             t.putInt("generation", generation);
             t.putDouble("z", metallicity);
+            t.putDouble("spin", spin);
             return t;
         }
 
@@ -83,6 +86,7 @@ public final class StarSystems extends SavedData {
                     t.hasUUID("owner") ? t.getUUID("owner") : null, t.getLong("seed"));
             s.generation = t.getInt("generation");
             s.metallicity = t.contains("z") ? t.getDouble("z") : 1;
+            s.spin = t.contains("spin") ? t.getDouble("spin") : 0.6;
             return s;
         }
     }

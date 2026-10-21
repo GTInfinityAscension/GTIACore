@@ -1,0 +1,162 @@
+{
+ "block.gtia.hraemc": [
+  "HRAE-MC",
+  "HRAE-MC",
+  "HRAE-MC"
+ ],
+ "gtia.machine.hraemc.tooltip.0": [
+  "A power plant around the black hole of its system, built in five phases: only where the star collapsed or was made as one.",
+  "Uma usina em volta do buraco negro do sistema, construída em cinco fases: só onde a estrela colapsou ou foi feita assim.",
+  "围绕所在恒星系黑洞建造的发电站，分五个阶段建造：仅限恒星已坍缩或被创造为黑洞的系统。"
+ ],
+ "gtia.machine.hraemc.tooltip.1": [
+  "Accretion (efficiency by the hole's spin, capped by Eddington), the Penrose process (takes the spin) and the polar jets.",
+  "Acreção (eficiência pelo spin do buraco, limitada por Eddington), o processo de Penrose (tira o spin) e os jatos polares.",
+  "吸积（效率取决于黑洞自旋，受爱丁顿极限限制）、彭罗斯过程（消耗自旋）和极向喷流。"
+ ],
+ "gtia.machine.hraemc.tooltip.2": [
+  "Feeding spins the hole up, Penrose slows it: keep them in balance. EU to the Nexus network, research with the antennas.",
+  "Alimentar acelera o buraco, Penrose freia: mantenha os dois em equilíbrio. EU para a rede Nexus, pesquisa com as antenas.",
+  "进料使黑洞加速旋转，彭罗斯使其减速：需保持平衡。EU 送入 Nexus 网络，天线产生研究点数。"
+ ],
+ "gtia.hraemc.needs_hole": [
+  "No black hole here: the HRAE-MC needs a system whose centre is one.",
+  "Sem buraco negro aqui: o HRAE-MC precisa de um sistema com um no centro.",
+  "此处没有黑洞：HRAE-MC 需要中心为黑洞的恒星系。"
+ ],
+ "gtia.hraemc.spin": [
+  "Hole spin a = %s",
+  "Spin do buraco a = %s",
+  "黑洞自旋 a = %s"
+ ],
+ "gtia.hraemc.ui.penrose.tip": [
+  "Share of the Penrose ring's draw: left click +10%, right click -10%. It takes the spin.",
+  "Fatia do anel de Penrose: clique esquerdo +10%, direito -10%. Ela consome o spin.",
+  "彭罗斯环的提取比例：左键 +10%，右键 -10%。会消耗自旋。"
+ ],
+ "gtia.hraemc.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.hraemc.ui.manual.tip": [
+  "How the plant works, with its formulas.",
+  "Como a usina funciona, com as fórmulas.",
+  "发电站的原理和公式。"
+ ],
+ "gtia.hraemc.ui.spin": [
+  "Spin",
+  "Spin",
+  "自旋"
+ ],
+ "gtia.hraemc.ui.research": [
+  "Research",
+  "Pesquisa",
+  "研究"
+ ],
+ "gtia.hraemc.ui.no_hole": [
+  "No black hole",
+  "Sem buraco negro",
+  "没有黑洞"
+ ],
+ "gtia.hraemc.ui.isco": [
+  "ISCO %s GM/c²",
+  "ISCO %s GM/c²",
+  "ISCO %s GM/c²"
+ ],
+ "gtia.hraemc.ui.accretion": [
+  "Accretion",
+  "Acreção",
+  "吸积"
+ ],
+ "gtia.hraemc.ui.penrose": [
+  "Penrose",
+  "Penrose",
+  "彭罗斯"
+ ],
+ "gtia.hraemc.ui.jets": [
+  "Jets",
+  "Jatos",
+  "喷流"
+ ],
+ "gtia.hraemc.ui.manual_title": [
+  "Field manual - HRAE-MC",
+  "Manual de campo - HRAE-MC",
+  "现场手册 - HRAE-MC"
+ ],
+ "gtia.hraemc.ui.manual.0": [
+  "#Accretion",
+  "#Acreção",
+  "#吸积"
+ ],
+ "gtia.hraemc.ui.manual.1": [
+  "Matter fed to the disk spirals down to the innermost stable orbit and gives off part of its rest energy as light.",
+  "A matéria levada ao disco espirala até a órbita estável mais interna e solta parte da energia de repouso como luz.",
+  "送入吸积盘的物质螺旋下落至最内稳定圆轨道，并以光的形式释放部分静止能量。"
+ ],
+ "gtia.hraemc.ui.manual.2": [
+  "=η = 1 - √(1 - 2 / 3 r_isco);  r_isco 6 GM/c² at a = 0 (η 5.7%), 1.24 at a = 0.998 (η 32%)",
+  "=η = 1 - √(1 - 2 / 3 r_isco);  r_isco 6 GM/c² com a = 0 (η 5,7%), 1,24 com a = 0,998 (η 32%)",
+  "=η = 1 - √(1 - 2 / 3 r_isco)；a = 0 时 r_isco = 6 GM/c²（η 5.7%），a = 0.998 时 1.24（η 32%）"
+ ],
+ "gtia.hraemc.ui.manual.3": [
+  "=power = units × 2^32 EU × η, at most the Eddington limit 2^40 EU/t × M/M☉",
+  "=potência = unidades × 2^32 EU × η, no máximo o limite de Eddington 2^40 EU/t × M/M☉",
+  "=功率 = 单位数 × 2^32 EU × η，上限为爱丁顿极限 2^40 EU/t × M/M☉"
+ ],
+ "gtia.hraemc.ui.manual.4": [
+  "One unit is an item or 1000 mB of any fluid. Feeding spins the hole up (the disk's matter carries its turn in).",
+  "Uma unidade é um item ou 1000 mB de qualquer fluido. Alimentar acelera o giro do buraco (a matéria do disco leva o giro para dentro).",
+  "一个单位为一件物品或 1000 mB 任意流体。进料会使黑洞加速旋转（吸积盘物质带入角动量）。"
+ ],
+ "gtia.hraemc.ui.manual.5": [
+  "#Penrose process",
+  "#Processo de Penrose",
+  "#彭罗斯过程"
+ ],
+ "gtia.hraemc.ui.manual.6": [
+  "Inside the ergosphere nothing can stand still. Matter split there leaves with more energy than it brought: the extra comes from the hole's spin.",
+  "Dentro da ergosfera nada consegue ficar parado. Matéria dividida lá sai com mais energia do que trouxe: o extra vem do giro do buraco.",
+  "在能层内没有东西能保持静止。在那里分裂的物质离开时带走的能量多于带入的：多出的部分来自黑洞自旋。"
+ ],
+ "gtia.hraemc.ui.manual.7": [
+  "=rotational share = 1 - √((1 + √(1 - a²)) / 2), up to 29% of the mass",
+  "=fração rotacional = 1 - √((1 + √(1 - a²)) / 2), até 29% da massa",
+  "=转动能占比 = 1 - √((1 + √(1 - a²)) / 2)，最高为质量的 29%"
+ ],
+ "gtia.hraemc.ui.manual.8": [
+  "=Penrose = 2^38 EU/t × M/M☉ × share × a",
+  "=Penrose = 2^38 EU/t × M/M☉ × fatia × a",
+  "=彭罗斯功率 = 2^38 EU/t × M/M☉ × 比例 × a"
+ ],
+ "gtia.hraemc.ui.manual.9": [
+  "It slows the hole down; a slower hole lowers η. Balance the feed and the share.",
+  "Ele freia o buraco; um buraco mais lento abaixa o η. Equilibre a alimentação e a fatia.",
+  "它会使黑洞减速；自旋变慢会降低 η。请平衡进料与提取比例。"
+ ],
+ "gtia.hraemc.ui.manual.10": [
+  "#Jets and research",
+  "#Jatos e pesquisa",
+  "#喷流与研究"
+ ],
+ "gtia.hraemc.ui.manual.11": [
+  "The polar bells (phase 4) catch the Blandford–Znajek jets, which carry a share a² of the accretion power.",
+  "Os sinos polares (fase 4) pegam os jatos de Blandford–Znajek, que levam uma fração a² da potência de acreção.",
+  "极向钟罩（阶段 4）捕获布兰福德–兹纳耶克喷流，其功率为吸积功率的 a² 倍。"
+ ],
+ "gtia.hraemc.ui.manual.12": [
+  "=jets = accretion × a²",
+  "=jatos = acreção × a²",
+  "=喷流 = 吸积 × a²"
+ ],
+ "gtia.hraemc.ui.manual.13": [
+  "The antennas (phase 5) give log₂(power)/4 research points a second (GTNA knowledge, area gtia:astrophysics).",
+  "As antenas (fase 5) dão log₂(potência)/4 pontos de pesquisa por segundo (conhecimento do GTNA, área gtia:astrophysics).",
+  "天线（阶段 5）每秒产生 log₂(功率)/4 研究点数（GTNA 知识点，领域 gtia:astrophysics）。"
+ ],
+ "gtia.hraemc.ui.manual.14": [
+  "Everything swallowed adds to the hole's mass, and with it to the Eddington limit.",
+  "Tudo o que é engolido soma na massa do buraco e, com ela, no limite de Eddington.",
+  "所有被吞噬的物质都会增加黑洞质量，从而提高爱丁顿极限。"
+ ]
+}

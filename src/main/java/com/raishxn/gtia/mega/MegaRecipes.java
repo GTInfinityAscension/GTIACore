@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-322): superconducting coils for the Penrose ring, sensors for the antennas. */
+    private static void hraemc(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("hraemc"))
+                .inputItems(com.gregtechceu.gtceu.common.data.GTBlocks.SUPERCONDUCTING_COIL.asStack(64))
+                .inputItems(GTItems.SENSOR_UV.asStack(32))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 16)
+                .inputFluids(GTMaterials.Neutronium.getFluid(18432))
+                .outputItems(GTIAMegastructures.HRAEMC_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-321): emitters to pour light in, gravity stars to hold the hole. */
     private static void kugelblitz(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("kugelblitz"))
@@ -98,6 +111,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.SYSTEM_CREATOR_DEF != null) systemCreator(provider);
         if (GTIAMegastructures.FUSION_SUPPRESSOR_DEF != null) fusionSuppressor(provider);
         if (GTIAMegastructures.KUGELBLITZ_DEF != null) kugelblitz(provider);
+        if (GTIAMegastructures.HRAEMC_DEF != null) hraemc(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))
