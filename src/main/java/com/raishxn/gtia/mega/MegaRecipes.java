@@ -18,6 +18,19 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-330): field generators to switch the binding off, a Suprashell's worth of gravity stars. */
+    private static void disintegrator(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("disintegrator"))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(64))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(GTItems.EMITTER_UV.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 32)
+                .inputFluids(GTMaterials.Neutronium.getFluid(73728))
+                .outputItems(GTIAMegastructures.DISINTEGRATOR_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(12000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-329): a shell needs field generators to hold it static and gravity stars to tether it. */
     private static void suprashell(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("suprashell"))
@@ -182,6 +195,7 @@ public final class MegaRecipes {
         if (GTIAMegastructures.YGGDRASIL_DEF != null) yggdrasil(provider);
         if (GTIAMegastructures.STELLAR_HARVESTER_DEF != null) stellarHarvester(provider);
         if (GTIAMegastructures.SUPRASHELL_DEF != null) suprashell(provider);
+        if (GTIAMegastructures.DISINTEGRATOR_DEF != null) disintegrator(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))
