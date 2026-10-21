@@ -99,6 +99,7 @@ final class MatrioshkaTestRig {
             long ring = MegaCapture.positions(MatrioshkaBrainMachine.SHAPE, m.getPos(), FRONT).get(part(shape, "inner_up", "body"))[0];
             helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
                     "the inner ring is in the controller");
+            MegaTestRig.lit(helper, m, "field_inner", "field_outer", "feed_front", "feed_back");
             m.countPhases(helper.getLevel());
             helper.assertTrue(m.phases() == 5, "captured rings still count: " + m.phases());
 

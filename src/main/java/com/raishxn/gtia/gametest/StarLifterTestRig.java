@@ -81,6 +81,7 @@ final class StarLifterTestRig {
                     .get(MegaTestRig.part(m.shape(), "current", "body"))[0];
             helper.assertTrue(m.isCaptured() && helper.getLevel().getBlockState(BlockPos.of(ring)).isAir(),
                     "the ring current is in the controller");
+            MegaTestRig.lit(helper, m, "current_field", "polar_jet_n", "polar_jet_s", "heater_0", "separator_n");
 
             // Deep stirring above 60% grows instability; a full one makes a flare.
             m.setMode(Mode.DEEP);

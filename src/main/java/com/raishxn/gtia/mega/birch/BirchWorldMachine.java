@@ -198,7 +198,7 @@ public class BirchWorldMachine extends MegaMachine {
         }
         recipe = result.recipe();
         blocked = result.blocked();
-        boolean working = result.crafts() > 0;
+        boolean working = result.busy();
         if (devShow > 0) {
             devShow--;
             working = true;

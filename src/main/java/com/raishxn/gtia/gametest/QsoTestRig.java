@@ -55,6 +55,7 @@ final class QsoTestRig {
             for (int i = 0; i < 200 && m.shots() == 0; i++) m.testSecond(owner);
             helper.assertTrue(m.shots() > 0 && era.get(EraStore.NEGENTROPY, owner) > 0, "it fires and harvests "
                     + "negentropy: " + m.shots());
+            MegaTestRig.lit(helper, m, "shot", "quasar_jet_n", "quasar_jet_s");
             // The world's stock spent: with the ending rule on, the next shot is the last.
             helper.assertTrue(WorldRules.get(GTIARules.FINAL_ENDING) != 0, "the ending is on by default");
             era.set(EraStore.NEGENTROPY_TAKEN, EraStore.WORLD, WorldRules.get(GTIARules.NEGENTROPY_STOCK));

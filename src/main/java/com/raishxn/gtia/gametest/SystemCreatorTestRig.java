@@ -82,7 +82,15 @@ final class SystemCreatorTestRig {
             made = m.targetSlot();
             m.testSecond(owner);
             MegaTestRig.capturesAndReleases(helper, m);
-            for (int i = 0; i < 200 && m.stage() != Stage.IDLE; i++) m.testSecond(owner);
+            float jet = 0, candle = 0, field = 0;
+            for (int i = 0; i < 200 && m.stage() != Stage.IDLE; i++) {
+                m.testSecond(owner);
+                jet = Math.max(jet, m.fxLevel("hh_jet_n"));
+                candle = Math.max(candle, m.fxLevel("candle_beam"));
+                field = Math.max(field, m.fxLevel("forge_field"));
+            }
+            helper.assertTrue(jet > 0 && candle > 0 && field > 0, "the collapse jets, the Candle beam and the forge "
+                    + "field light up while the star is made: " + jet + " " + candle + " " + field);
             var star = store.star(StarSystems.slot(made));
             helper.assertTrue(star != null && star.kind == Kind.RED_DWARF && owner.equals(star.owner),
                     "a red dwarf in a new system: " + (star == null ? "none" : star.kind) + " " + m.message());

@@ -87,6 +87,15 @@ final class MegaTestRig {
     }
 
     /**
+     * The named effects are lit (level above 0) in the machine's current state; the shader draws every lit effect, so
+     * this is what decides whether a state-bound effect (welding lasers, the shot, a field round a new hole) shows.
+     */
+    static void lit(GameTestHelper helper, MegaMachine m, String... effects) {
+        for (String e : effects)
+            helper.assertTrue(m.fxLevel(e) > 0, "the " + e + " effect is lit in this state: " + m.fxLevel(e));
+    }
+
+    /**
      * A running machine holds its moving pieces (their blocks are air and the renderer turns them); switching it off
      * puts them back as blocks, and switching it on again leaves it ready to take them on its next second.
      */

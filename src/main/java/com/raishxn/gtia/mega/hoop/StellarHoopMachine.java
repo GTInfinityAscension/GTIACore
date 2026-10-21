@@ -180,7 +180,7 @@ public class StellarHoopMachine extends MegaMachine {
         blocked = result.blocked();
         // The hoop turns whenever it is on and whole; the forge glow shows only while recipes run.
         boolean on = integrity > 0 && isWorkingEnabled();
-        boolean forging = on && result.crafts() > 0 || on && "inputs".equals(blocked);
+        boolean forging = on && (result.busy() || "inputs".equals(blocked));
         view = new double[] { parallel, kelvin, load, cooled, tier, result.crafts(), result.eu(), forging ? 1 : 0,
                 star.temperature(), star.drawnScale() };
         return on;

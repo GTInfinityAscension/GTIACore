@@ -41,8 +41,11 @@ final class KugelblitzTestRig {
             StellarEngineTestRig.power(helper, owner);
             m.setRate(4);
             m.setTarget(3);
+            m.testSecond(owner);
+            MegaTestRig.lit(helper, m, "laser_0", "laser_15", "containment");
             for (int i = 0; i < 60 && !m.hole(); i++) m.testSecond(owner);
             helper.assertTrue(m.hole() && m.mass() > 0, "the lasers make a hole: " + m.mass());
+            MegaTestRig.lit(helper, m, "stab_field_0", "stab_field_1");
 
             // A heavy hole radiates little; the petals give it back to the network.
             m.setMass(1e5, true);

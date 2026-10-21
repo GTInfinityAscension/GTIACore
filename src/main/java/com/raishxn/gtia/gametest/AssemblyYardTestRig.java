@@ -76,7 +76,12 @@ final class AssemblyYardTestRig {
             m.testSecond(owner);
             helper.assertTrue(m.crafted() == 0 && "slipways".equals(m.blocked()), "every slipway closed: it waits");
             m.setActive(18);
-            for (int i = 0; i < Math.max(2, recipe.duration / 20 + 2) && m.crafted() == 0; i++) m.testSecond(owner);
+            float weld = 0;
+            for (int i = 0; i < Math.max(2, recipe.duration / 20 + 2) && m.crafted() == 0; i++) {
+                m.testSecond(owner);
+                weld = Math.max(weld, m.fxLevel("weld_0"));
+            }
+            helper.assertTrue(weld > 0, "the welding lasers burn while the assembly is under way");
             helper.assertTrue(m.crafted() > 1, "the yard runs " + recipe.id + " in parallel: " + m.crafted() + " (" +
                     m.blocked() + ")");
             boolean any = false;

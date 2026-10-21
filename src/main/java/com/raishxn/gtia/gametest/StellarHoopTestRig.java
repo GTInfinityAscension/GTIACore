@@ -80,7 +80,13 @@ final class StellarHoopTestRig {
             UUID owner = UUID.randomUUID();
             StellarEngineTestRig.power(helper, owner);
             m.setHeight(HoopPhysics.HEIGHT_MIN);
-            for (int i = 0; i < Math.max(2, recipe.duration / 40 + 2); i++) m.testSecond(owner);
+            float field = 0, intake = 0;
+            for (int i = 0; i < Math.max(2, recipe.duration / 40 + 2); i++) {
+                m.testSecond(owner);
+                field = Math.max(field, m.fxLevel("hoop_field"));
+                intake = Math.max(intake, m.fxLevel("intake_0"));
+            }
+            helper.assertTrue(field > 0 && intake > 0, "the hoop field and the intake beams light while it forges");
             var match = RecipeHelper.matchContents(m, recipe);
             boolean found = GTRecipeTypes.BLAST_RECIPES.searchRecipe(m, r -> r == recipe).hasNext();
             helper.assertTrue(m.crafted() > 1, "the hoop runs " + recipe.id + " in parallel: " + m.crafted() +

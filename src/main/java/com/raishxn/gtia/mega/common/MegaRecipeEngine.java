@@ -55,6 +55,15 @@ public final class MegaRecipeEngine {
         public Result(long crafts, double eu, String recipe, String blocked) {
             this(crafts, eu, recipe, blocked, 0);
         }
+
+        /**
+         * A recipe is under way: it finished batches this second, or it is part way through one and nothing stops it.
+         * Effects that show the work (welding lasers, forge glow) follow this, not finished batches, or a recipe of
+         * several seconds would show them only on the second it ends.
+         */
+        public boolean busy() {
+            return crafts > 0 || !recipe.isEmpty() && blocked.isEmpty();
+        }
     }
 
     private MegaRecipeEngine() {}

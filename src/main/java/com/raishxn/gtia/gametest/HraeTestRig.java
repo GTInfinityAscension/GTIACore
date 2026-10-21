@@ -65,6 +65,7 @@ final class HraeTestRig {
             m.testSecond(owner);
             helper.assertTrue(m.view()[4] > 0 && m.view()[6] > 0 && star.spin > 0.5,
                     "fed: accretion and jets, and the hole spins up: " + star.spin);
+            MegaTestRig.lit(helper, m, "ergo", "bz_jet_n", "bz_jet_s");
             m.setPenrose(100);
             double before = star.spin;
             m.testSecond(owner);
