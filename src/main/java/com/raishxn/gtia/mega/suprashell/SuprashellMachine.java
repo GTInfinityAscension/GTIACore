@@ -108,7 +108,7 @@ public class SuprashellMachine extends MegaMachine {
     public float fxLevel(String effect) {
         boolean on = view[7] > 0;
         if (effect.equals("lowering")) return on ? 1 : 0;
-        if (effect.equals("shell_field")) return on ? 1 : 0.4f;
+        if (effect.equals("shell_field")) return on ? 1 : 0.8f;
         return 1;
     }
 
