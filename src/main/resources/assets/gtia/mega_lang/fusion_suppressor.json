@@ -1,0 +1,192 @@
+{
+ "block.gtia.fusion_suppressor": [
+  "Fusion Suppressor",
+  "Supressor de Fusão",
+  "聚变抑制器"
+ ],
+ "gtia.machine.fusion_suppressor.tooltip.0": [
+  "Damps the fusion of the star of its system and reads its neutrinos for research, built in five phases.",
+  "Abafa a fusão da estrela do sistema e lê os neutrinos dela para pesquisa, construído em cinco fases.",
+  "抑制所在恒星系恒星的聚变并读取中微子用于研究，分五个阶段建造。"
+ ],
+ "gtia.machine.fusion_suppressor.tooltip.1": [
+  "A star of 8 M☉ or more, held until its core gives way, ends as you choose: a supernova (r-process dust) or a black hole.",
+  "Uma estrela com 8 M☉ ou mais, segurada até o núcleo ceder, termina como você escolher: supernova (pós de processo r) ou buraco negro.",
+  "质量 8 M☉ 及以上的恒星在核心崩溃时，可选择结局：超新星（r 过程粉末）或黑洞。"
+ ],
+ "gtia.machine.fusion_suppressor.tooltip.2": [
+  "Lighter stars only flare: a helium flash hits the pylons.",
+  "Estrelas mais leves só têm uma erupção: um flash de hélio atinge os pilares.",
+  "较轻的恒星只会爆发：氦闪会冲击塔柱。"
+ ],
+ "gtia.fusion_suppressor.state": [
+  "Suppression %s%%, core deficit %s%%",
+  "Supressão %s%%, déficit do núcleo %s%%",
+  "抑制 %s%%，核心亏损 %s%%"
+ ],
+ "gtia.fusion_suppressor.ui.knob.tip": [
+  "Suppression: left click +10%, right click -10%.",
+  "Supressão: clique esquerdo +10%, direito -10%.",
+  "抑制强度：左键 +10%，右键 -10%。"
+ ],
+ "gtia.fusion_suppressor.ui.supernova": [
+  "Supernova",
+  "Supernova",
+  "超新星"
+ ],
+ "gtia.fusion_suppressor.ui.supernova.tip": [
+  "The core collapses and rebounds: r-process dust (a tenth without the corolla), a neutron star is left.",
+  "O núcleo colapsa e ricocheteia: pós de processo r (um décimo sem a corola), sobra uma estrela de nêutrons.",
+  "核心坍缩并反弹：产出 r 过程粉末（无花冠时只有十分之一），留下一颗中子星。"
+ ],
+ "gtia.fusion_suppressor.ui.collapse": [
+  "Black hole",
+  "Buraco negro",
+  "黑洞"
+ ],
+ "gtia.fusion_suppressor.ui.collapse.tip": [
+  "The core falls in with no rebound: 60% of the star becomes a black hole, a burst of research.",
+  "O núcleo cai sem ricochete: 60% da estrela vira buraco negro, com uma rajada de pesquisa.",
+  "核心无反弹地坍缩：恒星 60% 的质量变成黑洞，并获得大量研究点数。"
+ ],
+ "gtia.fusion_suppressor.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.fusion_suppressor.ui.manual.tip": [
+  "How the suppressor works, with its formulas.",
+  "Como o supressor funciona, com as fórmulas.",
+  "抑制器的原理和公式。"
+ ],
+ "gtia.fusion_suppressor.ui.flux": [
+  "Neutrino flux",
+  "Fluxo de neutrinos",
+  "中微子通量"
+ ],
+ "gtia.fusion_suppressor.ui.no_star": [
+  "No star in this system",
+  "Sem estrela neste sistema",
+  "本恒星系没有恒星"
+ ],
+ "gtia.fusion_suppressor.ui.event.1": [
+  "SUPERNOVA",
+  "SUPERNOVA",
+  "超新星"
+ ],
+ "gtia.fusion_suppressor.ui.event.2": [
+  "The core fell into a black hole",
+  "O núcleo caiu num buraco negro",
+  "核心坍缩成了黑洞"
+ ],
+ "gtia.fusion_suppressor.ui.event.3": [
+  "Helium flash: the pylons took it",
+  "Flash de hélio: os pilares sentiram",
+  "氦闪：塔柱受到冲击"
+ ],
+ "gtia.fusion_suppressor.ui.deficit": [
+  "Core deficit",
+  "Déficit do núcleo",
+  "核心亏损"
+ ],
+ "gtia.fusion_suppressor.ui.heavy": [
+  "Heavy enough to collapse",
+  "Pesada o bastante para colapsar",
+  "质量足以坍缩"
+ ],
+ "gtia.fusion_suppressor.ui.light": [
+  "Too light to collapse",
+  "Leve demais para colapsar",
+  "质量不足以坍缩"
+ ],
+ "gtia.fusion_suppressor.ui.research": [
+  "Research (astrophysics)",
+  "Pesquisa (astrofísica)",
+  "研究（天体物理）"
+ ],
+ "gtia.fusion_suppressor.ui.owed": [
+  "%s dust to come",
+  "%s pós a sair",
+  "还有 %s 份粉末"
+ ],
+ "gtia.fusion_suppressor.ui.manual_title": [
+  "Field manual - Fusion Suppressor",
+  "Manual de campo - Supressor de Fusão",
+  "现场手册 - 聚变抑制器"
+ ],
+ "gtia.fusion_suppressor.ui.manual.0": [
+  "#Damping a star",
+  "#Abafando uma estrela",
+  "#抑制恒星"
+ ],
+ "gtia.fusion_suppressor.ui.manual.1": [
+  "The pylons damp the core's fusion. Less fusion means fewer neutrinos and less pressure: the core contracts and heats (virial theorem).",
+  "Os pilares abafam a fusão do núcleo. Menos fusão quer dizer menos neutrinos e menos pressão: o núcleo contrai e esquenta (teorema do virial).",
+  "塔柱抑制核心聚变。聚变减少意味着中微子减少、压力下降：核心收缩并升温（位力定理）。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.2": [
+  "=research/s = 4 × S × √(L/L☉)  (from phase 2, the detectors)",
+  "=pesquisa/s = 4 × S × √(L/L☉)  (desde a fase 2, os detectores)",
+  "=研究/秒 = 4 × S × √(L/L☉)（阶段 2 的探测器起）"
+ ],
+ "gtia.fusion_suppressor.ui.manual.3": [
+  "=EU/t = 2^36 × S × √(L/L☉);  surface T × (1 - 0.3 S)",
+  "=EU/t = 2^36 × S × √(L/L☉);  T da superfície × (1 - 0,3 S)",
+  "=EU/t = 2^36 × S × √(L/L☉)；表面温度 × (1 - 0.3 S)"
+ ],
+ "gtia.fusion_suppressor.ui.manual.4": [
+  "Research goes to the owner's GTNA knowledge points, area gtia:astrophysics.",
+  "A pesquisa vai para os pontos de conhecimento do GTNA do dono, área gtia:astrophysics.",
+  "研究点数计入所有者的 GTNA 知识点，领域 gtia:astrophysics。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.5": [
+  "#The core gives way",
+  "#O núcleo cede",
+  "#核心崩溃"
+ ],
+ "gtia.fusion_suppressor.ui.manual.6": [
+  "=deficit/s = (S - 50%) / 2 above half; -5 below",
+  "=déficit/s = (S - 50%) / 2 acima da metade; -5 abaixo",
+  "=亏损/秒 = 超过一半时 (S - 50%) / 2；以下 -5"
+ ],
+ "gtia.fusion_suppressor.ui.manual.7": [
+  "At a full deficit a star of 8 M☉ or more (the core-collapse limit) is ready to end; the probes (phase 4) must be built.",
+  "Com o déficit cheio, uma estrela de 8 M☉ ou mais (o limite de colapso do núcleo) fica pronta para terminar; as sondas (fase 4) precisam estar construídas.",
+  "亏损满时，质量 8 M☉ 及以上（核心坍缩极限）的恒星即可终结；需建成探针（阶段 4）。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.8": [
+  "A lighter star only flares: a helium flash takes 25% of the pylons and half the deficit.",
+  "Uma estrela mais leve só tem uma erupção: um flash de hélio tira 25% dos pilares e metade do déficit.",
+  "较轻的恒星只会爆发：氦闪使塔柱损失 25%，亏损减半。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.9": [
+  "#Endings",
+  "#Desfechos",
+  "#结局"
+ ],
+ "gtia.fusion_suppressor.ui.manual.10": [
+  "Supernova: the core rebounds and the shock spreads r-process elements (gold, platinum, osmium, iridium, uranium, thorium, europium); a neutron star of 1.4 M☉ is left.",
+  "Supernova: o núcleo ricocheteia e o choque espalha elementos do processo r (ouro, platina, ósmio, irídio, urânio, tório, európio); sobra uma estrela de nêutrons de 1,4 M☉.",
+  "超新星：核心反弹，冲击波散播 r 过程元素（金、铂、锇、铱、铀、钍、铕）；留下 1.4 M☉ 的中子星。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.11": [
+  "=dust of each = 64 × M × Z  (a tenth without the corolla, phase 5)",
+  "=pó de cada = 64 × M × Z  (um décimo sem a corola, fase 5)",
+  "=每种粉末 = 64 × M × Z（无阶段 5 花冠时为十分之一）"
+ ],
+ "gtia.fusion_suppressor.ui.manual.12": [
+  "Black hole: the core falls in without a rebound; 60% of the star stays as a black hole for the Kugelblitz, the HRAE-MC and the Suprashell.",
+  "Buraco negro: o núcleo cai sem ricochete; 60% da estrela fica como buraco negro para o Kugelblitz, o HRAE-MC e a Suprashell.",
+  "黑洞：核心无反弹坍缩；恒星 60% 的质量成为黑洞，供 Kugelblitz、HRAE-MC 和超级壳层使用。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.13": [
+  "Either ending gives a burst of research (2000 or 5000 points). Do it in a system made for it: the star does not come back.",
+  "Os dois desfechos dão uma rajada de pesquisa (2000 ou 5000 pontos). Faça num sistema feito para isso: a estrela não volta.",
+  "两种结局都会给予大量研究点数（2000 或 5000）。请在专门创建的系统中进行：恒星无法恢复。"
+ ],
+ "gtia.fusion_suppressor.ui.manual.14": [
+  "Repair: idle, put pylon blocks in an input bus (+5% each).",
+  "Reparo: parado, ponha blocos dos pilares num barramento de entrada (+5% cada).",
+  "修复：停机时将塔柱方块放入输入总线（每个 +5%）。"
+ ]
+}

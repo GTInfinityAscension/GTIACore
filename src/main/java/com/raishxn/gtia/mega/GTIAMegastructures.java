@@ -14,14 +14,15 @@ public final class GTIAMegastructures {
 
     public static final String MATRIOSHKA = "matrioshka_brain", STELLAR_ENGINE = "stellar_engine",
             STAR_LIFTER = "star_lifter", STELLAR_HOOP = "stellar_hoop",
-            SYSTEM_CREATOR = "system_creator";
+            SYSTEM_CREATOR = "system_creator", FUSION_SUPPRESSOR = "fusion_suppressor";
 
     /** Every megastructure, for the client renderer check. */
-    static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR };
+    static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
+            FUSION_SUPPRESSOR };
 
     @Nullable
     public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF,
-            STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF;
+            STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF, FUSION_SUPPRESSOR_DEF;
 
     private GTIAMegastructures() {}
 
@@ -49,5 +50,7 @@ public final class GTIAMegastructures {
             STELLAR_HOOP_DEF = com.raishxn.gtia.mega.hoop.StellarHoopDefinition.register();
         if (available(SYSTEM_CREATOR))
             SYSTEM_CREATOR_DEF = com.raishxn.gtia.mega.creator.SystemCreatorDefinition.register();
+        if (available(FUSION_SUPPRESSOR))
+            FUSION_SUPPRESSOR_DEF = com.raishxn.gtia.mega.suppressor.FusionSuppressorDefinition.register();
     }
 }
