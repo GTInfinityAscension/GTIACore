@@ -18,20 +18,21 @@ public final class GTIAMegastructures {
             KUGELBLITZ = "kugelblitz", HRAEMC = "hraemc",
             NIDAVELLIR = "nidavellir", ASSEMBLY_YARD = "assembly_yard",
             YGGDRASIL = "yggdrasil", STELLAR_HARVESTER = "stellar_harvester",
-            SUPRASHELL = "suprashell", DISINTEGRATOR = "disintegrator";
+            SUPRASHELL = "suprashell", DISINTEGRATOR = "disintegrator", BIRCH_WORLD = "birch_world",
+            QSO = "qso";
 
     /** Every megastructure, for the client renderer check. */
     static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
             FUSION_SUPPRESSOR, KUGELBLITZ, HRAEMC,
             NIDAVELLIR, ASSEMBLY_YARD, YGGDRASIL, STELLAR_HARVESTER,
-            SUPRASHELL, DISINTEGRATOR };
+            SUPRASHELL, DISINTEGRATOR, BIRCH_WORLD, QSO };
 
     @Nullable
     public static MultiblockMachineDefinition MATRIOSHKA_BRAIN, STELLAR_ENGINE_DEF, STAR_LIFTER_DEF,
             STELLAR_HOOP_DEF, SYSTEM_CREATOR_DEF, FUSION_SUPPRESSOR_DEF,
             KUGELBLITZ_DEF, HRAEMC_DEF, NIDAVELLIR_DEF,
             ASSEMBLY_YARD_DEF, YGGDRASIL_DEF, STELLAR_HARVESTER_DEF, SUPRASHELL_DEF,
-            DISINTEGRATOR_DEF;
+            DISINTEGRATOR_DEF, BIRCH_WORLD_DEF, QSO_DEF;
 
     private GTIAMegastructures() {}
 
@@ -73,5 +74,7 @@ public final class GTIAMegastructures {
         if (available(SUPRASHELL)) SUPRASHELL_DEF = com.raishxn.gtia.mega.suprashell.SuprashellDefinition.register();
         if (available(DISINTEGRATOR))
             DISINTEGRATOR_DEF = com.raishxn.gtia.mega.disintegrator.DisintegratorDefinition.register();
+        if (available(BIRCH_WORLD)) BIRCH_WORLD_DEF = com.raishxn.gtia.mega.birch.BirchWorldDefinition.register();
+        if (available(QSO)) QSO_DEF = com.raishxn.gtia.mega.qso.QsoDefinition.register();
     }
 }

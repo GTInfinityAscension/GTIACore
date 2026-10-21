@@ -79,6 +79,10 @@ public final class GTIARules {
     public static final GTIARule CLEANROOM = register(GTIARule.toggle("cleanroom", "machines", true, true));
     public static final GTIARule CLEAN_MULTIBLOCKS = register(
             GTIARule.toggle("clean_multiblocks", "machines", true, false));
+    /** Final era (GTIA-D-312/D-332): the world's finite negentropy, in units, and whether the last shot ends the game. */
+    public static final GTIARule NEGENTROPY_STOCK = register(
+            GTIARule.number("negentropy_stock", "machines", 50_000, 100_000, 1_000, 10_000_000));
+    public static final GTIARule FINAL_ENDING = register(GTIARule.toggle("final_ending", "machines", true, true));
     public static final GTIARule EXPLOSIONS_DAMAGE_TERRAIN = register(
             GTIARule.toggle("explosions_damage_terrain", "machines", false, true));
     public static final GTIARule WEATHER_EXPLOSIONS = register(

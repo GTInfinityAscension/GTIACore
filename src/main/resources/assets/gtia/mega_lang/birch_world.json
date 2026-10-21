@@ -1,0 +1,187 @@
+{
+ "block.gtia.birch_world": [
+  "Birch World",
+  "Mundo Birch",
+  "伯奇世界"
+ ],
+ "gtia.machine.birch_world.tooltip.0": [
+  "Shells round a black hole whose time loops make almost anything, built in five phases: the Causal era.",
+  "Camadas em volta de um buraco negro cujos laços temporais fazem quase tudo, construído em cinco fases: a Era Causal.",
+  "围绕黑洞的多层壳体，其时间回路几乎能制造一切，分五个阶段建造：因果纪元。"
+ ],
+ "gtia.machine.birch_world.tooltip.1": [
+  "Hosts multiblock controllers like the Suprashell; recipes run 64 times as fast and their EU becomes causal debt.",
+  "Hospeda controladores de multibloco como a Supracasca; as receitas rodam 64 vezes mais rápido e o EU vira dívida causal.",
+  "像超壳一样托管多方块控制器；配方速度 x64，EU 记为因果债务。"
+ ],
+ "gtia.machine.birch_world.tooltip.2": [
+  "Pay it back from the Nexus network; past the credit, a paradox erases the debt and what it bought.",
+  "Pague de volta pela rede Nexus; passando do crédito, um paradoxo apaga a dívida e o que ela comprou.",
+  "通过 Nexus 网络偿还；超过信用额度时，悖论会抹除债务及其所购之物。"
+ ],
+ "gtia.birch_world.state": [
+  "Causal debt %s / %s, paradoxes %s",
+  "Dívida causal %s / %s, paradoxos %s",
+  "因果债务 %s / %s，悖论 %s"
+ ],
+ "gtia.birch_world.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.birch_world.ui.manual.tip": [
+  "How the time loops work, with the formulas.",
+  "Como os laços temporais funcionam, com as fórmulas.",
+  "时间回路的原理和公式。"
+ ],
+ "gtia.birch_world.ui.repay.tip": [
+  "Repayment: left click +2^40 EU/s, right click -2^40 EU/s.",
+  "Pagamento: clique esquerdo +2^40 EU/s, direito -2^40 EU/s.",
+  "还款：左键 +2^40 EU/s，右键 -2^40 EU/s。"
+ ],
+ "gtia.birch_world.ui.debt": [
+  "Causal debt",
+  "Dívida causal",
+  "因果债务"
+ ],
+ "gtia.birch_world.ui.credit": [
+  "credit %s",
+  "crédito %s",
+  "信用 %s"
+ ],
+ "gtia.birch_world.ui.paradoxes": [
+  "paradoxes %s",
+  "paradoxos %s",
+  "悖论 %s"
+ ],
+ "gtia.birch_world.ui.era.0": [
+  "Causal era —",
+  "Era Causal —",
+  "因果纪元 —"
+ ],
+ "gtia.birch_world.ui.era.1": [
+  "Causal era I",
+  "Era Causal I",
+  "因果纪元 I"
+ ],
+ "gtia.birch_world.ui.era.2": [
+  "Causal era II",
+  "Era Causal II",
+  "因果纪元 II"
+ ],
+ "gtia.birch_world.ui.era.3": [
+  "Causal era III",
+  "Era Causal III",
+  "因果纪元 III"
+ ],
+ "gtia.birch_world.ui.repay": [
+  "Repay",
+  "Pagar",
+  "偿还"
+ ],
+ "gtia.birch_world.ui.per_second": [
+  "%s EU/s",
+  "%s EU/s",
+  "%s EU/s"
+ ],
+ "gtia.birch_world.ui.hosted": [
+  "%s / %s modules",
+  "%s / %s módulos",
+  "%s / %s 模块"
+ ],
+ "gtia.birch_world.ui.frozen": [
+  "Paradox: the loops reopen in %s s",
+  "Paradoxo: os laços reabrem em %s s",
+  "悖论：回路将在 %s 秒后重开"
+ ],
+ "gtia.birch_world.ui.crafts": [
+  "%s made, %s EU borrowed",
+  "%s feitos, %s EU emprestados",
+  "完成 %s，借入 %s EU"
+ ],
+ "gtia.birch_world.ui.idle.no_recipe": [
+  "Waiting: no hosted recipe matches the buses",
+  "Esperando: nenhuma receita hospedada bate com os barramentos",
+  "等待中：总线无匹配的托管配方"
+ ],
+ "gtia.birch_world.ui.idle.inputs": [
+  "Waiting: inputs ran short",
+  "Esperando: faltaram insumos",
+  "等待中：原料不足"
+ ],
+ "gtia.birch_world.ui.idle.modules": [
+  "Waiting: no module hosted",
+  "Esperando: nenhum módulo hospedado",
+  "等待中：没有托管模块"
+ ],
+ "gtia.birch_world.ui.idle.paradox": [
+  "Paradox",
+  "Paradoxo",
+  "悖论"
+ ],
+ "gtia.birch_world.ui.manual_title": [
+  "Field manual - Birch World",
+  "Manual de campo - Mundo Birch",
+  "现场手册 - 伯奇世界"
+ ],
+ "gtia.birch_world.ui.manual.0": [
+  "#Time loops",
+  "#Laços temporais",
+  "#时间回路"
+ ],
+ "gtia.birch_world.ui.manual.1": [
+  "A spinning black hole's interior allows closed timelike curves: work sent round one is done before it is paid for.",
+  "O interior de um buraco negro girando permite curvas temporais fechadas: o trabalho mandado por uma é feito antes de ser pago.",
+  "旋转黑洞内部允许闭合类时曲线：沿其送出的工作在付款之前就已完成。"
+ ],
+ "gtia.birch_world.ui.manual.2": [
+  "=speed = x64;  parallel = 256 x modules;  room = 80 modules x phases",
+  "=velocidade = x64;  paralelo = 256 x módulos;  espaço = 80 módulos x fases",
+  "=速度 = x64；并行 = 256 x 模块数；容量 = 80 模块 x 阶段数"
+ ],
+ "gtia.birch_world.ui.manual.3": [
+  "Modules are multiblock controllers in the input buses, as in the Suprashell. Their EU is not drawn: it is owed.",
+  "Os módulos são controladores de multibloco nos barramentos, como na Supracasca. O EU deles não é tirado: fica devido.",
+  "模块是输入总线中的多方块控制器，与超壳相同。其 EU 不会被扣除，而是记为欠款。"
+ ],
+ "gtia.birch_world.ui.manual.4": [
+  "#Causal debt",
+  "#Dívida causal",
+  "#因果债务"
+ ],
+ "gtia.birch_world.ui.manual.5": [
+  "The loop's tension makes the debt grow; pay it back at the rate on the dial, from the Nexus network.",
+  "A tensão do laço faz a dívida crescer; pague de volta no ritmo do botão giratório, pela rede Nexus.",
+  "回路张力使债务增长；按旋钮设定的速率从 Nexus 网络偿还。"
+ ],
+ "gtia.birch_world.ui.manual.6": [
+  "=debt x 1.0005 each second;  repayment = 2^40 EU/s x dial (0-16)",
+  "=dívida x 1,0005 por segundo;  pagamento = 2^40 EU/s x botão (0-16)",
+  "=债务每秒 x 1.0005；还款 = 2^40 EU/s x 旋钮（0-16）"
+ ],
+ "gtia.birch_world.ui.manual.7": [
+  "=credit = 2^44 EU x layers x M/M☉  (40 layers a phase)",
+  "=crédito = 2^44 EU x camadas x M/M☉  (40 camadas por fase)",
+  "=信用 = 2^44 EU x 层数 x M/M☉（每阶段 40 层）"
+ ],
+ "gtia.birch_world.ui.manual.8": [
+  "#Paradox",
+  "#Paradoxo",
+  "#悖论"
+ ],
+ "gtia.birch_world.ui.manual.9": [
+  "History stays consistent (Novikov): a debt past the credit cannot stand. The debt vanishes, with all in the output buses.",
+  "A história fica consistente (Novikov): uma dívida acima do crédito não se sustenta. Ela some, junto com tudo nos barramentos de saída.",
+  "历史保持自洽（诺维科夫）：超过信用的债务无法成立。债务消失，输出总线中的一切也随之消失。"
+ ],
+ "gtia.birch_world.ui.manual.10": [
+  "The loops then close for 60 s. Feed the hole (HRAE-MC) to raise the credit.",
+  "Depois os laços fecham por 60 s. Alimente o buraco (HRAE-MC) para subir o crédito.",
+  "随后回路关闭 60 秒。向黑洞进料（HRAE-MC）可提高信用。"
+ ],
+ "gtia.birch_world.ui.manual.11": [
+  "The Causal era grows with debt paid back: I at 2^50 EU, II at 2^55, III at 2^60.",
+  "A Era Causal cresce com a dívida paga: I com 2^50 EU, II com 2^55, III com 2^60.",
+  "因果纪元随已偿还债务提升：2^50 EU 为 I，2^55 为 II，2^60 为 III。"
+ ]
+}

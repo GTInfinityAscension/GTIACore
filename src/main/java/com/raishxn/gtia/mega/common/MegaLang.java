@@ -16,7 +16,7 @@ public final class MegaLang {
     /** Files under mega_lang, without the extension. */
     public static final String[] FILES = { "common", "star_lifter", "stellar_hoop", "system_creator",
             "fusion_suppressor", "kugelblitz", "hraemc", "nidavellir", "assembly_yard", "yggdrasil",
-            "stellar_harvester", "suprashell", "disintegrator", "birch_world", "obliterator" };
+            "stellar_harvester", "suprashell", "disintegrator", "birch_world", "qso" };
 
     /** English of every key read, for names Registrate needs as a lang value. */
     private static final java.util.Map<String, String> ENGLISH = new java.util.HashMap<>();

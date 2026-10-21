@@ -1,13 +1,6 @@
 package com.raishxn.gtia.mega.suprashell;
 
-import com.gregtechceu.gtceu.api.capability.recipe.IO;
-import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
-import com.gregtechceu.gtceu.api.item.MetaMachineItem;
 import com.gregtechceu.gtceu.api.machine.IMachineBlockEntity;
-import com.gregtechceu.gtceu.api.machine.MultiblockMachineDefinition;
-import com.gregtechceu.gtceu.api.machine.trait.NotifiableItemStackHandler;
-import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
-import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
 import com.lowdragmc.lowdraglib.gui.util.ClickData;
@@ -20,16 +13,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-import com.raishxn.gtia.GTIAMod;
 import com.raishxn.gtia.mega.common.MegaMachine;
+import com.raishxn.gtia.mega.common.MegaModules;
 import com.raishxn.gtia.mega.common.MegaRecipeEngine;
 import com.raishxn.gtia.mega.system.StarPhysics.Kind;
 import com.raishxn.gtia.mega.system.StarSystems;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Controller of the Black Hole Suprashell (GTIA-D-329): hosts GTCEu multiblock controllers placed in its input buses
@@ -114,35 +104,6 @@ public class SuprashellMachine extends MegaMachine {
         return view;
     }
 
-    /** GTCEu multiblock controllers in the input buses, by kind; the megastructures cannot be hosted. */
-    Map<MultiblockMachineDefinition, Integer> hosted() {
-        Map<MultiblockMachineDefinition, Integer> out = new LinkedHashMap<>();
-        for (var part : getParts())
-            for (var handlers : part.getRecipeHandlers()) {
-                if (!handlers.isValid(IO.IN)) continue;
-                for (var handler : handlers.getCapability(ItemRecipeCapability.CAP)) {
-                    if (!(handler instanceof NotifiableItemStackHandler items)) continue;
-                    for (int i = 0; i < items.storage.getSlots(); i++) {
-                        var stack = items.storage.getStackInSlot(i);
-                        if (!(stack.getItem() instanceof MetaMachineItem item) ||
-                                !(item.getDefinition() instanceof MultiblockMachineDefinition def) ||
-                                GTIAMod.MOD_ID.equals(def.getId().getNamespace()))
-                            continue;
-                        out.merge(def, stack.getCount(), Integer::sum);
-                    }
-                }
-            }
-        return out;
-    }
-
-    static List<GTRecipeType> types(Map<MultiblockMachineDefinition, Integer> hosted) {
-        List<GTRecipeType> out = new ArrayList<>();
-        for (var def : hosted.keySet())
-            for (var type : def.getRecipeTypes())
-                if (type != null && type != GTRecipeTypes.DUMMY_RECIPES && !out.contains(type)) out.add(type);
-        return out;
-    }
-
     @Override
     public float fxLevel(String effect) {
         boolean on = view[7] > 0;
@@ -153,12 +114,12 @@ public class SuprashellMachine extends MegaMachine {
 
     @Override
     protected boolean megaSecond(ServerLevel level) {
-        var hosted = hosted();
-        int count = hosted.values().stream().mapToInt(Integer::intValue).sum();
+        var hosted = MegaModules.hosted(this);
+        int count = MegaModules.count(hosted);
         int capacity = ShellPhysics.capacity(radius, phases);
         int used = Math.min(count, capacity);
         double tau = ShellPhysics.tau(radius);
-        var types = types(hosted);
+        var types = MegaModules.types(hosted);
         MegaRecipeEngine.Result result = new MegaRecipeEngine.Result(0, 0, "", used == 0 ? "modules" : "");
         if (isWorkingEnabled() && used > 0 && !types.isEmpty()) {
             progress.ticks = progressTicks;
@@ -178,9 +139,7 @@ public class SuprashellMachine extends MegaMachine {
             recipe = result.recipe();
             blocked = "";
         }
-        var lines = new StringBuilder();
-        hosted.forEach((def, n) -> lines.append(def.getBlock().getDescriptionId()).append('=').append(n).append('\n'));
-        modules = lines.toString();
+        modules = MegaModules.lines(hosted);
         view = new double[] { count, capacity, ShellPhysics.parallel(used), tau, radius, result.crafts(), result.eu(),
                 working ? 1 : 0, types.size() };
         return working || isWorkingEnabled();

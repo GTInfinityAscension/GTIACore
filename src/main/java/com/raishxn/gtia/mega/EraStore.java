@@ -15,7 +15,10 @@ import java.util.UUID;
  */
 public final class EraStore extends SavedData {
 
-    public static final String CAUSAL_DEBT = "causal_debt", NEGENTROPY = "negentropy", FINAL_DONE = "final_done";
+    public static final String CAUSAL_DEBT = "causal_debt", CAUSAL_PAID = "causal_paid", NEGENTROPY = "negentropy",
+            NEGENTROPY_TAKEN = "negentropy_taken", FINAL_DONE = "final_done";
+    /** Owner key for values of the whole world (the negentropy stock taken, the end). */
+    public static final java.util.UUID WORLD = new java.util.UUID(0, 0);
 
     private static final String NAME = "gtia_era_store";
     private final Map<String, Map<UUID, Double>> values = new HashMap<>();

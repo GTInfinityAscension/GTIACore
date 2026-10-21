@@ -115,6 +115,8 @@ legacyForge {
         gameTestServer {
             type = "gameTestServer"
             sourceSet = sourceSets.main
+            // The megastructure GameTests build structures of up to ~90k blocks each.
+            jvmArguments.addAll('-Xmx12G')
             systemProperty('forge.enabledGameTestNamespaces', project.mod_id)
             if (project.hasProperty('gtia.shapeDump')) systemProperty('gtia.shapeDump', project.property('gtia.shapeDump'))
         }

@@ -18,6 +18,31 @@ public final class MegaRecipes {
 
     private MegaRecipes() {}
 
+    /** Provisional (GTIA-D-332): the last megastructure takes a Birch World's worth of everything. */
+    private static void qso(Consumer<FinishedRecipe> provider) {
+        var b = GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("qso"))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(64))
+                .inputItems(GTItems.EMITTER_UV.asStack(64))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 64)
+                .inputFluids(GTMaterials.Neutronium.getFluid(294912));
+        if (GTIAMegastructures.BIRCH_WORLD_DEF != null) b.inputItems(GTIAMegastructures.BIRCH_WORLD_DEF.asStack(1));
+        b.outputItems(GTIAMegastructures.QSO_DEF.asStack()).EUt(GTValues.VA[GTValues.UIV]).duration(48000).save(provider);
+    }
+
+    /** Provisional (GTIA-D-331): a Suprashell's worth of shells many times over. */
+    private static void birchWorld(Consumer<FinishedRecipe> provider) {
+        GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("birch_world"))
+                .inputItems(GTIAMegastructures.SUPRASHELL_DEF.asStack(4))
+                .inputItems(GTItems.FIELD_GENERATOR_UV.asStack(64))
+                .inputItems(GTItems.GRAVI_STAR.asStack(64))
+                .inputItems(CustomTags.UIV_CIRCUITS, 64)
+                .inputFluids(GTMaterials.Neutronium.getFluid(147456))
+                .outputItems(GTIAMegastructures.BIRCH_WORLD_DEF.asStack())
+                .EUt(GTValues.VA[GTValues.UIV]).duration(24000)
+                .save(provider);
+    }
+
     /** Provisional (GTIA-D-330): field generators to switch the binding off, a Suprashell's worth of gravity stars. */
     private static void disintegrator(Consumer<FinishedRecipe> provider) {
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("disintegrator"))
@@ -196,6 +221,8 @@ public final class MegaRecipes {
         if (GTIAMegastructures.STELLAR_HARVESTER_DEF != null) stellarHarvester(provider);
         if (GTIAMegastructures.SUPRASHELL_DEF != null) suprashell(provider);
         if (GTIAMegastructures.DISINTEGRATOR_DEF != null) disintegrator(provider);
+        if (GTIAMegastructures.BIRCH_WORLD_DEF != null) birchWorld(provider);
+        if (GTIAMegastructures.QSO_DEF != null) qso(provider);
         if (GTIAMegastructures.MATRIOSHKA_BRAIN == null) return;
         GTRecipeTypes.ASSEMBLY_LINE_RECIPES.recipeBuilder(GTIAMod.id("matrioshka_brain"))
                 .inputItems(GTResearchMachines.HIGH_PERFORMANCE_COMPUTING_ARRAY.asStack(16))

@@ -1,0 +1,177 @@
+{
+ "block.gtia.qso": [
+  "Quasi-Stellar Obliterator",
+  "Obliterador Quase-Estelar",
+  "类星体湮灭炮"
+ ],
+ "gtia.machine.qso.tooltip.0": [
+  "A gun the size of a system round its quasar, built in five phases: the Final era.",
+  "Uma arma do tamanho de um sistema em volta do quasar, construída em cinco fases: a Era Final.",
+  "围绕类星体的星系级巨炮，分五个阶段建造：终末纪元。"
+ ],
+ "gtia.machine.qso.tooltip.1": [
+  "Charges a capacitor from the quasar and the Nexus network and fires it; each shot harvests negentropy.",
+  "Carrega um capacitor com o quasar e a rede Nexus e dispara; cada tiro colhe negentropia.",
+  "以类星体和 Nexus 网络为电容充能并发射；每次发射收集负熵。"
+ ],
+ "gtia.machine.qso.tooltip.2": [
+  "The world's negentropy is finite. With it spent, the last shot may end the game (a world rule).",
+  "A negentropia do mundo é finita. Esgotada, o último tiro pode encerrar o jogo (regra do mundo).",
+  "世界负熵有限。耗尽后，最后一发可能终结游戏（世界规则）。"
+ ],
+ "gtia.qso.state": [
+  "Capacitor %s, world stock %s",
+  "Capacitor %s, estoque do mundo %s",
+  "电容 %s，世界储量 %s"
+ ],
+ "gtia.qso.final_broadcast": [
+  "The Quasi-Stellar Obliterator fires its last shot. The universe has no order left to give. The game is over.",
+  "O Obliterador Quase-Estelar dispara o último tiro. O universo não tem mais ordem para dar. O jogo acabou.",
+  "类星体湮灭炮发射了最后一发。宇宙已无秩序可供索取。游戏结束。"
+ ],
+ "gtia.qso.ui.manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtia.qso.ui.manual.tip": [
+  "How the gun works, with its formulas.",
+  "Como a arma funciona, com as fórmulas.",
+  "巨炮的原理和公式。"
+ ],
+ "gtia.qso.ui.minus": [
+  "-",
+  "-",
+  "-"
+ ],
+ "gtia.qso.ui.plus": [
+  "+",
+  "+",
+  "+"
+ ],
+ "gtia.qso.ui.draw": [
+  "Draw %s",
+  "Puxar %s",
+  "汲取 %s"
+ ],
+ "gtia.qso.ui.size": [
+  "Shot %s",
+  "Tiro %s",
+  "发射 %s"
+ ],
+ "gtia.qso.ui.negentropy": [
+  "Negentropy",
+  "Negentropia",
+  "负熵"
+ ],
+ "gtia.qso.ui.stock": [
+  "World stock",
+  "Estoque do mundo",
+  "世界储量"
+ ],
+ "gtia.qso.ui.hole": [
+  "%s M☉",
+  "%s M☉",
+  "%s M☉"
+ ],
+ "gtia.qso.ui.status": [
+  "%s shots · %s EU/s in",
+  "%s tiros · %s EU/s entrando",
+  "已发射 %s · 输入 %s EU/s"
+ ],
+ "gtia.qso.ui.spent": [
+  "The world's negentropy is spent",
+  "A negentropia do mundo acabou",
+  "世界负熵已耗尽"
+ ],
+ "gtia.qso.ui.ended": [
+  "The last shot was fired",
+  "O último tiro foi disparado",
+  "最后一发已发射"
+ ],
+ "gtia.qso.ui.manual_title": [
+  "Field manual - Quasi-Stellar Obliterator",
+  "Manual de campo - Obliterador",
+  "现场手册 - 类星体湮灭炮"
+ ],
+ "gtia.rule.machines.negentropy_stock": [
+  "Negentropy in the world",
+  "Negentropia do mundo",
+  "世界负熵储量"
+ ],
+ "gtia.rule.machines.negentropy_stock.desc": [
+  "Units of negentropy the Final era can harvest in this world, all players together.",
+  "Unidades de negentropia que a Era Final pode colher neste mundo, somando todos os jogadores.",
+  "本世界终末纪元可收集的负熵总量（所有玩家合计）。"
+ ],
+ "gtia.rule.machines.final_ending": [
+  "The last shot ends the game",
+  "O último tiro encerra o jogo",
+  "最后一发终结游戏"
+ ],
+ "gtia.rule.machines.final_ending.desc": [
+  "When the world's negentropy is spent, the Obliterator's next shot ends the game.",
+  "Com a negentropia do mundo esgotada, o próximo tiro do Obliterador encerra o jogo.",
+  "世界负熵耗尽后，湮灭炮的下一发将终结游戏。"
+ ],
+ "gtia.qso.ui.manual.0": [
+  "#The quasar",
+  "#O quasar",
+  "#类星体"
+ ],
+ "gtia.qso.ui.manual.1": [
+  "A quasar is a black hole swallowing matter at its Eddington limit, the brightest steady light there is.",
+  "Um quasar é um buraco negro engolindo matéria no limite de Eddington, a luz estável mais forte que existe.",
+  "类星体是以爱丁顿极限吞噬物质的黑洞，是最亮的稳定光源。"
+ ],
+ "gtia.qso.ui.manual.2": [
+  "=input = 2^40 EU/t x M/M☉ x 20 + 2^42 EU/s x draw (0-16)",
+  "=entrada = 2^40 EU/t x M/M☉ x 20 + 2^42 EU/s x puxar (0-16)",
+  "=输入 = 2^40 EU/t x M/M☉ x 20 + 2^42 EU/s x 汲取（0-16）"
+ ],
+ "gtia.qso.ui.manual.3": [
+  "=charge = charge x 0.99 + input each second;  ceiling = input / 0.01",
+  "=carga = carga x 0,99 + entrada por segundo;  teto = entrada / 0,01",
+  "=电量 = 电量 x 0.99 + 输入（每秒）；上限 = 输入 / 0.01"
+ ],
+ "gtia.qso.ui.manual.4": [
+  "#The shot",
+  "#O tiro",
+  "#发射"
+ ],
+ "gtia.qso.ui.manual.5": [
+  "A shot of size k holds 2^50 x 2^(k+1) EU; aiming costs 2^50 of it. Sizes up to 2 + phases, at most 7.",
+  "Um tiro de tamanho k guarda 2^50 x 2^(k+1) EU; mirar custa 2^50 dele. Tamanhos até 2 + fases, no máximo 7.",
+  "k 级发射储能 2^50 x 2^(k+1) EU，其中瞄准消耗 2^50。等级最高为 2 + 阶段数，上限 7。"
+ ],
+ "gtia.qso.ui.manual.6": [
+  "=negentropy = (shot - 2^50) / 2^48 units",
+  "=negentropia = (tiro - 2^50) / 2^48 unidades",
+  "=负熵 = (发射能量 - 2^50) / 2^48 单位"
+ ],
+ "gtia.qso.ui.manual.7": [
+  "Big shots waste less on aiming but fill slowly and leak; past the ceiling they never fire. A heavier hole lifts it.",
+  "Tiros grandes perdem menos na mira, mas enchem devagar e vazam; acima do teto nunca disparam. Um buraco mais pesado sobe o teto.",
+  "大发射瞄准损耗少，但充能慢且会泄漏；超过上限则永远无法发射。黑洞越重上限越高。"
+ ],
+ "gtia.qso.ui.manual.8": [
+  "#The end",
+  "#O fim",
+  "#终结"
+ ],
+ "gtia.qso.ui.manual.9": [
+  "Ordered energy fired at the 2.7 K sky is negentropy; the world holds only so much (a world rule), shared by all.",
+  "Energia ordenada disparada contra o céu de 2,7 K é negentropia; o mundo só tem um tanto (regra do mundo), dividido por todos.",
+  "向 2.7 K 天空发射的有序能量即为负熵；世界总量有限（世界规则），所有人共享。"
+ ],
+ "gtia.qso.ui.manual.10": [
+  "When it is spent and the world rule allows it, the next shot is the last: the Final era closes and the game ends.",
+  "Quando acaba e a regra do mundo permite, o próximo tiro é o último: a Era Final se fecha e o jogo acaba.",
+  "耗尽且世界规则允许时，下一发即最后一发：终末纪元关闭，游戏结束。"
+ ],
+ "gtia.qso.ui.manual.11": [
+  "Modpacks set the stock and may turn the ending off; the negentropy is kept for their own final recipes.",
+  "Os modpacks definem o estoque e podem desligar o final; a negentropia fica guardada para as receitas finais deles.",
+  "整合包可设定储量并关闭结局；负熵会保留供其终局配方使用。"
+ ]
+}

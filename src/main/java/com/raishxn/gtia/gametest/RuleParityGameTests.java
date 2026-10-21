@@ -68,7 +68,7 @@ public final class RuleParityGameTests {
     /** The new rules have the GTO-like values on each preset. */
     @GameTest(template = "qa_empty_5x5", batch = "rules", timeoutTicks = 20)
     public static void parityRuleValues(GameTestHelper helper) {
-        helper.assertTrue(GTIARules.all().size() == 54, "54 rules, got " + GTIARules.all().size());
+        helper.assertTrue(GTIARules.all().size() == 56, "56 rules, got " + GTIARules.all().size());
         helper.assertTrue(GTIARules.REQUIRE_GT_TOOLS.restart(), "GT tools rule is read at startup");
         helper.assertTrue(GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.JOURNEY) == 0 &&
                 GTIARules.ORGAN_PLANET_REQUIREMENT.valueFor(RulePreset.NORMAL) == 1, "planets need organs on Normal");
