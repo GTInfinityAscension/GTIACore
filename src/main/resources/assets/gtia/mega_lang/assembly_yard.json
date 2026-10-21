@@ -130,9 +130,9 @@
   "=并行 = 16 x 开放船台；船台 = 18 x 阶段数"
  ],
  "gtia.assembly_yard.ui.manual.3": [
-  "Recipes: the Assembly Line and the Assembler. EU comes from the Nexus network, as in the base recipe.",
-  "Receitas: a Assembly Line e o Assembler. O EU sai da rede Nexus, como na receita base.",
-  "配方：装配线和组装机。EU 按原配方从 Nexus 网络支付。"
+  "Recipes: the Assembly Line and the Assembler, EU from the Nexus network. Closed slipways cost nothing.",
+  "Receitas: a Assembly Line e o Assembler, EU da rede Nexus. Rampas fechadas não custam nada.",
+  "配方：装配线和组装机，EU 来自 Nexus 网络。关闭的船台不耗能。"
  ],
  "gtia.assembly_yard.ui.manual.4": [
   "#Starlight",
@@ -170,9 +170,9 @@
   "=赶工：速度 x2，EU x2.5"
  ],
  "gtia.assembly_yard.ui.manual.11": [
-  "Close slipways to save EU when the buses run short: idle slipways cost nothing.",
-  "Feche rampas para poupar EU quando os barramentos estiverem curtos: rampa parada não custa nada.",
-  "总线原料不足时可关闭船台以节省 EU：闲置船台不耗能。"
+  "=megastructure controllers: EU x0.5 here (the yard is built for them)",
+  "=controladores de megaestrutura: EU x0,5 aqui (o estaleiro é feito para eles)",
+  "=巨构控制器：在此 EU x0.5（船坞专为其建造）"
  ],
  "gtia.assembly_yard.ui.lever.tip.up": [
   "Open six more slipways.",

@@ -28,6 +28,9 @@ public final class StarSystems extends SavedData {
     public static final ResourceKey<Level> NEXUS = key("nexus_system");
 
     private static final String NAME = "gtia_star_systems";
+    /** The server this store was read for (not saved): a new star cancels a pending wipe of its slot. */
+    @Nullable
+    private transient MinecraftServer server;
 
     /** The star of one system. */
     public static final class Star {
@@ -112,7 +115,9 @@ public final class StarSystems extends SavedData {
     }
 
     public static StarSystems get(MinecraftServer server) {
-        return server.overworld().getDataStorage().computeIfAbsent(StarSystems::load, StarSystems::new, NAME);
+        var out = server.overworld().getDataStorage().computeIfAbsent(StarSystems::load, StarSystems::new, NAME);
+        out.server = server;
+        return out;
     }
 
     private static StarSystems load(CompoundTag tag) {
@@ -153,6 +158,7 @@ public final class StarSystems extends SavedData {
         var key = slot(slot).location();
         var old = stars.get(key);
         if (old != null && old.kind != Kind.NONE) return false;
+        if (server != null) SystemWipe.cancel(server, slot);
         var s = new Star(kind, kind.mass, kind.mainSequence() ? 1.0 : 0, owner, seed);
         s.generation = old == null ? 1 : old.generation + 1;
         s.metallicity = z;

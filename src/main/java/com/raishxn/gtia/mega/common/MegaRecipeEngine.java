@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 public final class MegaRecipeEngine {
 
     /** At most this many batches per second, so a fast recipe cannot hold the server. */
-    static final int MAX_BATCHES = 64;
+    public static final int MAX_BATCHES = 64;
 
     /** Work carried over between seconds for recipes longer than one second of work. */
     public static final class Progress {
@@ -33,11 +33,19 @@ public final class MegaRecipeEngine {
         public String last = "";
     }
 
-    /** {@code maxBatches}: at most this many batches this second (a fuel that runs out caps it). */
-    public record Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed, int maxBatches) {
+    /**
+     * {@code maxBatches}: at most this many batches this second (a fuel that runs out caps it); {@code recipeEu}: an
+     * extra EU factor per recipe (the Assembly Yard's discount on megastructure parts).
+     */
+    public record Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed, int maxBatches,
+                         java.util.function.ToDoubleFunction<GTRecipe> recipeEu) {
+
+        public Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed, int maxBatches) {
+            this(parallel, speed, euFactor, allowed, maxBatches, r -> 1);
+        }
 
         public Limits(int parallel, double speed, double euFactor, Predicate<GTRecipe> allowed) {
-            this(parallel, speed, euFactor, allowed, MAX_BATCHES);
+            this(parallel, speed, euFactor, allowed, MAX_BATCHES, r -> 1);
         }
     }
 
@@ -78,7 +86,8 @@ public final class MegaRecipeEngine {
                 blocked = "inputs";
                 break;
             }
-            double cost = RecipeHelper.getRealEUt(found).getTotalEU() * (double) duration * p * lim.euFactor();
+            double cost = RecipeHelper.getRealEUt(found).getTotalEU() * (double) duration * p * lim.euFactor() *
+                    lim.recipeEu().applyAsDouble(found);
             if (!m.pay(level, cost)) {
                 blocked = "power";
                 break;

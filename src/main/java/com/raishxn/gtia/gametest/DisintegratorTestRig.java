@@ -70,11 +70,20 @@ final class DisintegratorTestRig {
                     "taking the star erases the system");
             helper.assertTrue(gas.tank.getFluidInTank(0).getAmount() > 0 || m.owedGas() > 0,
                     "the star pours out as gas");
+            helper.assertTrue(com.raishxn.gtia.mega.system.SystemWipe.pending(server(helper), slot),
+                    "the erased system's terrain is marked for wiping at the next start");
+            systems.create(slot, Kind.RED_DWARF, owner, 7);
+            helper.assertTrue(!com.raishxn.gtia.mega.system.SystemWipe.pending(server(helper), slot),
+                    "making a new star in the slot first cancels the wipe");
             helper.succeed();
         } finally {
             MegaMachine.anyDimensionForTests = false;
             if (slot >= 0) systems.clear(slot);
         }
+    }
+
+    private static net.minecraft.server.MinecraftServer server(GameTestHelper helper) {
+        return helper.getLevel().getServer();
     }
 
     static void noRingNoDisintegrator(GameTestHelper helper) {

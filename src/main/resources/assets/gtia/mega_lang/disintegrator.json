@@ -170,8 +170,8 @@
   "最后 10% 是恒星：每百分比每太阳质量一百万 mB 气体，氢与氦比例 3:1。"
  ],
  "gtia.disintegrator.ui.manual.11": [
-  "Taking the star erases the system: its slot is free for the System Creator again. Stop before it to keep the system.",
-  "Tirar a estrela apaga o sistema: o espaço volta livre para o System Creator. Pare antes para manter o sistema.",
-  "取走恒星会抹除星系：其槽位重新供星系创造器使用。在此之前停止即可保留星系。"
+  "Taking the star erases the system; its terrain is wiped at the next server start, unless a new star is made there first.",
+  "Tirar a estrela apaga o sistema; o terreno é apagado no próximo início do servidor, a não ser que uma estrela nova seja feita lá antes.",
+  "取走恒星会抹除星系；其地形将在下次服务器启动时清除，除非在此之前已在该处创造新恒星。"
  ]
 }

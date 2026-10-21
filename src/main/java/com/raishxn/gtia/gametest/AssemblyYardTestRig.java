@@ -84,6 +84,13 @@ final class AssemblyYardTestRig {
                 any |= !out.getInventory().storage.getStackInSlot(s).isEmpty();
             helper.assertTrue(any, "the assemblies reach the output bus");
             helper.assertTrue(m.view()[0] == 288 && Math.abs(m.view()[1] - 1) < 1e-9, "18 slipways x16, the Sun x1");
+            helper.assertTrue(AssemblyYardMachine.discount(recipe) == 1, "an ordinary assembly pays full EU");
+            GTRecipe mega = null;
+            for (var r : helper.getLevel().getRecipeManager().getAllRecipesFor(GTRecipeTypes.ASSEMBLY_LINE_RECIPES))
+                for (var o : RecipeHelper.getOutputItems(r))
+                    if (o.is(GTIAMegastructures.ASSEMBLY_YARD_DEF.asStack().getItem())) mega = r;
+            helper.assertTrue(mega != null && AssemblyYardMachine.discount(mega) == YardPhysics.MEGA_DISCOUNT,
+                    "a megastructure controller's recipe costs half the EU in the yard");
             m.setRush(true);
             m.testSecond(owner);
             helper.assertTrue(Math.abs(m.view()[1] - 2) < 1e-9, "rush doubles the rate");

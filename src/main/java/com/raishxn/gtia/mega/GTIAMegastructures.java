@@ -22,7 +22,7 @@ public final class GTIAMegastructures {
             QSO = "qso";
 
     /** Every megastructure, for the client renderer check. */
-    static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
+    public static final String[] ALL = { MATRIOSHKA, STELLAR_ENGINE, STAR_LIFTER, STELLAR_HOOP, SYSTEM_CREATOR,
             FUSION_SUPPRESSOR, KUGELBLITZ, HRAEMC,
             NIDAVELLIR, ASSEMBLY_YARD, YGGDRASIL, STELLAR_HARVESTER,
             SUPRASHELL, DISINTEGRATOR, BIRCH_WORLD, QSO };
@@ -76,5 +76,14 @@ public final class GTIAMegastructures {
             DISINTEGRATOR_DEF = com.raishxn.gtia.mega.disintegrator.DisintegratorDefinition.register();
         if (available(BIRCH_WORLD)) BIRCH_WORLD_DEF = com.raishxn.gtia.mega.birch.BirchWorldDefinition.register();
         if (available(QSO)) QSO_DEF = com.raishxn.gtia.mega.qso.QsoDefinition.register();
+    }
+
+    /** True for the controller item of a GTIA megastructure. */
+    public static boolean isController(net.minecraft.world.item.ItemStack stack) {
+        if (!(stack.getItem() instanceof com.gregtechceu.gtceu.api.item.MetaMachineItem item)) return false;
+        var id = item.getDefinition().getId();
+        if (!com.raishxn.gtia.GTIAMod.MOD_ID.equals(id.getNamespace())) return false;
+        for (String name : ALL) if (name.equals(id.getPath())) return true;
+        return false;
     }
 }

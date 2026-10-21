@@ -44,6 +44,7 @@ public final class GTIAMod {
         GTIAItems.init();
         com.raishxn.gtia.organ.GTIAOrgans.init();
         MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.rules.GTIASurvivalRules::onPlayerTick);
+        MinecraftForge.EVENT_BUS.addListener(com.raishxn.gtia.mega.system.SystemWipe::onServerAboutToStart);
         com.raishxn.gtia.station.GTIAStation.init();
         com.raishxn.gtia.data.rocket.GTIARocketBlocks.init();
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();

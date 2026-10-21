@@ -101,6 +101,13 @@ public class AssemblyYardMachine extends MegaMachine {
         return view;
     }
 
+    /** Half the EU for a recipe that makes a megastructure controller. */
+    public static double discount(com.gregtechceu.gtceu.api.recipe.GTRecipe recipe) {
+        for (var out : com.gregtechceu.gtceu.api.recipe.RecipeHelper.getOutputItems(recipe))
+            if (com.raishxn.gtia.mega.GTIAMegastructures.isController(out)) return YardPhysics.MEGA_DISCOUNT;
+        return 1;
+    }
+
     static List<GTRecipeType> types() {
         return List.of(GTRecipeTypes.ASSEMBLY_LINE_RECIPES, GTRecipeTypes.ASSEMBLER_RECIPES);
     }
@@ -139,7 +146,8 @@ public class AssemblyYardMachine extends MegaMachine {
         if (isWorkingEnabled() && open > 0) {
             progress.ticks = progressTicks;
             result = MegaRecipeEngine.second(this, level, types(), new MegaRecipeEngine.Limits(parallel, speed,
-                    YardPhysics.euFactor(rush), r -> true), progress);
+                    YardPhysics.euFactor(rush), r -> true, MegaRecipeEngine.MAX_BATCHES, AssemblyYardMachine::discount),
+                    progress);
             progressTicks = progress.ticks;
             crafted += result.crafts();
         }

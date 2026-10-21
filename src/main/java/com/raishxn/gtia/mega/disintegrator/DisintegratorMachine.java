@@ -173,6 +173,7 @@ public class DisintegratorMachine extends MegaMachine {
                     working = true;
                     if (taken >= 1 - 1e-9) {
                         systems.clear(target);
+                        com.raishxn.gtia.mega.system.SystemWipe.request(level.getServer(), target);
                         erased++;
                         target = -1;
                         taken = 0;

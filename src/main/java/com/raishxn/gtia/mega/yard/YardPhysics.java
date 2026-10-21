@@ -9,12 +9,15 @@ package com.raishxn.gtia.mega.yard;
  * <li>The lasers take their power from starlight: the build rate follows the star's luminosity on a log scale,
  * 1 + log10(L/L☉), from x0.5 round a dim star to x4 round a blue giant.</li>
  * <li>Rush shifts double the rate but waste power: EU x2.5.</li>
+ * <li>Megastructure controllers are what the yard is built for: their recipes cost half the EU here.</li>
  * </ul>
  */
 public final class YardPhysics {
 
     public static final int SLIPWAYS_PER_PHASE = 18, PARALLEL_PER_SLIPWAY = 16, STEP = 6;
     public static final double RUSH_SPEED = 2, RUSH_EU = 2.5, SPEED_MIN = 0.5, SPEED_MAX = 4;
+    /** EU factor for recipes that make a megastructure controller: the yard is built for them. */
+    public static final double MEGA_DISCOUNT = 0.5;
 
     private YardPhysics() {}
 
