@@ -1,0 +1,232 @@
+{
+ "block.gtia.stellar_hoop": [
+  "Stellar Hoop",
+  "Aro Estelar",
+  "恒星环"
+ ],
+ "gtia.machine.stellar_hoop.tooltip.0": [
+  "A hoop that turns through the star's corona, built in five phases; works around the star of any star system.",
+  "Um aro que gira pela coroa da estrela, construído em cinco fases; funciona em volta da estrela de qualquer sistema estelar.",
+  "穿过恒星日冕旋转的圆环，分五个阶段建造；可在任何恒星系的恒星周围工作。"
+ ],
+ "gtia.machine.stellar_hoop.tooltip.1": [
+  "Runs fusion, Electric Blast Furnace and Plasma Forge recipes with the corona's heat: up to 1024 in parallel, twice as fast, half the EU.",
+  "Roda receitas de fusão, Electric Blast Furnace e Plasma Forge com o calor da coroa: até 1024 em paralelo, com o dobro da velocidade e metade do EU.",
+  "利用日冕热量运行聚变、电力高炉和等离子锻炉配方：最多 1024 并行，速度翻倍，EU 减半。"
+ ],
+ "gtia.machine.stellar_hoop.tooltip.2": [
+  "The lower it dives, the more parallel and the hotter the shields: feed it helium coolant.",
+  "Quanto mais baixo mergulha, mais paralelo e mais quente o escudo: alimente com hélio refrigerante.",
+  "下潜越低，并行越多、护盾越热：需要供应氦冷却剂。"
+ ],
+ "gtia.stellar_hoop.needs_star": [
+  "No star here: the Stellar Hoop works around the star of a star system.",
+  "Sem estrela aqui: o Aro Estelar funciona em volta da estrela de um sistema estelar.",
+  "此处没有恒星：恒星环只能在恒星系的恒星周围工作。"
+ ],
+ "gtia.stellar_hoop.parallel": [
+  "Parallel: %s",
+  "Paralelo: %s",
+  "并行：%s"
+ ],
+ "gtia.stellar_hoop.corona": [
+  "Corona: %s MK",
+  "Coroa: %s MK",
+  "日冕：%s MK"
+ ],
+ "gtna.ui.o.sh_manual": [
+  "Manual",
+  "Manual",
+  "手册"
+ ],
+ "gtna.ui.o.sh_manual.tip": [
+  "How the hoop works, with its formulas.",
+  "Como o aro funciona, com as fórmulas.",
+  "圆环的原理和公式。"
+ ],
+ "gtia.stellar_hoop.ui.height": [
+  "Dive %s%% R above the surface",
+  "Mergulho a %s%% R da superfície",
+  "下潜至表面上方 %s%% R"
+ ],
+ "gtia.stellar_hoop.ui.no_star": [
+  "No star in this system.",
+  "Sem estrela neste sistema.",
+  "本恒星系没有恒星。"
+ ],
+ "gtia.stellar_hoop.ui.parallel": [
+  "Parallel",
+  "Paralelo",
+  "并行"
+ ],
+ "gtia.stellar_hoop.ui.coolant": [
+  "Coolant",
+  "Refrigerante",
+  "冷却剂"
+ ],
+ "gtia.stellar_hoop.ui.coolant.0": [
+  "none",
+  "nenhum",
+  "无"
+ ],
+ "gtia.stellar_hoop.ui.coolant.1": [
+  "liquid He",
+  "He líquido",
+  "液氦"
+ ],
+ "gtia.stellar_hoop.ui.coolant.2": [
+  "He II",
+  "He II",
+  "超流氦"
+ ],
+ "gtia.stellar_hoop.ui.coolant.3": [
+  "shifted",
+  "deslocado",
+  "位移超流体"
+ ],
+ "gtia.stellar_hoop.ui.shields": [
+  "Shields",
+  "Escudos",
+  "护盾"
+ ],
+ "gtia.stellar_hoop.ui.load": [
+  "Shield load %s units/s",
+  "Carga do escudo %s unidades/s",
+  "护盾负荷 %s 单位/秒"
+ ],
+ "gtia.stellar_hoop.ui.crafts": [
+  "%s crafts/s · %s EU",
+  "%s receitas/s · %s EU",
+  "%s 次/秒 · %s EU"
+ ],
+ "gtia.stellar_hoop.ui.idle.no_recipe": [
+  "Waiting for inputs",
+  "Esperando entradas",
+  "等待输入"
+ ],
+ "gtia.stellar_hoop.ui.idle.inputs": [
+  "Out of inputs",
+  "Faltam entradas",
+  "输入不足"
+ ],
+ "gtia.stellar_hoop.ui.idle.power": [
+  "No Nexus power",
+  "Sem energia da Nexus",
+  "Nexus 能量不足"
+ ],
+ "gtia.stellar_hoop.ui.idle.shields": [
+  "Shields burnt: repair them",
+  "Escudos queimados: conserte",
+  "护盾烧毁：请修复"
+ ],
+ "gtia.stellar_hoop.ui.chart.parallel": [
+  "Parallel",
+  "Paralelo",
+  "并行"
+ ],
+ "gtia.stellar_hoop.ui.chart.load": [
+  "Shield load",
+  "Carga do escudo",
+  "护盾负荷"
+ ],
+ "gtia.stellar_hoop.ui.manual.0": [
+  "#The hoop",
+  "#O aro",
+  "#圆环"
+ ],
+ "gtia.stellar_hoop.ui.manual.1": [
+  "An eccentric hoop turns about its own centre; once a turn each segment passes the dive point, just above the photosphere, and its crucibles take in the corona's plasma.",
+  "Um aro excêntrico gira em volta do próprio centro; a cada volta cada trecho passa pelo ponto de mergulho, logo acima da fotosfera, e os cadinhos recebem o plasma da coroa.",
+  "偏心圆环绕自身中心旋转；每转一圈，各段都会经过紧贴光球的下潜点，坩埚吸入日冕等离子体。"
+ ],
+ "gtia.stellar_hoop.ui.manual.2": [
+  "=T(h) = 10^4 K + 2×10^6 K × (1 - e^(-h/4%))",
+  "=T(h) = 10^4 K + 2×10^6 K × (1 - e^(-h/4%))",
+  "=T(h) = 10^4 K + 2×10^6 K × (1 - e^(-h/4%))"
+ ],
+ "gtia.stellar_hoop.ui.manual.3": [
+  "Recipes up to that heat run: fusion, Electric Blast Furnace and Plasma Forge.",
+  "Rodam as receitas até esse calor: fusão, Electric Blast Furnace e Plasma Forge.",
+  "运行该温度以下的配方：聚变、电力高炉和等离子锻炉。"
+ ],
+ "gtia.stellar_hoop.ui.manual.4": [
+  "=work = 2 × 20 ticks/s;  EU = EU/t × time × parallel × 0.5",
+  "=trabalho = 2 × 20 ticks/s;  EU = EU/t × tempo × paralelo × 0,5",
+  "=工作量 = 2 × 20 tick/秒；EU = EU/t × 时间 × 并行 × 0.5"
+ ],
+ "gtia.stellar_hoop.ui.manual.5": [
+  "#Diving",
+  "#O mergulho",
+  "#下潜"
+ ],
+ "gtia.stellar_hoop.ui.manual.6": [
+  "The corona thins out with height (scale height ~7% R): lower plasma is denser, so more of it comes in at once.",
+  "A coroa rarefaz com a altura (altura de escala ~7% R): o plasma mais baixo é mais denso, então entra mais de uma vez.",
+  "日冕随高度变稀（标高约 7% R）：越低的等离子体越稠密，一次进入越多。"
+ ],
+ "gtia.stellar_hoop.ui.manual.7": [
+  "=P = P0 × e^(-(h - 2%)/10%);  P0 = 16, 256, 512, 512, 1024 by phase",
+  "=P = P0 × e^(-(h - 2%)/10%);  P0 = 16, 256, 512, 512, 1024 por fase",
+  "=P = P0 × e^(-(h - 2%)/10%)；各阶段 P0 = 16, 256, 512, 512, 1024"
+ ],
+ "gtia.stellar_hoop.ui.manual.8": [
+  "=Q = 100 × e^(-(h - 2%)/5%) × P / 256  (radiators: × 0.6)",
+  "=Q = 100 × e^(-(h - 2%)/5%) × P / 256  (radiadores: × 0,6)",
+  "=Q = 100 × e^(-(h - 2%)/5%) × P / 256（散热器：× 0.6）"
+ ],
+ "gtia.stellar_hoop.ui.manual.9": [
+  "The load rises faster than the parallel: a high dive is cheaper per craft, a low one faster.",
+  "A carga sobe mais rápido que o paralelo: mergulho alto sai mais barato por receita, mergulho baixo é mais rápido.",
+  "负荷增长快于并行：高处下潜每次配方更省，低处更快。"
+ ],
+ "gtia.stellar_hoop.ui.manual.10": [
+  "#Coolant and shields",
+  "#Refrigerante e escudos",
+  "#冷却剂与护盾"
+ ],
+ "gtia.stellar_hoop.ui.manual.11": [
+  "Each mB of liquid helium takes 1 unit of load, Helium II 3, shifted superfluid 10; the best one in the hatches is used.",
+  "Cada mB de hélio líquido tira 1 unidade de carga, Hélio II 3, superfluido deslocado 10; usa-se o melhor nas hatches.",
+  "每 mB 液氦带走 1 单位负荷，超流氦 3，位移超流体 10；使用仓口中最好的一种。"
+ ],
+ "gtia.stellar_hoop.ui.manual.12": [
+  "=wear = 2% × uncooled share, per second",
+  "=desgaste = 2% × parte sem resfriar, por segundo",
+  "=磨损 = 2% × 未冷却比例，每秒"
+ ],
+ "gtia.stellar_hoop.ui.manual.13": [
+  "At 0% the hoop stops. Idle, it takes shield and hull blocks from an input bus: +5% each.",
+  "Com 0% o aro para. Parado, ele pega blocos do escudo e do casco num barramento de entrada: +5% cada.",
+  "降至 0% 时圆环停止。停机时从输入总线取护盾和外壳方块：每个 +5%。"
+ ],
+ "gtia.stellar_hoop.ui.manual.14": [
+  "The second hoop (phase 5) runs higher and doubles the crucibles.",
+  "O segundo aro (fase 5) passa mais alto e dobra os cadinhos.",
+  "第二个圆环（阶段 5）运行在更高处，使坩埚数量加倍。"
+ ],
+ "gtna.ui.o.sh_lever.up": [
+  "Rise: pull plasma from 2% higher (thinner, cooler, cheaper per craft).",
+  "Subir: puxa plasma 2% mais alto (mais rarefeito, mais frio, mais barato por receita).",
+  "上升：从高 2% 处抽取等离子体（更稀薄、更冷、每次配方更省）。"
+ ],
+ "gtna.ui.o.sh_lever.down": [
+  "Dive: pull plasma from 2% lower (denser and hotter: more parallel, more shield load).",
+  "Descer: puxa plasma 2% mais baixo (mais denso e quente: mais paralelo, mais carga no escudo).",
+  "下潜：从低 2% 处抽取等离子体（更稠密更热：并行更多、护盾负荷更大）。"
+ ],
+ "gtia.stellar_hoop.ui.total": [
+  "%s crafted",
+  "%s feitas",
+  "已完成 %s"
+ ],
+ "gtia.stellar_hoop.ui.manual_title": [
+  "Field manual - Stellar Hoop",
+  "Manual de campo - Aro Estelar",
+  "现场手册 - 恒星环"
+ ],
+ "gtia.stellar_hoop.ui.load.short": [
+  "Load/s",
+  "Carga/s",
+  "负荷/秒"
+ ]
+}
